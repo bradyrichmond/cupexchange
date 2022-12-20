@@ -3,18 +3,27 @@ import { createSlice } from '@reduxjs/toolkit'
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
-    userData: {},
+    isLoggedIn: false,
+    fbUsername: '',
+    userGroups: []
   },
   reducers: {
-    setUserData: (state, action) => {
-      state.userData = action.payload;
+    setIsLoggedIn: (state, action) => {
+      state.isLoggedIn = action.payload;
     },
+    setFbUsername: (state, action) => {
+      state.fbUsername = action.payload;
+    },
+    setUserGroups: (state, action) => {
+      state.userGroups = action.payload;
+    }
   },
 });
 
-export const { setUserData } = userSlice.actions;
+export const { setIsLoggedIn, setFbUsername, setUserGroups } = userSlice.actions;
 
-export const selectUserIsLoggedIn = (state: any) => state.user.userData.isLoggedIn;
-export const selectUserCognitoGroups = (state: any) => state.user.signInUserSession.accessToken.payload['cognito:groups'];
+export const selectUserIsLoggedIn = (state: any) => state.user.isLoggedIn;
+export const selectFbUsername = (state: any) => state.user.fbUsername;
+export const selectUserCognitoGroups = (state: any) => state.user.userGroups;
 
 export default userSlice.reducer;

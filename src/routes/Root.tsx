@@ -7,11 +7,14 @@ import awsExports from '../aws-exports';
 import { Outlet, useNavigate } from 'react-router';
 import { Box } from '@mui/material';
 import { User } from '../models';
+import { useDispatch } from 'react-redux';
+import { setFbUsername, setIsLoggedIn, setUserGroups } from '../features/User/UserSlice';
 
 Amplify.configure(awsExports);
 
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const userLoggedIn = (user: any | undefined) => {
     checkIfNewUser(user);
@@ -21,15 +24,19 @@ export default function Login() {
   const checkIfNewUser = async (user: any | undefined) => {
     const fbUsername = user.username;
     const email = user.attributes.email;
-    console.log(JSON.stringify(user));
+    const groups = user.signInUserSession.accessToken.payload['cognito:groups'];
+    
     if (fbUsername) {
       const users = await DataStore.query(User, (u) => u.fbUsername.eq(fbUsername));
       if (users.length < 1) {
-        navigate('/signup', { state: { fbUsername, email }})
+        navigate('/signup', { state: { fbUsername, email, groups }});
       }
 
       if (users.length > 0) {
-        navigate('/home', { state: { fbUsername, email }});
+        dispatch(setFbUsername(user.username));
+        dispatch(setIsLoggedIn(true));
+        dispatch(setUserGroups(user.signInUserSession.accessToken.payload['cognito:groups']));
+        navigate('/');
       }
     }
   }
@@ -41,8 +48,6 @@ export default function Login() {
           {user && userLoggedIn(user) && 
             <Box />
           }
-          {/* sidebar */}
-          {/* <Outlet /> */}
         </Box>
       )}
     </Authenticator>

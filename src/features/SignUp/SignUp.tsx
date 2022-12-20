@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { Box, Button, TextField, Theme, Typography } from '@mui/material';
 import { makeStyles, createStyles } from '@mui/styles';
 import { useLocation, useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { setUserData } from '../User/UserSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFbUsername, setIsLoggedIn, setUserGroups } from '../User/UserSlice';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     textInputSpacing: {
@@ -31,7 +31,9 @@ const SignUp = () => {
         const userAddress = new Address({ address: address1, address2, city, district: usState, postal_code: zipCode });
         await DataStore.save(userAddress);
         await DataStore.save(new User({ fbUsername: locData.state.fbUsername, first_name: firstName, last_name: lastName, address: { ...userAddress }, userAddressId: userAddress.id, email: locData.state.email }));
-        await dispatch(setUserData(true));
+        dispatch(setFbUsername(locData.state.fbUsername));
+        dispatch(setIsLoggedIn(true));
+        dispatch(setUserGroups(locData.state.groups));
         navigate('/');
     }
 

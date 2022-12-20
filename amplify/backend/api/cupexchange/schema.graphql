@@ -1,17 +1,21 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+# input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
-type User @model {
+type User @model @auth(rules: [ 
+    {allow: private, operations: [read, create]},
+    {allow: owner, operations: [update, delete]}
+  ]) {
   id: ID!
   fbUsername: String!
   first_name: String!
   last_name: String!
   address: Address! @hasOne
   email: String!
+  banned: Boolean @auth(rules:[{allow: groups, groups: ["moderators"], operations: [update]}])
 }
 
-type Address @model {
+type Address @model @auth(rules: [{ allow: private }]) {
   id: ID!
   address: String!
   address2: String

@@ -1,18 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export const userSlice = createSlice({
-  name: 'counter',
+  name: 'user',
   initialState: {
-    isLoggedIn: false,
+    userData: {},
   },
   reducers: {
-    setIsLoggedIn: (state, action) => {
-      state.isLoggedIn = action.payload;
+    setUserData: (state, action) => {
+      state.userData = action.payload;
     },
   },
-})
+});
 
-// Action creators are generated for each case reducer function
-export const { setIsLoggedIn } = userSlice.actions
+export const { setUserData } = userSlice.actions;
 
-export default userSlice.reducer
+export const selectUserIsLoggedIn = (state: any) => state.user.userData.isLoggedIn;
+export const selectUserCognitoGroups = (state: any) => state.user.signInUserSession.accessToken.payload['cognito:groups'];
+
+export default userSlice.reducer;

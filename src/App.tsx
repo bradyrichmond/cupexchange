@@ -11,6 +11,8 @@ import './App.css';
 import Root from './routes/Root';
 import Error from './Error';
 import SignUp from './features/SignUp/SignUp';
+import { selectUserIsLoggedIn } from './features/User/UserSlice';
+import { useSelector } from 'react-redux';
 
 const buildRoutes = (isLoggedIn: boolean) => createBrowserRouter([
   {
@@ -30,7 +32,9 @@ const buildRoutes = (isLoggedIn: boolean) => createBrowserRouter([
 ]);
 
 export default function App() {
+  const userIsLoggedIn = useSelector(selectUserIsLoggedIn)
+
   return (
-    <RouterProvider router={buildRoutes(false)} />
+    <RouterProvider router={buildRoutes(userIsLoggedIn)} />
   );
 }

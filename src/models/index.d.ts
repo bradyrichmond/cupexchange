@@ -16,6 +16,8 @@ type EagerUser = {
   readonly first_name: string;
   readonly last_name: string;
   readonly address: Address;
+  readonly email: string;
+  readonly banned?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly userAddressId: string;
@@ -31,6 +33,8 @@ type LazyUser = {
   readonly first_name: string;
   readonly last_name: string;
   readonly address: AsyncItem<Address>;
+  readonly email: string;
+  readonly banned?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly userAddressId: string;

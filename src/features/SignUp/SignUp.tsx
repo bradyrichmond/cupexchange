@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { Box, Button, TextField, Theme, Typography } from '@mui/material';
 import { makeStyles, createStyles } from '@mui/styles';
 import { useLocation, useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../User/UserSlice';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     textInputSpacing: {
@@ -20,15 +22,17 @@ const SignUp = () => {
     const classes = useStyles();
     const [isLoading, setIsLoading] = useState(false);
     const locData = useLocation();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     async function createUser(data: any) {
         setIsLoading(true);
         const { firstName, lastName, address1, address2, city, usState, zipCode } = data;
         const userAddress = new Address({ address: address1, address2, city, district: usState, postal_code: zipCode });
         await DataStore.save(userAddress);
-        await DataStore.save(new User({ fbUsername: locData.state.fbUsername , first_name: firstName, last_name: lastName, address: { ...userAddress }, userAddressId: userAddress.id }));
-        navigate('')
+        await DataStore.save(new User({ fbUsername: locData.state.fbUsername, first_name: firstName, last_name: lastName, address: { ...userAddress }, userAddressId: userAddress.id, email: locData.state.email }));
+        await dispatch(setUserData(true));
+        navigate('/');
     }
 
     return (

@@ -21,6 +21,7 @@ export default function Login() {
   const checkIfNewUser = async (user: any | undefined) => {
     const fbUsername = user.username;
     const email = user.attributes.email;
+    console.log(JSON.stringify(user));
     if (fbUsername) {
       const users = await DataStore.query(User, (u) => u.fbUsername.eq(fbUsername));
       if (users.length < 1) {

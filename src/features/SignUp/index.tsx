@@ -30,7 +30,7 @@ const SignUp = () => {
         const { firstName, lastName, address1, address2, city, usState, zipCode } = data;
         const userAddress = new Address({ address: address1, address2, city, district: usState, postal_code: zipCode });
         await DataStore.save(userAddress);
-        await DataStore.save(new User({ fbUsername: locData.state.fbUsername, first_name: firstName, last_name: lastName, address: { ...userAddress }, userAddressId: userAddress.id, email: locData.state.email }));
+        await DataStore.save(new User({ fbUsername: locData.state.fbUsername, first_name: firstName, last_name: lastName, address: userAddress, userAddressId: userAddress.id, email: locData.state.email }));
         dispatch(setFbUsername(locData.state.fbUsername));
         dispatch(setIsLoggedIn(true));
         dispatch(setUserGroups(locData.state.groups));

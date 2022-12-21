@@ -10,14 +10,16 @@ import './App.css';
 
 import Root from './routes/Root';
 import Error from './Error';
-import SignUp from './features/SignUp/SignUp';
+import SignUp from './features/SignUp';
+import Home from './features/Home';
+
 import { selectUserIsLoggedIn } from './features/User/UserSlice';
 import { useSelector } from 'react-redux';
 
 const buildRoutes = (isLoggedIn: boolean) => createBrowserRouter([
   {
     path: '/',
-    element: isLoggedIn ? <Box>Logged in</Box> : <Navigate to='/login' />
+    element: isLoggedIn ? <Home /> : <Navigate to='/login' />
   },
   {
     path: '/login',

@@ -149,3 +149,132 @@ export const onDeleteAddress = /* GraphQL */ `
     }
   }
 `;
+export const onCreateStore = /* GraphQL */ `
+  subscription OnCreateStore($filter: ModelSubscriptionStoreFilterInput) {
+    onCreateStore(filter: $filter) {
+      id
+      name
+      district
+      city
+      lastUpdateBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateStore = /* GraphQL */ `
+  subscription OnUpdateStore($filter: ModelSubscriptionStoreFilterInput) {
+    onUpdateStore(filter: $filter) {
+      id
+      name
+      district
+      city
+      lastUpdateBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteStore = /* GraphQL */ `
+  subscription OnDeleteStore($filter: ModelSubscriptionStoreFilterInput) {
+    onDeleteStore(filter: $filter) {
+      id
+      name
+      district
+      city
+      lastUpdateBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;

@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { Box, Button, TextField, Theme, Typography } from '@mui/material';
 import { makeStyles, createStyles } from '@mui/styles';
 import { useLocation, useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { setFbUsername, setIsLoggedIn, setUserGroups } from '../User/UserSlice';
+import { setFbUsername, setUserGroups, createUserAddress, selectAddressId, createUser } from '../User/UserSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     textInputSpacing: {
@@ -23,18 +23,22 @@ const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const locData = useLocation();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
+    const addressId = useAppSelector(selectAddressId);
 
-    async function createUser(data: any) {
+    const createUserAccount = async (data: any) => {
         setIsLoading(true);
         const { firstName, lastName, address1, address2, city, usState, zipCode } = data;
-        const userAddress = new Address({ address: address1, address2, city, district: usState, postal_code: zipCode });
-        await DataStore.save(userAddress);
-        await DataStore.save(new User({ fbUsername: locData.state.fbUsername, first_name: firstName, last_name: lastName, address: userAddress, userAddressId: userAddress.id, email: locData.state.email }));
+        dispatch(createUserAddress({ address1, address2, city, usState, zipCode }));
+        const address = await getUserAddressFromStorage();
+        dispatch(createUser({ firstName, lastName, addressId, email: locData.state.email, address, fbUsername: locData.state.fbUsername }))
         dispatch(setFbUsername(locData.state.fbUsername));
-        dispatch(setIsLoggedIn(true));
         dispatch(setUserGroups(locData.state.groups));
         navigate('/');
+    }
+
+    const getUserAddressFromStorage = async () => {
+        return await DataStore.query(Address, addressId);
     }
 
     return (
@@ -43,7 +47,7 @@ const SignUp = () => {
             {!isLoading && 
             <Box border='1px solid #ccc' borderRadius='1rem' padding='2rem' justifyContent='center' alignItems='center'>
                 <Typography fontSize='3rem' paddingBottom='2rem'>Complete Sign up</Typography>
-                <form onSubmit={handleSubmit(createUser)}>
+                <form onSubmit={handleSubmit(createUserAccount)}>
                     <Box display='flex' flexDirection='column' fontSize='2rem'>
                         <Typography fontSize='2rem' paddingBottom='1rem'>Name</Typography>
                         <Box display='flex' flexDirection='row'>

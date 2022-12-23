@@ -10,7 +10,7 @@ export type CreateUserInput = {
   email: string,
   banned?: boolean | null,
   _version?: number | null,
-  userAddressId: string,
+  userAddressId?: string | null,
 };
 
 export type ModelUserConditionInput = {
@@ -94,7 +94,7 @@ export type User = {
   fbUsername: string,
   first_name: string,
   last_name: string,
-  address: Address,
+  address?: Address | null,
   email: string,
   banned?: boolean | null,
   createdAt: string,
@@ -102,7 +102,7 @@ export type User = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
-  userAddressId: string,
+  userAddressId?: string | null,
   owner?: string | null,
 };
 
@@ -129,7 +129,7 @@ export type UpdateUserInput = {
   email?: string | null,
   banned?: boolean | null,
   _version?: number | null,
-  userAddressId: string,
+  userAddressId?: string | null,
 };
 
 export type DeleteUserInput = {
@@ -173,6 +173,50 @@ export type DeleteAddressInput = {
   _version?: number | null,
 };
 
+export type CreateStoreInput = {
+  id?: string | null,
+  name: string,
+  district: string,
+  city: string,
+  _version?: number | null,
+};
+
+export type ModelStoreConditionInput = {
+  name?: ModelStringInput | null,
+  district?: ModelStringInput | null,
+  city?: ModelStringInput | null,
+  and?: Array< ModelStoreConditionInput | null > | null,
+  or?: Array< ModelStoreConditionInput | null > | null,
+  not?: ModelStoreConditionInput | null,
+};
+
+export type Store = {
+  __typename: "Store",
+  id: string,
+  name: string,
+  district: string,
+  city: string,
+  lastUpdateBy: User,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateStoreInput = {
+  id: string,
+  name?: string | null,
+  district?: string | null,
+  city?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteStoreInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   fbUsername?: ModelStringInput | null,
@@ -208,6 +252,23 @@ export type ModelAddressFilterInput = {
 export type ModelAddressConnection = {
   __typename: "ModelAddressConnection",
   items:  Array<Address | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelStoreFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  district?: ModelStringInput | null,
+  city?: ModelStringInput | null,
+  and?: Array< ModelStoreFilterInput | null > | null,
+  or?: Array< ModelStoreFilterInput | null > | null,
+  not?: ModelStoreFilterInput | null,
+};
+
+export type ModelStoreConnection = {
+  __typename: "ModelStoreConnection",
+  items:  Array<Store | null >,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -269,6 +330,15 @@ export type ModelSubscriptionAddressFilterInput = {
   or?: Array< ModelSubscriptionAddressFilterInput | null > | null,
 };
 
+export type ModelSubscriptionStoreFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  district?: ModelSubscriptionStringInput | null,
+  city?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionStoreFilterInput | null > | null,
+  or?: Array< ModelSubscriptionStoreFilterInput | null > | null,
+};
+
 export type CreateUserMutationVariables = {
   input: CreateUserInput,
   condition?: ModelUserConditionInput | null,
@@ -281,7 +351,7 @@ export type CreateUserMutation = {
     fbUsername: string,
     first_name: string,
     last_name: string,
-    address:  {
+    address?:  {
       __typename: "Address",
       id: string,
       address: string,
@@ -294,7 +364,7 @@ export type CreateUserMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    },
+    } | null,
     email: string,
     banned?: boolean | null,
     createdAt: string,
@@ -302,7 +372,7 @@ export type CreateUserMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userAddressId: string,
+    userAddressId?: string | null,
     owner?: string | null,
   } | null,
 };
@@ -319,7 +389,7 @@ export type UpdateUserMutation = {
     fbUsername: string,
     first_name: string,
     last_name: string,
-    address:  {
+    address?:  {
       __typename: "Address",
       id: string,
       address: string,
@@ -332,7 +402,7 @@ export type UpdateUserMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    },
+    } | null,
     email: string,
     banned?: boolean | null,
     createdAt: string,
@@ -340,7 +410,7 @@ export type UpdateUserMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userAddressId: string,
+    userAddressId?: string | null,
     owner?: string | null,
   } | null,
 };
@@ -357,7 +427,7 @@ export type DeleteUserMutation = {
     fbUsername: string,
     first_name: string,
     last_name: string,
-    address:  {
+    address?:  {
       __typename: "Address",
       id: string,
       address: string,
@@ -370,7 +440,7 @@ export type DeleteUserMutation = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    },
+    } | null,
     email: string,
     banned?: boolean | null,
     createdAt: string,
@@ -378,7 +448,7 @@ export type DeleteUserMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userAddressId: string,
+    userAddressId?: string | null,
     owner?: string | null,
   } | null,
 };
@@ -449,6 +519,156 @@ export type DeleteAddressMutation = {
   } | null,
 };
 
+export type CreateStoreMutationVariables = {
+  input: CreateStoreInput,
+  condition?: ModelStoreConditionInput | null,
+};
+
+export type CreateStoreMutation = {
+  createStore?:  {
+    __typename: "Store",
+    id: string,
+    name: string,
+    district: string,
+    city: string,
+    lastUpdateBy:  {
+      __typename: "User",
+      id: string,
+      fbUsername: string,
+      first_name: string,
+      last_name: string,
+      address?:  {
+        __typename: "Address",
+        id: string,
+        address: string,
+        address2?: string | null,
+        district: string,
+        city: string,
+        postal_code: string,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+      } | null,
+      email: string,
+      banned?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      userAddressId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateStoreMutationVariables = {
+  input: UpdateStoreInput,
+  condition?: ModelStoreConditionInput | null,
+};
+
+export type UpdateStoreMutation = {
+  updateStore?:  {
+    __typename: "Store",
+    id: string,
+    name: string,
+    district: string,
+    city: string,
+    lastUpdateBy:  {
+      __typename: "User",
+      id: string,
+      fbUsername: string,
+      first_name: string,
+      last_name: string,
+      address?:  {
+        __typename: "Address",
+        id: string,
+        address: string,
+        address2?: string | null,
+        district: string,
+        city: string,
+        postal_code: string,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+      } | null,
+      email: string,
+      banned?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      userAddressId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteStoreMutationVariables = {
+  input: DeleteStoreInput,
+  condition?: ModelStoreConditionInput | null,
+};
+
+export type DeleteStoreMutation = {
+  deleteStore?:  {
+    __typename: "Store",
+    id: string,
+    name: string,
+    district: string,
+    city: string,
+    lastUpdateBy:  {
+      __typename: "User",
+      id: string,
+      fbUsername: string,
+      first_name: string,
+      last_name: string,
+      address?:  {
+        __typename: "Address",
+        id: string,
+        address: string,
+        address2?: string | null,
+        district: string,
+        city: string,
+        postal_code: string,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+      } | null,
+      email: string,
+      banned?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      userAddressId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
 export type GetUserQueryVariables = {
   id: string,
 };
@@ -460,7 +680,7 @@ export type GetUserQuery = {
     fbUsername: string,
     first_name: string,
     last_name: string,
-    address:  {
+    address?:  {
       __typename: "Address",
       id: string,
       address: string,
@@ -473,7 +693,7 @@ export type GetUserQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    },
+    } | null,
     email: string,
     banned?: boolean | null,
     createdAt: string,
@@ -481,7 +701,7 @@ export type GetUserQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userAddressId: string,
+    userAddressId?: string | null,
     owner?: string | null,
   } | null,
 };
@@ -501,7 +721,7 @@ export type ListUsersQuery = {
       fbUsername: string,
       first_name: string,
       last_name: string,
-      address:  {
+      address?:  {
         __typename: "Address",
         id: string,
         address: string,
@@ -514,7 +734,7 @@ export type ListUsersQuery = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
-      },
+      } | null,
       email: string,
       banned?: boolean | null,
       createdAt: string,
@@ -522,7 +742,7 @@ export type ListUsersQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userAddressId: string,
+      userAddressId?: string | null,
       owner?: string | null,
     } | null >,
     nextToken?: string | null,
@@ -546,7 +766,7 @@ export type SyncUsersQuery = {
       fbUsername: string,
       first_name: string,
       last_name: string,
-      address:  {
+      address?:  {
         __typename: "Address",
         id: string,
         address: string,
@@ -559,7 +779,7 @@ export type SyncUsersQuery = {
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
-      },
+      } | null,
       email: string,
       banned?: boolean | null,
       createdAt: string,
@@ -567,7 +787,7 @@ export type SyncUsersQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userAddressId: string,
+      userAddressId?: string | null,
       owner?: string | null,
     } | null >,
     nextToken?: string | null,
@@ -653,6 +873,140 @@ export type SyncAddressesQuery = {
   } | null,
 };
 
+export type GetStoreQueryVariables = {
+  id: string,
+};
+
+export type GetStoreQuery = {
+  getStore?:  {
+    __typename: "Store",
+    id: string,
+    name: string,
+    district: string,
+    city: string,
+    lastUpdateBy:  {
+      __typename: "User",
+      id: string,
+      fbUsername: string,
+      first_name: string,
+      last_name: string,
+      address?:  {
+        __typename: "Address",
+        id: string,
+        address: string,
+        address2?: string | null,
+        district: string,
+        city: string,
+        postal_code: string,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+      } | null,
+      email: string,
+      banned?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      userAddressId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListStoresQueryVariables = {
+  filter?: ModelStoreFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListStoresQuery = {
+  listStores?:  {
+    __typename: "ModelStoreConnection",
+    items:  Array< {
+      __typename: "Store",
+      id: string,
+      name: string,
+      district: string,
+      city: string,
+      lastUpdateBy:  {
+        __typename: "User",
+        id: string,
+        fbUsername: string,
+        first_name: string,
+        last_name: string,
+        email: string,
+        banned?: boolean | null,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        userAddressId?: string | null,
+        owner?: string | null,
+      },
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncStoresQueryVariables = {
+  filter?: ModelStoreFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncStoresQuery = {
+  syncStores?:  {
+    __typename: "ModelStoreConnection",
+    items:  Array< {
+      __typename: "Store",
+      id: string,
+      name: string,
+      district: string,
+      city: string,
+      lastUpdateBy:  {
+        __typename: "User",
+        id: string,
+        fbUsername: string,
+        first_name: string,
+        last_name: string,
+        email: string,
+        banned?: boolean | null,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        userAddressId?: string | null,
+        owner?: string | null,
+      },
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
 };
@@ -664,7 +1018,7 @@ export type OnCreateUserSubscription = {
     fbUsername: string,
     first_name: string,
     last_name: string,
-    address:  {
+    address?:  {
       __typename: "Address",
       id: string,
       address: string,
@@ -677,7 +1031,7 @@ export type OnCreateUserSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    },
+    } | null,
     email: string,
     banned?: boolean | null,
     createdAt: string,
@@ -685,7 +1039,7 @@ export type OnCreateUserSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userAddressId: string,
+    userAddressId?: string | null,
     owner?: string | null,
   } | null,
 };
@@ -701,7 +1055,7 @@ export type OnUpdateUserSubscription = {
     fbUsername: string,
     first_name: string,
     last_name: string,
-    address:  {
+    address?:  {
       __typename: "Address",
       id: string,
       address: string,
@@ -714,7 +1068,7 @@ export type OnUpdateUserSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    },
+    } | null,
     email: string,
     banned?: boolean | null,
     createdAt: string,
@@ -722,7 +1076,7 @@ export type OnUpdateUserSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userAddressId: string,
+    userAddressId?: string | null,
     owner?: string | null,
   } | null,
 };
@@ -738,7 +1092,7 @@ export type OnDeleteUserSubscription = {
     fbUsername: string,
     first_name: string,
     last_name: string,
-    address:  {
+    address?:  {
       __typename: "Address",
       id: string,
       address: string,
@@ -751,7 +1105,7 @@ export type OnDeleteUserSubscription = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    },
+    } | null,
     email: string,
     banned?: boolean | null,
     createdAt: string,
@@ -759,7 +1113,7 @@ export type OnDeleteUserSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userAddressId: string,
+    userAddressId?: string | null,
     owner?: string | null,
   } | null,
 };
@@ -819,6 +1173,153 @@ export type OnDeleteAddressSubscription = {
     district: string,
     city: string,
     postal_code: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateStoreSubscriptionVariables = {
+  filter?: ModelSubscriptionStoreFilterInput | null,
+};
+
+export type OnCreateStoreSubscription = {
+  onCreateStore?:  {
+    __typename: "Store",
+    id: string,
+    name: string,
+    district: string,
+    city: string,
+    lastUpdateBy:  {
+      __typename: "User",
+      id: string,
+      fbUsername: string,
+      first_name: string,
+      last_name: string,
+      address?:  {
+        __typename: "Address",
+        id: string,
+        address: string,
+        address2?: string | null,
+        district: string,
+        city: string,
+        postal_code: string,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+      } | null,
+      email: string,
+      banned?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      userAddressId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateStoreSubscriptionVariables = {
+  filter?: ModelSubscriptionStoreFilterInput | null,
+};
+
+export type OnUpdateStoreSubscription = {
+  onUpdateStore?:  {
+    __typename: "Store",
+    id: string,
+    name: string,
+    district: string,
+    city: string,
+    lastUpdateBy:  {
+      __typename: "User",
+      id: string,
+      fbUsername: string,
+      first_name: string,
+      last_name: string,
+      address?:  {
+        __typename: "Address",
+        id: string,
+        address: string,
+        address2?: string | null,
+        district: string,
+        city: string,
+        postal_code: string,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+      } | null,
+      email: string,
+      banned?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      userAddressId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteStoreSubscriptionVariables = {
+  filter?: ModelSubscriptionStoreFilterInput | null,
+};
+
+export type OnDeleteStoreSubscription = {
+  onDeleteStore?:  {
+    __typename: "Store",
+    id: string,
+    name: string,
+    district: string,
+    city: string,
+    lastUpdateBy:  {
+      __typename: "User",
+      id: string,
+      fbUsername: string,
+      first_name: string,
+      last_name: string,
+      address?:  {
+        __typename: "Address",
+        id: string,
+        address: string,
+        address2?: string | null,
+        district: string,
+        city: string,
+        postal_code: string,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+      } | null,
+      email: string,
+      banned?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      userAddressId?: string | null,
+      owner?: string | null,
+    },
     createdAt: string,
     updatedAt: string,
     _version: number,

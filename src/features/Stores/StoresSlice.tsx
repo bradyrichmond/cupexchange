@@ -1,33 +1,35 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { DataStore } from 'aws-amplify';
+import { DataStore, Predicates } from 'aws-amplify';
+import { LazyStore, Store } from '../../models';
 
-// const getStoreData = createAsyncThunk(
-//     'stores/getStores',
-//     async () => {
-//         try {
-//             DataStore.query()
-//         }
-//         catch {
+export const getStoreData = createAsyncThunk(
+    'stores/getStores',
+    async () => {
+      return DataStore.query(Store);
+    }
+)
 
-//         }
-//     }
-// )
+const initialStoreData: Array<LazyStore> = [];
 
 export const storesSlice = createSlice({
   name: 'storesData',
   initialState: {
-    storeData: []
+    storeData: initialStoreData
   },
   reducers: {
-    setStoreData: (state, action) => {
-        state.storeData = action.payload
-    }
   },
-  extraReducers: {
-      
+  extraReducers: (builder) => {
+    builder
+      .addCase(getStoreData.rejected, (state, action) => {
+        console.log('getStoreData failed')
+      })
+      .addCase(getStoreData.fulfilled, (state, action) => {
+        state.storeData = action.payload;
+      })
+      .addCase(getStoreData.pending, () => {
+
+      })   
   },
 });
-
-export const { setStoreData } = storesSlice.actions;
 
 export default storesSlice.reducer;

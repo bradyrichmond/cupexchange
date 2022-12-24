@@ -9,7 +9,7 @@ const Home = () => {
             <Box>
                 <Navigation />
             </Box>
-            <Box>
+            <Box flex={1} height='100%'>
                 <Outlet />
             </Box>
         </Box>

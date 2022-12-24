@@ -29,9 +29,9 @@ const SignUp = () => {
     const createUserAccount = async (data: any) => {
         setIsLoading(true);
         const { firstName, lastName, address1, address2, city, usState, zipCode } = data;
-        dispatch(createUserAddress({ address1, address2, city, usState, zipCode }));
+        dispatch(createUserAddress({ address: address1, address2, city, district: usState, postal_code: zipCode }));
         const address = await getUserAddressFromStorage();
-        dispatch(createUser({ firstName, lastName, addressId, email: locData.state.email, address, fbUsername: locData.state.fbUsername }))
+        dispatch(createUser({ first_name: firstName, last_name: lastName, userAddressId: addressId, email: locData.state.email, fbUsername: locData.state.fbUsername }))
         dispatch(setFbUsername(locData.state.fbUsername));
         dispatch(setUserGroups(locData.state.groups));
         navigate('/');

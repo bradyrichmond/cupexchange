@@ -1,39 +1,24 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { DataStore } from 'aws-amplify';
+import { CreateAddressInput, CreateUserInput } from '../../API';
 import { User, Address } from '../../models';
 
-interface addressDataType {
-  address1: string;
-  address2: string;
-  city: string;
-  usState: string;
-  zipCode: string;
-}
 
-interface userDataType {
-  fbUsername: string;
-  firstName: string;
-  lastName: string;
-  addressId: string | undefined;
-  address: Address | undefined;
-  email: string;
-}
-
-export const createUserAddress = createAsyncThunk<string, addressDataType> (
+export const createUserAddress = createAsyncThunk<string, CreateAddressInput> (
   'users/createUserAddress',
-  async (addressData: addressDataType) => {
-    const { address1, address2, city, usState, zipCode } = addressData;
-    const userAddress = new Address({ address: address1, address2, city, district: usState, postal_code: zipCode });
+  async (addressData: CreateAddressInput) => {
+    const { address, address2, city, district, postal_code } = addressData;
+    const userAddress = new Address({ address, address2, city, district, postal_code });
     await DataStore.save(userAddress);
     return userAddress.id;
   }
 );
 
-export const createUser = createAsyncThunk<void, userDataType>(
+export const createUser = createAsyncThunk<void, CreateUserInput>(
   'users/createUser',
-  async (userData: userDataType) => {
-    const { fbUsername, firstName, lastName, address, email } = userData;
-    await DataStore.save(new User({ fbUsername, first_name: firstName, last_name: lastName, address, userAddressId: address?.id, email }));
+  async (userData: CreateUserInput) => {
+    const { fbUsername, first_name, last_name, userAddressId, email } = userData;
+    await DataStore.save(new User({ fbUsername, first_name, last_name, userAddressId, email }));
   }
 );
 
@@ -61,6 +46,7 @@ export const userSlice = createSlice({
     builder
     .addCase(createUserAddress.rejected, (state, action) => {
       console.log('createUserAddressFail');
+      state.loading = false;
     })
     .addCase(createUserAddress.pending, (state, action) => {
       state.loading = true;
@@ -71,6 +57,7 @@ export const userSlice = createSlice({
     })
     .addCase(createUser.rejected, (state, action) => {
       console.log('createUserFail');
+      state.loading = false;
     })
     .addCase(createUser.pending, (state, action) => {
       state.loading = true;

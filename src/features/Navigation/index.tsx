@@ -9,23 +9,23 @@ import { Link } from 'react-router-dom';
 
 const Navigation = () => {
     return (
-        <Box display='flex' flexDirection='column' padding='1rem' borderRight='3px solid #ccc' height='100%'>
+        <Box display='flex' flexDirection='column' padding='1rem' borderRight='10px solid rgba(246,236,54,255)' height='100%' bgcolor='rgba(208,16,18,255)'>
             <Box marginBottom='1rem'>
-                <MenuIcon />
+                <MenuIcon htmlColor='rgba(255,255,255,255)'/>
             </Box>
             <Box marginBottom='1rem'>
                 <Link to='/stores'>
-                    <StoreIcon />
+                    <StoreIcon htmlColor='rgba(255,255,255,255)' />
                 </Link>
             </Box>
             <Box marginBottom='1rem'>
-                <AvTimerIcon />
+                <AvTimerIcon htmlColor='rgba(255,255,255,255)' />
             </Box>
             <Box marginBottom='1rem'>
-                <ViewListIcon />
+                <ViewListIcon htmlColor='rgba(255,255,255,255)' />
             </Box>
             <Box marginBottom='1rem'>
-                <ManageAccountsIcon />
+                <ManageAccountsIcon htmlColor='rgba(255,255,255,255)' />
             </Box>
         </Box>
     )

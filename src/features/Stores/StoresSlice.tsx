@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { DataStore, Predicates } from 'aws-amplify';
 import { LazyStore, Store } from '../../models';
 import { CreateStoreInput } from '../../API';
+import { RootState } from '../../store';
 
 export const getStoreData = createAsyncThunk(
     'stores/getStores',
@@ -21,7 +22,7 @@ export const createStore = createAsyncThunk(
 const initialStoreData: Array<LazyStore> = [];
 
 export const storesSlice = createSlice({
-  name: 'storesData',
+  name: 'stores',
   initialState: {
     storeData: initialStoreData,
     loading: false
@@ -49,5 +50,7 @@ export const storesSlice = createSlice({
       })
   },
 });
+
+export const selectStoreData = (state: RootState) => state.store.storeData;
 
 export default storesSlice.reducer;

@@ -1,28 +1,46 @@
-import React from 'react';
-import { Box } from '@mui/material';
-import { useAppDispatch } from '../../hooks';
-import { getStoreData } from './StoresSlice';
+import React, { useEffect, useState } from 'react';
+import { Box, Button, Modal, Typography } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getStoreData, selectStoreData } from './StoresSlice';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import { Add } from '@mui/icons-material';
+import CreateStoreForm from './CreateStoreForm';
 
 const Stores = () => {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const dispatch = useAppDispatch();
-    dispatch(getStoreData());
+    const storeData = useAppSelector(selectStoreData);
+    
+    useEffect(() => {
+        dispatch(getStoreData());
+    }, [])
 
-    const rows: GridRowsProp = [
-        { id: 1, storeName: 'Test 1', city: 'City 1', state: 'State 1' },
-        { id: 2, storeName: 'Test 2', city: 'City 2', state: 'State 2' },
-        { id: 3, storeName: 'Test 3', city: 'City 3', state: 'State 3' },
-    ];
+    const rows: GridRowsProp = storeData;
 
     const columns: GridColDef[] = [
-        { field: 'storeName', headerName: 'Store Name', width: 150 },
-        { field: 'state', headerName: 'State', width: 150 },
+        { field: 'name', headerName: 'Store Name', width: 150 },
         { field: 'city', headerName: 'City', width: 150 },
+        { field: 'district', headerName: 'State', width: 150 },
     ];
 
     return (
-        <Box height='100%' width='100%'>
-            <DataGrid rows={rows} columns={columns} />
+        <Box height='100%' width='100%' display='flex' flexDirection='column'>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <CreateStoreForm />
+            </Modal>
+            <Box marginLeft='2rem' marginRight='2rem' marginTop='2rem'>
+                <Button onClick={handleOpen}><Add />Add Store</Button>
+            </Box>
+            <Box margin='2rem' flex={1}>
+                <DataGrid rows={rows} columns={columns} />
+            </Box>
         </Box>
     )
 }

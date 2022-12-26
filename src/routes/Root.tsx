@@ -4,7 +4,7 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
 import awsExports from '../aws-exports';
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import { Box } from '@mui/material';
 import { User } from '../models';
 import { useDispatch } from 'react-redux';
@@ -15,6 +15,7 @@ Amplify.configure(awsExports);
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const userLoggedIn = (user: any | undefined) => {
     checkIfNewUser(user);
@@ -36,7 +37,7 @@ export default function Login() {
         dispatch(setFbUsername(user.username));
         dispatch(setIsLoggedIn(true));
         dispatch(setUserGroups(user.signInUserSession.accessToken.payload['cognito:groups']));
-        navigate('/');
+        navigate(location.state.goto);
       }
     }
   }

@@ -3,6 +3,7 @@ import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
+  useLocation,
 } from "react-router-dom";
 import { Box } from '@mui/material';
 
@@ -17,10 +18,10 @@ import Stores from './features/Stores';
 import { selectUserIsLoggedIn } from './features/User/UserSlice';
 import { useSelector } from 'react-redux';
 
-const buildRoutes = (isLoggedIn: boolean) => createBrowserRouter([
+const buildRoutes = (isLoggedIn: boolean, pathname: string) => createBrowserRouter([
   {
     path: '/',
-    element: isLoggedIn ? <Home /> : <Navigate to='/login' />,
+    element: isLoggedIn ? <Home /> : <Navigate to='/login' state={{goto: pathname}}/>,
     children: [
       {
         path: 'stores',
@@ -45,9 +46,10 @@ const buildRoutes = (isLoggedIn: boolean) => createBrowserRouter([
 ]);
 
 export default function App() {
-  const userIsLoggedIn = useSelector(selectUserIsLoggedIn)
+  const userIsLoggedIn = useSelector(selectUserIsLoggedIn);
+  const pathname = window.location.pathname;
 
   return (
-    <RouterProvider router={buildRoutes(userIsLoggedIn)} />
+    <RouterProvider router={buildRoutes(userIsLoggedIn, pathname)} />
   );
 }

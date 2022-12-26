@@ -22,7 +22,7 @@ const Stores = () => {
         dispatch(getStoreData());
     }, [])
 
-    const rows: GridRowsProp = storeData;
+    const rows: GridRowsProp = storeData ?? [];
 
     const columns: GridColDef[] = [
         { field: 'name', headerName: 'Store Name', width: 300 },

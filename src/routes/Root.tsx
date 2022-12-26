@@ -4,7 +4,7 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
 import awsExports from '../aws-exports';
-import { Outlet, useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Box } from '@mui/material';
 import { User } from '../models';
 import { useDispatch } from 'react-redux';

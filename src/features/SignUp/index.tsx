@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { DataStore } from '@aws-amplify/datastore';
-import { Address, User } from '../../models';
 import { useForm } from "react-hook-form";
 import { Box, Button, TextField, Theme, Typography } from '@mui/material';
 import { makeStyles, createStyles } from '@mui/styles';

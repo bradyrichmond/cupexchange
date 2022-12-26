@@ -17,6 +17,7 @@ import Stores from './features/Stores';
 
 import { selectUserIsLoggedIn } from './features/User/UserSlice';
 import { useSelector } from 'react-redux';
+import StoreData from './features/Stores/StoreData';
 
 const buildRoutes = (isLoggedIn: boolean, pathname: string) => createBrowserRouter([
   {
@@ -29,7 +30,7 @@ const buildRoutes = (isLoggedIn: boolean, pathname: string) => createBrowserRout
       },
       {
         path: 'stores/:id',
-        element: <Box>Store data page</Box>
+        element: <StoreData />
       }
     ]
   },

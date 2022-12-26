@@ -25,6 +25,10 @@ const buildRoutes = (isLoggedIn: boolean) => createBrowserRouter([
       {
         path: 'stores',
         element: <Stores />
+      },
+      {
+        path: 'stores/:id',
+        element: <Box>Store data page</Box>
       }
     ]
   },

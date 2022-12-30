@@ -9,6 +9,7 @@ export type CreateUserInput = {
   last_name: string,
   email: string,
   banned?: boolean | null,
+  deleted?: boolean | null,
   _version?: number | null,
   userAddressId?: string | null,
 };
@@ -19,6 +20,7 @@ export type ModelUserConditionInput = {
   last_name?: ModelStringInput | null,
   email?: ModelStringInput | null,
   banned?: ModelBooleanInput | null,
+  deleted?: ModelBooleanInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
@@ -97,6 +99,7 @@ export type User = {
   address?: Address | null,
   email: string,
   banned?: boolean | null,
+  deleted?: boolean | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -128,6 +131,7 @@ export type UpdateUserInput = {
   last_name?: string | null,
   email?: string | null,
   banned?: boolean | null,
+  deleted?: boolean | null,
   _version?: number | null,
   userAddressId?: string | null,
 };
@@ -178,6 +182,7 @@ export type CreateStoreInput = {
   name: string,
   district: string,
   city: string,
+  inventoryId?: string | null,
   _version?: number | null,
 };
 
@@ -185,6 +190,7 @@ export type ModelStoreConditionInput = {
   name?: ModelStringInput | null,
   district?: ModelStringInput | null,
   city?: ModelStringInput | null,
+  inventoryId?: ModelStringInput | null,
   and?: Array< ModelStoreConditionInput | null > | null,
   or?: Array< ModelStoreConditionInput | null > | null,
   not?: ModelStoreConditionInput | null,
@@ -197,6 +203,7 @@ export type Store = {
   district: string,
   city: string,
   lastUpdateBy: User,
+  inventoryId?: string | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -209,10 +216,81 @@ export type UpdateStoreInput = {
   name?: string | null,
   district?: string | null,
   city?: string | null,
+  inventoryId?: string | null,
   _version?: number | null,
 };
 
 export type DeleteStoreInput = {
+  id: string,
+  _version?: number | null,
+};
+
+export type CreateInventoryInput = {
+  id?: string | null,
+  items: Array< string >,
+  _version?: number | null,
+};
+
+export type ModelInventoryConditionInput = {
+  items?: ModelStringInput | null,
+  and?: Array< ModelInventoryConditionInput | null > | null,
+  or?: Array< ModelInventoryConditionInput | null > | null,
+  not?: ModelInventoryConditionInput | null,
+};
+
+export type Inventory = {
+  __typename: "Inventory",
+  id: string,
+  items: Array< string >,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateInventoryInput = {
+  id: string,
+  items?: Array< string > | null,
+  _version?: number | null,
+};
+
+export type DeleteInventoryInput = {
+  id: string,
+  _version?: number | null,
+};
+
+export type CreateLegoInput = {
+  id?: string | null,
+  imageKey: string,
+  _version?: number | null,
+};
+
+export type ModelLegoConditionInput = {
+  imageKey?: ModelStringInput | null,
+  and?: Array< ModelLegoConditionInput | null > | null,
+  or?: Array< ModelLegoConditionInput | null > | null,
+  not?: ModelLegoConditionInput | null,
+};
+
+export type Lego = {
+  __typename: "Lego",
+  id: string,
+  imageKey: string,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateLegoInput = {
+  id: string,
+  imageKey?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteLegoInput = {
   id: string,
   _version?: number | null,
 };
@@ -224,6 +302,7 @@ export type ModelUserFilterInput = {
   last_name?: ModelStringInput | null,
   email?: ModelStringInput | null,
   banned?: ModelBooleanInput | null,
+  deleted?: ModelBooleanInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
@@ -261,6 +340,7 @@ export type ModelStoreFilterInput = {
   name?: ModelStringInput | null,
   district?: ModelStringInput | null,
   city?: ModelStringInput | null,
+  inventoryId?: ModelStringInput | null,
   and?: Array< ModelStoreFilterInput | null > | null,
   or?: Array< ModelStoreFilterInput | null > | null,
   not?: ModelStoreFilterInput | null,
@@ -273,6 +353,36 @@ export type ModelStoreConnection = {
   startedAt?: number | null,
 };
 
+export type ModelInventoryFilterInput = {
+  id?: ModelIDInput | null,
+  items?: ModelStringInput | null,
+  and?: Array< ModelInventoryFilterInput | null > | null,
+  or?: Array< ModelInventoryFilterInput | null > | null,
+  not?: ModelInventoryFilterInput | null,
+};
+
+export type ModelInventoryConnection = {
+  __typename: "ModelInventoryConnection",
+  items:  Array<Inventory | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelLegoFilterInput = {
+  id?: ModelIDInput | null,
+  imageKey?: ModelStringInput | null,
+  and?: Array< ModelLegoFilterInput | null > | null,
+  or?: Array< ModelLegoFilterInput | null > | null,
+  not?: ModelLegoFilterInput | null,
+};
+
+export type ModelLegoConnection = {
+  __typename: "ModelLegoConnection",
+  items:  Array<Lego | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   fbUsername?: ModelSubscriptionStringInput | null,
@@ -280,6 +390,7 @@ export type ModelSubscriptionUserFilterInput = {
   last_name?: ModelSubscriptionStringInput | null,
   email?: ModelSubscriptionStringInput | null,
   banned?: ModelSubscriptionBooleanInput | null,
+  deleted?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
 };
@@ -335,8 +446,23 @@ export type ModelSubscriptionStoreFilterInput = {
   name?: ModelSubscriptionStringInput | null,
   district?: ModelSubscriptionStringInput | null,
   city?: ModelSubscriptionStringInput | null,
+  inventoryId?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionStoreFilterInput | null > | null,
   or?: Array< ModelSubscriptionStoreFilterInput | null > | null,
+};
+
+export type ModelSubscriptionInventoryFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  items?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionInventoryFilterInput | null > | null,
+  or?: Array< ModelSubscriptionInventoryFilterInput | null > | null,
+};
+
+export type ModelSubscriptionLegoFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  imageKey?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionLegoFilterInput | null > | null,
+  or?: Array< ModelSubscriptionLegoFilterInput | null > | null,
 };
 
 export type CreateUserMutationVariables = {
@@ -367,6 +493,7 @@ export type CreateUserMutation = {
     } | null,
     email: string,
     banned?: boolean | null,
+    deleted?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -405,6 +532,7 @@ export type UpdateUserMutation = {
     } | null,
     email: string,
     banned?: boolean | null,
+    deleted?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -443,6 +571,7 @@ export type DeleteUserMutation = {
     } | null,
     email: string,
     banned?: boolean | null,
+    deleted?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -553,6 +682,7 @@ export type CreateStoreMutation = {
       } | null,
       email: string,
       banned?: boolean | null,
+      deleted?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -561,6 +691,7 @@ export type CreateStoreMutation = {
       userAddressId?: string | null,
       owner?: string | null,
     },
+    inventoryId?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -603,6 +734,7 @@ export type UpdateStoreMutation = {
       } | null,
       email: string,
       banned?: boolean | null,
+      deleted?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -611,6 +743,7 @@ export type UpdateStoreMutation = {
       userAddressId?: string | null,
       owner?: string | null,
     },
+    inventoryId?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -653,6 +786,7 @@ export type DeleteStoreMutation = {
       } | null,
       email: string,
       banned?: boolean | null,
+      deleted?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -661,6 +795,115 @@ export type DeleteStoreMutation = {
       userAddressId?: string | null,
       owner?: string | null,
     },
+    inventoryId?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateInventoryMutationVariables = {
+  input: CreateInventoryInput,
+  condition?: ModelInventoryConditionInput | null,
+};
+
+export type CreateInventoryMutation = {
+  createInventory?:  {
+    __typename: "Inventory",
+    id: string,
+    items: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateInventoryMutationVariables = {
+  input: UpdateInventoryInput,
+  condition?: ModelInventoryConditionInput | null,
+};
+
+export type UpdateInventoryMutation = {
+  updateInventory?:  {
+    __typename: "Inventory",
+    id: string,
+    items: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteInventoryMutationVariables = {
+  input: DeleteInventoryInput,
+  condition?: ModelInventoryConditionInput | null,
+};
+
+export type DeleteInventoryMutation = {
+  deleteInventory?:  {
+    __typename: "Inventory",
+    id: string,
+    items: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateLegoMutationVariables = {
+  input: CreateLegoInput,
+  condition?: ModelLegoConditionInput | null,
+};
+
+export type CreateLegoMutation = {
+  createLego?:  {
+    __typename: "Lego",
+    id: string,
+    imageKey: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateLegoMutationVariables = {
+  input: UpdateLegoInput,
+  condition?: ModelLegoConditionInput | null,
+};
+
+export type UpdateLegoMutation = {
+  updateLego?:  {
+    __typename: "Lego",
+    id: string,
+    imageKey: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteLegoMutationVariables = {
+  input: DeleteLegoInput,
+  condition?: ModelLegoConditionInput | null,
+};
+
+export type DeleteLegoMutation = {
+  deleteLego?:  {
+    __typename: "Lego",
+    id: string,
+    imageKey: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -696,6 +939,7 @@ export type GetUserQuery = {
     } | null,
     email: string,
     banned?: boolean | null,
+    deleted?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -737,6 +981,7 @@ export type ListUsersQuery = {
       } | null,
       email: string,
       banned?: boolean | null,
+      deleted?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -782,6 +1027,7 @@ export type SyncUsersQuery = {
       } | null,
       email: string,
       banned?: boolean | null,
+      deleted?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -906,6 +1152,7 @@ export type GetStoreQuery = {
       } | null,
       email: string,
       banned?: boolean | null,
+      deleted?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -914,6 +1161,7 @@ export type GetStoreQuery = {
       userAddressId?: string | null,
       owner?: string | null,
     },
+    inventoryId?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -945,6 +1193,7 @@ export type ListStoresQuery = {
         last_name: string,
         email: string,
         banned?: boolean | null,
+        deleted?: boolean | null,
         createdAt: string,
         updatedAt: string,
         _version: number,
@@ -953,6 +1202,7 @@ export type ListStoresQuery = {
         userAddressId?: string | null,
         owner?: string | null,
       },
+      inventoryId?: string | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -988,6 +1238,7 @@ export type SyncStoresQuery = {
         last_name: string,
         email: string,
         banned?: boolean | null,
+        deleted?: boolean | null,
         createdAt: string,
         updatedAt: string,
         _version: number,
@@ -996,6 +1247,139 @@ export type SyncStoresQuery = {
         userAddressId?: string | null,
         owner?: string | null,
       },
+      inventoryId?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type GetInventoryQueryVariables = {
+  id: string,
+};
+
+export type GetInventoryQuery = {
+  getInventory?:  {
+    __typename: "Inventory",
+    id: string,
+    items: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListInventoriesQueryVariables = {
+  filter?: ModelInventoryFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListInventoriesQuery = {
+  listInventories?:  {
+    __typename: "ModelInventoryConnection",
+    items:  Array< {
+      __typename: "Inventory",
+      id: string,
+      items: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncInventoriesQueryVariables = {
+  filter?: ModelInventoryFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncInventoriesQuery = {
+  syncInventories?:  {
+    __typename: "ModelInventoryConnection",
+    items:  Array< {
+      __typename: "Inventory",
+      id: string,
+      items: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type GetLegoQueryVariables = {
+  id: string,
+};
+
+export type GetLegoQuery = {
+  getLego?:  {
+    __typename: "Lego",
+    id: string,
+    imageKey: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListLegosQueryVariables = {
+  filter?: ModelLegoFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListLegosQuery = {
+  listLegos?:  {
+    __typename: "ModelLegoConnection",
+    items:  Array< {
+      __typename: "Lego",
+      id: string,
+      imageKey: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncLegosQueryVariables = {
+  filter?: ModelLegoFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncLegosQuery = {
+  syncLegos?:  {
+    __typename: "ModelLegoConnection",
+    items:  Array< {
+      __typename: "Lego",
+      id: string,
+      imageKey: string,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1034,6 +1418,7 @@ export type OnCreateUserSubscription = {
     } | null,
     email: string,
     banned?: boolean | null,
+    deleted?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1071,6 +1456,7 @@ export type OnUpdateUserSubscription = {
     } | null,
     email: string,
     banned?: boolean | null,
+    deleted?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1108,6 +1494,7 @@ export type OnDeleteUserSubscription = {
     } | null,
     email: string,
     banned?: boolean | null,
+    deleted?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1214,6 +1601,7 @@ export type OnCreateStoreSubscription = {
       } | null,
       email: string,
       banned?: boolean | null,
+      deleted?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1222,6 +1610,7 @@ export type OnCreateStoreSubscription = {
       userAddressId?: string | null,
       owner?: string | null,
     },
+    inventoryId?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1263,6 +1652,7 @@ export type OnUpdateStoreSubscription = {
       } | null,
       email: string,
       banned?: boolean | null,
+      deleted?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1271,6 +1661,7 @@ export type OnUpdateStoreSubscription = {
       userAddressId?: string | null,
       owner?: string | null,
     },
+    inventoryId?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1312,6 +1703,7 @@ export type OnDeleteStoreSubscription = {
       } | null,
       email: string,
       banned?: boolean | null,
+      deleted?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1320,6 +1712,109 @@ export type OnDeleteStoreSubscription = {
       userAddressId?: string | null,
       owner?: string | null,
     },
+    inventoryId?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateInventorySubscriptionVariables = {
+  filter?: ModelSubscriptionInventoryFilterInput | null,
+};
+
+export type OnCreateInventorySubscription = {
+  onCreateInventory?:  {
+    __typename: "Inventory",
+    id: string,
+    items: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateInventorySubscriptionVariables = {
+  filter?: ModelSubscriptionInventoryFilterInput | null,
+};
+
+export type OnUpdateInventorySubscription = {
+  onUpdateInventory?:  {
+    __typename: "Inventory",
+    id: string,
+    items: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteInventorySubscriptionVariables = {
+  filter?: ModelSubscriptionInventoryFilterInput | null,
+};
+
+export type OnDeleteInventorySubscription = {
+  onDeleteInventory?:  {
+    __typename: "Inventory",
+    id: string,
+    items: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateLegoSubscriptionVariables = {
+  filter?: ModelSubscriptionLegoFilterInput | null,
+};
+
+export type OnCreateLegoSubscription = {
+  onCreateLego?:  {
+    __typename: "Lego",
+    id: string,
+    imageKey: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateLegoSubscriptionVariables = {
+  filter?: ModelSubscriptionLegoFilterInput | null,
+};
+
+export type OnUpdateLegoSubscription = {
+  onUpdateLego?:  {
+    __typename: "Lego",
+    id: string,
+    imageKey: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteLegoSubscriptionVariables = {
+  filter?: ModelSubscriptionLegoFilterInput | null,
+};
+
+export type OnDeleteLegoSubscription = {
+  onDeleteLego?:  {
+    __typename: "Lego",
+    id: string,
+    imageKey: string,
     createdAt: string,
     updatedAt: string,
     _version: number,

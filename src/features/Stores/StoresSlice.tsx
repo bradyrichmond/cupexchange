@@ -21,7 +21,7 @@ export const createStore = createAsyncThunk(
 
 export const getSingleStoreData = createAsyncThunk(
   'stores/getSingleStoreData',
-  async ( id: string ) => {
+  async (id: string) => {
     return DataStore.query(Store, id);
   }
 )

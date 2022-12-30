@@ -1,0 +1,14 @@
+{
+  "resourceName": "storeInventoryImages",
+  "policyUUID": "6545b164",
+  "bucketName": "cupexchangee6440dd2a1eb4c398b40f2063d37f017",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

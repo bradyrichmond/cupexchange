@@ -13,6 +13,7 @@ type User @model @auth(rules: [
   address: Address @hasOne
   email: String!
   banned: Boolean @auth(rules:[{allow: groups, groups: ["moderators"], operations: [update]}])
+  deleted: Boolean @auth(rules:[{allow: groups, groups: ["admins"], operations: [update]}])
 }
 
 type Address @model @auth(rules: [{ allow: private }]) {
@@ -33,4 +34,15 @@ type Store @model @auth(rules: [
   district: String!
   city: String!
   lastUpdateBy: User!
+  inventoryId: String 
+}
+
+type Inventory @model @auth(rules: [{ allow: private }]) {
+  id: ID!
+  items: [String!]!
+}
+
+type Lego @model @auth(rules: [{ allow: private }]) {
+  id: ID!
+  imageKey: String!
 }

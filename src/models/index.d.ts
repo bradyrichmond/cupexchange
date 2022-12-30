@@ -18,6 +18,7 @@ type EagerUser = {
   readonly address?: Address | null;
   readonly email: string;
   readonly banned?: boolean | null;
+  readonly deleted?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly userAddressId?: string | null;
@@ -35,6 +36,7 @@ type LazyUser = {
   readonly address: AsyncItem<Address | undefined>;
   readonly email: string;
   readonly banned?: boolean | null;
+  readonly deleted?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly userAddressId?: string | null;
@@ -91,6 +93,7 @@ type EagerStore = {
   readonly name: string;
   readonly district: string;
   readonly city: string;
+  readonly inventoryId?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -104,6 +107,7 @@ type LazyStore = {
   readonly name: string;
   readonly district: string;
   readonly city: string;
+  readonly inventoryId?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -112,4 +116,60 @@ export declare type Store = LazyLoading extends LazyLoadingDisabled ? EagerStore
 
 export declare const Store: (new (init: ModelInit<Store>) => Store) & {
   copyOf(source: Store, mutator: (draft: MutableModel<Store>) => MutableModel<Store> | void): Store;
+}
+
+type EagerInventory = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Inventory, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly items: string[];
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyInventory = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Inventory, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly items: string[];
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Inventory = LazyLoading extends LazyLoadingDisabled ? EagerInventory : LazyInventory
+
+export declare const Inventory: (new (init: ModelInit<Inventory>) => Inventory) & {
+  copyOf(source: Inventory, mutator: (draft: MutableModel<Inventory>) => MutableModel<Inventory> | void): Inventory;
+}
+
+type EagerLego = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Lego, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly imageKey: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyLego = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Lego, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly imageKey: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Lego = LazyLoading extends LazyLoadingDisabled ? EagerLego : LazyLego
+
+export declare const Lego: (new (init: ModelInit<Lego>) => Lego) & {
+  copyOf(source: Lego, mutator: (draft: MutableModel<Lego>) => MutableModel<Lego> | void): Lego;
 }

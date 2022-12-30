@@ -27,6 +27,7 @@ export const createUser = /* GraphQL */ `
       }
       email
       banned
+      deleted
       createdAt
       updatedAt
       _version
@@ -62,6 +63,7 @@ export const updateUser = /* GraphQL */ `
       }
       email
       banned
+      deleted
       createdAt
       updatedAt
       _version
@@ -97,6 +99,7 @@ export const deleteUser = /* GraphQL */ `
       }
       email
       banned
+      deleted
       createdAt
       updatedAt
       _version
@@ -197,6 +200,7 @@ export const createStore = /* GraphQL */ `
         }
         email
         banned
+        deleted
         createdAt
         updatedAt
         _version
@@ -205,6 +209,7 @@ export const createStore = /* GraphQL */ `
         userAddressId
         owner
       }
+      inventoryId
       createdAt
       updatedAt
       _version
@@ -243,6 +248,7 @@ export const updateStore = /* GraphQL */ `
         }
         email
         banned
+        deleted
         createdAt
         updatedAt
         _version
@@ -251,6 +257,7 @@ export const updateStore = /* GraphQL */ `
         userAddressId
         owner
       }
+      inventoryId
       createdAt
       updatedAt
       _version
@@ -289,6 +296,7 @@ export const deleteStore = /* GraphQL */ `
         }
         email
         banned
+        deleted
         createdAt
         updatedAt
         _version
@@ -297,6 +305,103 @@ export const deleteStore = /* GraphQL */ `
         userAddressId
         owner
       }
+      inventoryId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createInventory = /* GraphQL */ `
+  mutation CreateInventory(
+    $input: CreateInventoryInput!
+    $condition: ModelInventoryConditionInput
+  ) {
+    createInventory(input: $input, condition: $condition) {
+      id
+      items
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateInventory = /* GraphQL */ `
+  mutation UpdateInventory(
+    $input: UpdateInventoryInput!
+    $condition: ModelInventoryConditionInput
+  ) {
+    updateInventory(input: $input, condition: $condition) {
+      id
+      items
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteInventory = /* GraphQL */ `
+  mutation DeleteInventory(
+    $input: DeleteInventoryInput!
+    $condition: ModelInventoryConditionInput
+  ) {
+    deleteInventory(input: $input, condition: $condition) {
+      id
+      items
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createLego = /* GraphQL */ `
+  mutation CreateLego(
+    $input: CreateLegoInput!
+    $condition: ModelLegoConditionInput
+  ) {
+    createLego(input: $input, condition: $condition) {
+      id
+      imageKey
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateLego = /* GraphQL */ `
+  mutation UpdateLego(
+    $input: UpdateLegoInput!
+    $condition: ModelLegoConditionInput
+  ) {
+    updateLego(input: $input, condition: $condition) {
+      id
+      imageKey
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteLego = /* GraphQL */ `
+  mutation DeleteLego(
+    $input: DeleteLegoInput!
+    $condition: ModelLegoConditionInput
+  ) {
+    deleteLego(input: $input, condition: $condition) {
+      id
+      imageKey
       createdAt
       updatedAt
       _version

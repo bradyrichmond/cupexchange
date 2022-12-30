@@ -24,6 +24,7 @@ export const onCreateUser = /* GraphQL */ `
       }
       email
       banned
+      deleted
       createdAt
       updatedAt
       _version
@@ -56,6 +57,7 @@ export const onUpdateUser = /* GraphQL */ `
       }
       email
       banned
+      deleted
       createdAt
       updatedAt
       _version
@@ -88,6 +90,7 @@ export const onDeleteUser = /* GraphQL */ `
       }
       email
       banned
+      deleted
       createdAt
       updatedAt
       _version
@@ -176,6 +179,7 @@ export const onCreateStore = /* GraphQL */ `
         }
         email
         banned
+        deleted
         createdAt
         updatedAt
         _version
@@ -184,6 +188,7 @@ export const onCreateStore = /* GraphQL */ `
         userAddressId
         owner
       }
+      inventoryId
       createdAt
       updatedAt
       _version
@@ -219,6 +224,7 @@ export const onUpdateStore = /* GraphQL */ `
         }
         email
         banned
+        deleted
         createdAt
         updatedAt
         _version
@@ -227,6 +233,7 @@ export const onUpdateStore = /* GraphQL */ `
         userAddressId
         owner
       }
+      inventoryId
       createdAt
       updatedAt
       _version
@@ -262,6 +269,7 @@ export const onDeleteStore = /* GraphQL */ `
         }
         email
         banned
+        deleted
         createdAt
         updatedAt
         _version
@@ -270,6 +278,91 @@ export const onDeleteStore = /* GraphQL */ `
         userAddressId
         owner
       }
+      inventoryId
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreateInventory = /* GraphQL */ `
+  subscription OnCreateInventory(
+    $filter: ModelSubscriptionInventoryFilterInput
+  ) {
+    onCreateInventory(filter: $filter) {
+      id
+      items
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateInventory = /* GraphQL */ `
+  subscription OnUpdateInventory(
+    $filter: ModelSubscriptionInventoryFilterInput
+  ) {
+    onUpdateInventory(filter: $filter) {
+      id
+      items
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteInventory = /* GraphQL */ `
+  subscription OnDeleteInventory(
+    $filter: ModelSubscriptionInventoryFilterInput
+  ) {
+    onDeleteInventory(filter: $filter) {
+      id
+      items
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreateLego = /* GraphQL */ `
+  subscription OnCreateLego($filter: ModelSubscriptionLegoFilterInput) {
+    onCreateLego(filter: $filter) {
+      id
+      imageKey
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateLego = /* GraphQL */ `
+  subscription OnUpdateLego($filter: ModelSubscriptionLegoFilterInput) {
+    onUpdateLego(filter: $filter) {
+      id
+      imageKey
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteLego = /* GraphQL */ `
+  subscription OnDeleteLego($filter: ModelSubscriptionLegoFilterInput) {
+    onDeleteLego(filter: $filter) {
+      id
+      imageKey
       createdAt
       updatedAt
       _version

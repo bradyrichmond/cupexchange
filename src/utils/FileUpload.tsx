@@ -24,8 +24,8 @@ const FileUpload = (props: FileUploadInput) => {
             for (let i = 0; i < filesArray.length; i++) {
                 const guidName = uuidv4();
                 const file = filesArray[i];
-                const result = await Storage.put(`${guidName}`, file, {
-                    level: 'private',
+                const result = await Storage.put(`${guidName}_${file.name}`, file, {
+                    level: 'public',
                     contentType: file.type
                 });
                 results.push(result.key);

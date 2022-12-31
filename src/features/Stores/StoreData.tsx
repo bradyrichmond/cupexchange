@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Modal, Typography } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { useParams } from 'react-router';
-import { PutResult } from '@aws-amplify/storage';
+import { PutResult, Storage } from '@aws-amplify/storage';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getSingleStoreData, selectCurrentStoreData } from './StoresSlice';
 import FileUpload from '../../utils/FileUpload';
@@ -68,8 +68,40 @@ const StoreData = () => {
             </Box>
             <Box flex={1}>
                 <Typography>Store Inventory as of Date</Typography>
-                {JSON.stringify(currentStoreInventory)}
+                {currentStoreInventory?.map((inv) => {
+                    return (
+                        <Box>
+                            <InventoryItem imageKey={inv?.imageKey} key={inv?.id}/>
+                        </Box>
+                    );
+                })}
             </Box>
+        </Box>
+    )
+}
+
+interface InventoryItemProps{
+    imageKey: string | undefined
+}
+
+const InventoryItem = (props: InventoryItemProps) => {
+    const { imageKey } = props;
+    const [url, setUrl] = useState('')
+
+    useEffect(() => {
+        if (imageKey) {
+            const getUrl = async () => {
+                const url = await Storage.get(imageKey);
+                setUrl(url);
+            }
+
+            getUrl();
+        }
+    })
+
+    return (
+        <Box>
+            <img src={url} alt="" width='100px' height='100px'/>
         </Box>
     )
 }

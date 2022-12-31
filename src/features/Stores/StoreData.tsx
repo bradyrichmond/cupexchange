@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Modal, Typography } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Refresh } from '@mui/icons-material';
 import { useParams } from 'react-router';
-import { PutResult, Storage } from '@aws-amplify/storage';
+import { Storage } from '@aws-amplify/storage';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getSingleStoreData, selectCurrentStoreData } from './StoresSlice';
 import FileUpload from '../../utils/FileUpload';
 import { DataStore } from 'aws-amplify';
 import { Lego } from '../../models';
 import { createStoreInventory, getStoreInventory, selectCurrentStoreInventory } from './InventorySlice';
+import { formatRelative } from 'date-fns';
 
 const StoreData = () => {
     const { id } = useParams();
@@ -16,6 +17,7 @@ const StoreData = () => {
     const dispatch = useAppDispatch();
     const currentStoreData = useAppSelector(selectCurrentStoreData);
     const currentStoreInventory = useAppSelector(selectCurrentStoreInventory);
+    const relativeUpdatedAt = formatRelative(Date.parse(currentStoreData?.updatedAt ?? ''), Date.now());
 
     const startAddingInventory = () => {
         setIsAddingInventory(true);
@@ -57,24 +59,26 @@ const StoreData = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <FileUpload onComplete={handleFileUploadComplete} />
+                <Box height="100%" width="100%" display='flex' justifyContent='center' alignItems='center' borderRadius='1rem' padding='2rem'>
+                    <FileUpload onComplete={handleFileUploadComplete} />
+                </Box>
             </Modal>
             <Box marginBottom='2rem'>
-                <Button onClick={startAddingInventory}><Add />Add Inventory</Button>
+                <Button onClick={startAddingInventory}><Refresh /> Update Inventory</Button>
             </Box>
-            <Box>
-                <Typography>{currentStoreData?.name}</Typography>
-                <Typography>{`${currentStoreData?.city}, ${currentStoreData?.district}`}</Typography>
+            <Box flex='row'>
+                <Typography fontSize='3rem' display='inline-block'>{currentStoreData?.name}</Typography>
+                <Typography fontSize='2rem' color='#ccc' paddingLeft='1rem' display='inline-block'>{`${currentStoreData?.city}, ${currentStoreData?.district}`}</Typography>
             </Box>
-            <Box flex={1}>
-                <Typography>Store Inventory as of Date</Typography>
-                {currentStoreInventory?.map((inv) => {
-                    return (
-                        <Box>
+            <Box flex='1' paddingTop='2rem'>
+                <Typography>Store Inventory as of {relativeUpdatedAt}</Typography>
+                <Box display='flex' flexDirection='row'>
+                    {currentStoreInventory?.map((inv) => {
+                        return (
                             <InventoryItem imageKey={inv?.imageKey} key={inv?.id}/>
-                        </Box>
-                    );
-                })}
+                        );
+                    })}
+                </Box>
             </Box>
         </Box>
     )
@@ -100,7 +104,7 @@ const InventoryItem = (props: InventoryItemProps) => {
     })
 
     return (
-        <Box>
+        <Box border='2px solid rgba(246,236,54,255)' borderRadius='1rem' padding='2rem' margin='2rem'>
             <img src={url} alt="" width='100px' height='100px'/>
         </Box>
     )

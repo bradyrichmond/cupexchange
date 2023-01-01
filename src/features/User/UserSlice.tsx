@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { DataStore } from 'aws-amplify';
 import { CreateAddressInput, CreateUserInput } from '../../API';
-import { User, Address } from '../../models';
+import { User, Address, LazyUser } from '../../models';
+import { RootState } from '../../store';
 
 
 export const createUserAddress = createAsyncThunk<string, CreateAddressInput> (
@@ -14,23 +15,38 @@ export const createUserAddress = createAsyncThunk<string, CreateAddressInput> (
   }
 );
 
-export const createUser = createAsyncThunk<void, CreateUserInput>(
+export const createUser = createAsyncThunk<User, CreateUserInput>(
   'users/createUser',
-  async (userData: CreateUserInput) => {
-    const { fbUsername, first_name, last_name, userAddressId, email } = userData;
-    await DataStore.save(new User({ fbUsername, first_name, last_name, userAddressId, email }));
+  async (userDataInput: CreateUserInput) => {
+    const { fbUsername, first_name, last_name, userAddressId, email } = userDataInput;
+    const userData = await DataStore.save(new User({ fbUsername, first_name, last_name, userAddressId, email }));
+    return userData;
   }
 );
 
+interface InitialState {
+  isLoggedIn: boolean
+  fbUsername: string
+  userGroups: string[]
+  userName: string
+  loading: boolean
+  addressId: string
+  userData: LazyUser | undefined
+}
+
+const initialState: InitialState = {
+  isLoggedIn: false,
+  fbUsername: '',
+  userGroups: [],
+  userName: '',
+  loading: false,
+  addressId:'',
+  userData: undefined
+}
+
 export const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    isLoggedIn: false,
-    fbUsername: '',
-    userGroups: [],
-    loading: false,
-    addressId:''
-  },
+  initialState,
   reducers: {
     setIsLoggedIn: (state, action) => {
       state.isLoggedIn = action.payload;
@@ -65,15 +81,17 @@ export const userSlice = createSlice({
     .addCase(createUser.fulfilled, (state, action) => {
       state.loading = false;
       state.isLoggedIn = true;
+      state.userData = action.payload;
     })
   },
 });
 
 export const { setIsLoggedIn, setFbUsername, setUserGroups } = userSlice.actions;
 
-export const selectUserIsLoggedIn = (state: any) => state.user.isLoggedIn;
-export const selectFbUsername = (state: any) => state.user.fbUsername;
-export const selectUserCognitoGroups = (state: any) => state.user.userGroups;
-export const selectAddressId = (state: any) => state.user.addressId;
+export const selectUserIsLoggedIn = (state: RootState) => state.user.isLoggedIn;
+export const selectFbUsername = (state: RootState) => state.user.fbUsername;
+export const selectUserCognitoGroups = (state: RootState) => state.user.userGroups;
+export const selectAddressId = (state: RootState) => state.user.addressId;
+export const selectUserData = (state: RootState) => state.user.userData;
 
 export default userSlice.reducer;

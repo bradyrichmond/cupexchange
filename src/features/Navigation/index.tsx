@@ -19,7 +19,9 @@ const Navigation = () => {
                 </Link>
             </Box>
             <Box marginBottom='1rem'>
-                <AvTimerIcon htmlColor='rgba(255,255,255,255)' />
+                <Link to='/upcoming'>
+                    <AvTimerIcon htmlColor='rgba(255,255,255,255)' />
+                </Link>
             </Box>
             <Box marginBottom='1rem'>
                 <ViewListIcon htmlColor='rgba(255,255,255,255)' />

@@ -295,6 +295,62 @@ export type DeleteLegoInput = {
   _version?: number | null,
 };
 
+export type CreateTripInput = {
+  name: string,
+  store: string,
+  shipper: string,
+  cupPrice: string,
+  shippingPrice: string,
+  orderExpiration: string,
+  id?: string | null,
+  _version?: number | null,
+};
+
+export type ModelTripConditionInput = {
+  name?: ModelStringInput | null,
+  store?: ModelStringInput | null,
+  shipper?: ModelStringInput | null,
+  cupPrice?: ModelStringInput | null,
+  shippingPrice?: ModelStringInput | null,
+  orderExpiration?: ModelStringInput | null,
+  and?: Array< ModelTripConditionInput | null > | null,
+  or?: Array< ModelTripConditionInput | null > | null,
+  not?: ModelTripConditionInput | null,
+};
+
+export type Trip = {
+  __typename: "Trip",
+  name: string,
+  store: string,
+  shipper: string,
+  cupPrice: string,
+  shippingPrice: string,
+  orderExpiration: string,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+  owner?: string | null,
+};
+
+export type UpdateTripInput = {
+  name?: string | null,
+  store?: string | null,
+  shipper?: string | null,
+  cupPrice?: string | null,
+  shippingPrice?: string | null,
+  orderExpiration?: string | null,
+  id: string,
+  _version?: number | null,
+};
+
+export type DeleteTripInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   fbUsername?: ModelStringInput | null,
@@ -383,6 +439,25 @@ export type ModelLegoConnection = {
   startedAt?: number | null,
 };
 
+export type ModelTripFilterInput = {
+  name?: ModelStringInput | null,
+  store?: ModelStringInput | null,
+  shipper?: ModelStringInput | null,
+  cupPrice?: ModelStringInput | null,
+  shippingPrice?: ModelStringInput | null,
+  orderExpiration?: ModelStringInput | null,
+  and?: Array< ModelTripFilterInput | null > | null,
+  or?: Array< ModelTripFilterInput | null > | null,
+  not?: ModelTripFilterInput | null,
+};
+
+export type ModelTripConnection = {
+  __typename: "ModelTripConnection",
+  items:  Array<Trip | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   fbUsername?: ModelSubscriptionStringInput | null,
@@ -463,6 +538,17 @@ export type ModelSubscriptionLegoFilterInput = {
   imageKey?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionLegoFilterInput | null > | null,
   or?: Array< ModelSubscriptionLegoFilterInput | null > | null,
+};
+
+export type ModelSubscriptionTripFilterInput = {
+  name?: ModelSubscriptionStringInput | null,
+  store?: ModelSubscriptionStringInput | null,
+  shipper?: ModelSubscriptionStringInput | null,
+  cupPrice?: ModelSubscriptionStringInput | null,
+  shippingPrice?: ModelSubscriptionStringInput | null,
+  orderExpiration?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionTripFilterInput | null > | null,
+  or?: Array< ModelSubscriptionTripFilterInput | null > | null,
 };
 
 export type CreateUserMutationVariables = {
@@ -909,6 +995,78 @@ export type DeleteLegoMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateTripMutationVariables = {
+  input: CreateTripInput,
+  condition?: ModelTripConditionInput | null,
+};
+
+export type CreateTripMutation = {
+  createTrip?:  {
+    __typename: "Trip",
+    name: string,
+    store: string,
+    shipper: string,
+    cupPrice: string,
+    shippingPrice: string,
+    orderExpiration: string,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateTripMutationVariables = {
+  input: UpdateTripInput,
+  condition?: ModelTripConditionInput | null,
+};
+
+export type UpdateTripMutation = {
+  updateTrip?:  {
+    __typename: "Trip",
+    name: string,
+    store: string,
+    shipper: string,
+    cupPrice: string,
+    shippingPrice: string,
+    orderExpiration: string,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteTripMutationVariables = {
+  input: DeleteTripInput,
+  condition?: ModelTripConditionInput | null,
+};
+
+export type DeleteTripMutation = {
+  deleteTrip?:  {
+    __typename: "Trip",
+    name: string,
+    store: string,
+    shipper: string,
+    cupPrice: string,
+    shippingPrice: string,
+    orderExpiration: string,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };
 
@@ -1391,6 +1549,90 @@ export type SyncLegosQuery = {
   } | null,
 };
 
+export type GetTripQueryVariables = {
+  id: string,
+};
+
+export type GetTripQuery = {
+  getTrip?:  {
+    __typename: "Trip",
+    name: string,
+    store: string,
+    shipper: string,
+    cupPrice: string,
+    shippingPrice: string,
+    orderExpiration: string,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListTripsQueryVariables = {
+  filter?: ModelTripFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListTripsQuery = {
+  listTrips?:  {
+    __typename: "ModelTripConnection",
+    items:  Array< {
+      __typename: "Trip",
+      name: string,
+      store: string,
+      shipper: string,
+      cupPrice: string,
+      shippingPrice: string,
+      orderExpiration: string,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncTripsQueryVariables = {
+  filter?: ModelTripFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncTripsQuery = {
+  syncTrips?:  {
+    __typename: "ModelTripConnection",
+    items:  Array< {
+      __typename: "Trip",
+      name: string,
+      store: string,
+      shipper: string,
+      cupPrice: string,
+      shippingPrice: string,
+      orderExpiration: string,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
 };
@@ -1820,5 +2062,74 @@ export type OnDeleteLegoSubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateTripSubscriptionVariables = {
+  filter?: ModelSubscriptionTripFilterInput | null,
+};
+
+export type OnCreateTripSubscription = {
+  onCreateTrip?:  {
+    __typename: "Trip",
+    name: string,
+    store: string,
+    shipper: string,
+    cupPrice: string,
+    shippingPrice: string,
+    orderExpiration: string,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateTripSubscriptionVariables = {
+  filter?: ModelSubscriptionTripFilterInput | null,
+};
+
+export type OnUpdateTripSubscription = {
+  onUpdateTrip?:  {
+    __typename: "Trip",
+    name: string,
+    store: string,
+    shipper: string,
+    cupPrice: string,
+    shippingPrice: string,
+    orderExpiration: string,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteTripSubscriptionVariables = {
+  filter?: ModelSubscriptionTripFilterInput | null,
+};
+
+export type OnDeleteTripSubscription = {
+  onDeleteTrip?:  {
+    __typename: "Trip",
+    name: string,
+    store: string,
+    shipper: string,
+    cupPrice: string,
+    shippingPrice: string,
+    orderExpiration: string,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
   } | null,
 };

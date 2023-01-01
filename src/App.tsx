@@ -14,12 +14,13 @@ import Error from './Error';
 import SignUp from './features/SignUp';
 import Home from './features/Home';
 import Stores from './features/Stores';
+import Upcoming from './features/Trips';
 
-import { selectUserIsLoggedIn } from './features/User/UserSlice';
+import { selectUserCognitoGroups, selectUserIsLoggedIn } from './features/User/UserSlice';
 import { useSelector } from 'react-redux';
 import StoreData from './features/Stores/StoreData';
 
-const buildRoutes = (isLoggedIn: boolean, pathname: string) => createBrowserRouter([
+const buildRoutes = (isLoggedIn: boolean, pathname: string, userGroups: string[]) => createBrowserRouter([
   {
     path: '/',
     element: isLoggedIn ? <Home /> : <Navigate to='/login' state={{goto: pathname}}/>,
@@ -31,6 +32,14 @@ const buildRoutes = (isLoggedIn: boolean, pathname: string) => createBrowserRout
       {
         path: 'stores/:id',
         element: <StoreData />
+      },
+      {
+        path: 'upcoming',
+        element: <Upcoming />
+      },
+      {
+        path: 'upcoming/:id',
+        element: <Box></Box>
       }
     ]
   },
@@ -48,9 +57,10 @@ const buildRoutes = (isLoggedIn: boolean, pathname: string) => createBrowserRout
 
 export default function App() {
   const userIsLoggedIn = useSelector(selectUserIsLoggedIn);
+  const userGroups = useSelector(selectUserCognitoGroups);
   const pathname = window.location.pathname;
 
   return (
-    <RouterProvider router={buildRoutes(userIsLoggedIn, pathname)} />
+    <RouterProvider router={buildRoutes(userIsLoggedIn, pathname, userGroups)} />
   );
 }

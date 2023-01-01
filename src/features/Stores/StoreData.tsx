@@ -63,15 +63,19 @@ const StoreData = () => {
                     <FileUpload onComplete={handleFileUploadComplete} />
                 </Box>
             </Modal>
-            <Box marginBottom='2rem'>
-                <Button onClick={startAddingInventory}><Refresh /> Update Inventory</Button>
-            </Box>
             <Box flex='row'>
                 <Typography fontSize='3rem' display='inline-block'>{currentStoreData?.name}</Typography>
                 <Typography fontSize='2rem' color='#ccc' paddingLeft='1rem' display='inline-block'>{`${currentStoreData?.city}, ${currentStoreData?.district}`}</Typography>
             </Box>
-            <Box flex='1' paddingTop='2rem'>
-                <Typography>Store Inventory as of {relativeUpdatedAt}</Typography>
+            <Box flex='1' paddingTop='2rem' borderTop='1px solid rgba(246,236,54,255)'>
+                <Box marginBottom='2rem' display='flex' flexDirection='row'>
+                    <Box flex='1'>
+                        <Typography>Store Inventory as of {relativeUpdatedAt}</Typography>
+                    </Box>
+                    <Box flex='1' display='flex' justifyContent='flex-end' flexDirection='row'>
+                        <Button onClick={startAddingInventory}><Refresh />Update Inventory</Button>
+                    </Box>
+                </Box>
                 <Box display='flex' flexDirection='row'>
                     {currentStoreInventory?.map((inv) => {
                         return (
@@ -104,8 +108,8 @@ const InventoryItem = (props: InventoryItemProps) => {
     })
 
     return (
-        <Box border='2px solid rgba(246,236,54,255)' borderRadius='1rem' padding='2rem' margin='2rem'>
-            <img src={url} alt="" width='100px' height='100px'/>
+        <Box border='2px solid rgba(246,236,54,255)' borderRadius='1rem' padding='2rem' margin='2rem' flex='1' minWidth='200px'>
+            <img src={url} alt="" width='100%' height='100%'/>
         </Box>
     )
 }

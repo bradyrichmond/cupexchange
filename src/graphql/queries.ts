@@ -449,3 +449,82 @@ export const syncLegos = /* GraphQL */ `
     }
   }
 `;
+export const getTrip = /* GraphQL */ `
+  query GetTrip($id: ID!) {
+    getTrip(id: $id) {
+      name
+      store
+      shipper
+      cupPrice
+      shippingPrice
+      orderExpiration
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const listTrips = /* GraphQL */ `
+  query ListTrips(
+    $filter: ModelTripFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTrips(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        name
+        store
+        shipper
+        cupPrice
+        shippingPrice
+        orderExpiration
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncTrips = /* GraphQL */ `
+  query SyncTrips(
+    $filter: ModelTripFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncTrips(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        name
+        store
+        shipper
+        cupPrice
+        shippingPrice
+        orderExpiration
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;

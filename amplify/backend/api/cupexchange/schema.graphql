@@ -46,3 +46,17 @@ type Lego @model @auth(rules: [{ allow: private }]) {
   id: ID!
   imageKey: String!
 }
+
+type Trip @model @auth(rules: [
+    { allow: groups, groups: ["moderators", "admins"], operations: [update, delete] },
+    { allow: owner, operations: [update, delete] },
+    { allow: private, operations: [create, read] }
+  ]) 
+{
+  name: String!
+  store: String!
+  shipper: String!
+  cupPrice: String!
+  shippingPrice: String!
+  orderExpiration: String!
+}

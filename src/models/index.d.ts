@@ -173,3 +173,41 @@ export declare type Lego = LazyLoading extends LazyLoadingDisabled ? EagerLego :
 export declare const Lego: (new (init: ModelInit<Lego>) => Lego) & {
   copyOf(source: Lego, mutator: (draft: MutableModel<Lego>) => MutableModel<Lego> | void): Lego;
 }
+
+type EagerTrip = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Trip, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly store: string;
+  readonly shipper: string;
+  readonly cupPrice: string;
+  readonly shippingPrice: string;
+  readonly orderExpiration: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyTrip = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Trip, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly store: string;
+  readonly shipper: string;
+  readonly cupPrice: string;
+  readonly shippingPrice: string;
+  readonly orderExpiration: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Trip = LazyLoading extends LazyLoadingDisabled ? EagerTrip : LazyTrip
+
+export declare const Trip: (new (init: ModelInit<Trip>) => Trip) & {
+  copyOf(source: Trip, mutator: (draft: MutableModel<Trip>) => MutableModel<Trip> | void): Trip;
+}

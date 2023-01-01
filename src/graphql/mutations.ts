@@ -410,3 +410,69 @@ export const deleteLego = /* GraphQL */ `
     }
   }
 `;
+export const createTrip = /* GraphQL */ `
+  mutation CreateTrip(
+    $input: CreateTripInput!
+    $condition: ModelTripConditionInput
+  ) {
+    createTrip(input: $input, condition: $condition) {
+      name
+      store
+      shipper
+      cupPrice
+      shippingPrice
+      orderExpiration
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const updateTrip = /* GraphQL */ `
+  mutation UpdateTrip(
+    $input: UpdateTripInput!
+    $condition: ModelTripConditionInput
+  ) {
+    updateTrip(input: $input, condition: $condition) {
+      name
+      store
+      shipper
+      cupPrice
+      shippingPrice
+      orderExpiration
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const deleteTrip = /* GraphQL */ `
+  mutation DeleteTrip(
+    $input: DeleteTripInput!
+    $condition: ModelTripConditionInput
+  ) {
+    deleteTrip(input: $input, condition: $condition) {
+      name
+      store
+      shipper
+      cupPrice
+      shippingPrice
+      orderExpiration
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;

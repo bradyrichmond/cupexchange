@@ -4,7 +4,11 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../hooks';
 import { createStore, getStoreData } from './StoresSlice';
 
-const CreateStoreForm = () => {
+interface CreateStoreFormProps {
+    close: () => void
+}
+
+const CreateStoreForm = ({ close }: CreateStoreFormProps) => {
     const { register, handleSubmit } = useForm();
     const dispatch = useAppDispatch();
 
@@ -12,6 +16,7 @@ const CreateStoreForm = () => {
         const { storeName, storeCity, storeState } = data;
         await dispatch(createStore({ name: storeName, city: storeCity, district: storeState }));
         await dispatch(getStoreData());
+        close();
     }
 
     return (

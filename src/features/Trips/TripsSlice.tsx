@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { DataStore, Predicates } from 'aws-amplify';
 import { Trip } from '../../models';
-import { CreateStoreInput } from '../../API';
+import { CreateTripInput } from '../../API';
 import { RootState } from '../../store';
 
 export const getTrips = createAsyncThunk(
@@ -10,6 +10,14 @@ export const getTrips = createAsyncThunk(
       return await DataStore.query(Trip, Predicates.ALL, { page, limit: 50});
     }
 );
+
+export const createTrip = createAsyncThunk(
+  'trips/createTrip',
+  async (input: CreateTripInput) => {
+    const { store, shipper, cupPrice, shippingPrice, orderExpiration } = input;
+    await DataStore.save(new Trip({ store, shipper, cupPrice, shippingPrice, orderExpiration: `${orderExpiration}` }));
+  }
+)
 
 interface TripsState {
   loading: Boolean
@@ -37,6 +45,16 @@ export const storesSlice = createSlice({
         state.trips = action.payload;
       })
       .addCase(getTrips.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(createTrip.rejected, (state, action) => {
+        console.log('createTrip failed', JSON.stringify(action));
+        state.loading = false;
+      })
+      .addCase(createTrip.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(createTrip.pending, (state, action) => {
         state.loading = true;
       })
   },

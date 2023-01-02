@@ -416,7 +416,6 @@ export const createTrip = /* GraphQL */ `
     $condition: ModelTripConditionInput
   ) {
     createTrip(input: $input, condition: $condition) {
-      name
       store
       shipper
       cupPrice
@@ -438,7 +437,6 @@ export const updateTrip = /* GraphQL */ `
     $condition: ModelTripConditionInput
   ) {
     updateTrip(input: $input, condition: $condition) {
-      name
       store
       shipper
       cupPrice
@@ -460,7 +458,6 @@ export const deleteTrip = /* GraphQL */ `
     $condition: ModelTripConditionInput
   ) {
     deleteTrip(input: $input, condition: $condition) {
-      name
       store
       shipper
       cupPrice

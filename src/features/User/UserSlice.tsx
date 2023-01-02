@@ -4,6 +4,13 @@ import { CreateAddressInput, CreateUserInput } from '../../API';
 import { User, Address, LazyUser } from '../../models';
 import { RootState } from '../../store';
 
+export const getUserData = createAsyncThunk<User, string>(
+  'users/getUser',
+  async (fbUsername: string) => {
+    const userData = await DataStore.query(User, (u) => u.fbUsername.eq(fbUsername));
+    return userData[0];
+  }
+)
 
 export const createUserAddress = createAsyncThunk<string, CreateAddressInput> (
   'users/createUserAddress',
@@ -15,11 +22,20 @@ export const createUserAddress = createAsyncThunk<string, CreateAddressInput> (
   }
 );
 
-export const createUser = createAsyncThunk<User, CreateUserInput>(
+interface UserType {
+  id: string
+  first_name: string
+  last_name: string
+  fbUsername: string
+  email: string
+}
+
+export const createUser = createAsyncThunk<UserType, CreateUserInput>(
   'users/createUser',
   async (userDataInput: CreateUserInput) => {
     const { fbUsername, first_name, last_name, userAddressId, email } = userDataInput;
-    const userData = await DataStore.save(new User({ fbUsername, first_name, last_name, userAddressId, email }));
+    const userDataRaw = await DataStore.save(new User({ fbUsername, first_name, last_name, userAddressId, email }));
+    const userData = { id: userDataRaw.id, first_name: userDataRaw.first_name, last_name: userDataRaw.last_name, fbUsername: userDataRaw.fbUsername, email: userDataRaw.email }
     return userData;
   }
 );
@@ -31,7 +47,7 @@ interface InitialState {
   userName: string
   loading: boolean
   addressId: string
-  userData: LazyUser | undefined
+  userData: UserType | undefined
 }
 
 const initialState: InitialState = {
@@ -81,6 +97,17 @@ export const userSlice = createSlice({
     .addCase(createUser.fulfilled, (state, action) => {
       state.loading = false;
       state.isLoggedIn = true;
+      state.userData = action.payload;
+    })
+    .addCase(getUserData.rejected, (state, action) => {
+      console.log('getUserDataFail');
+      state.loading = false;
+    })
+    .addCase(getUserData.pending, (state, action) => {
+      state.loading = true;
+    })
+    .addCase(getUserData.fulfilled, (state, action) => {
+      state.loading = false;
       state.userData = action.payload;
     })
   },

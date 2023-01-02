@@ -7,14 +7,14 @@ import awsExports from '../aws-exports';
 import { useLocation, useNavigate } from 'react-router';
 import { Box } from '@mui/material';
 import { User } from '../models';
-import { useDispatch } from 'react-redux';
-import { setFbUsername, setIsLoggedIn, setUserGroups } from '../features/User/UserSlice';
+import { getUserData, setFbUsername, setIsLoggedIn, setUserGroups } from '../features/User/UserSlice';
+import { useAppDispatch } from '../hooks';
 
 Amplify.configure(awsExports);
 
 export default function Login() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
   const userLoggedIn = (user: any | undefined) => {
@@ -34,9 +34,10 @@ export default function Login() {
       }
 
       if (users.length > 0) {
-        dispatch(setFbUsername(user.username));
-        dispatch(setIsLoggedIn(true));
-        dispatch(setUserGroups(user.signInUserSession.accessToken.payload['cognito:groups']));
+        await dispatch(setFbUsername(user.username));
+        await dispatch(setIsLoggedIn(true));
+        await dispatch(setUserGroups(user.signInUserSession.accessToken.payload['cognito:groups']));
+        await dispatch(getUserData(fbUsername));
         navigate(location.state.goto);
       }
     }

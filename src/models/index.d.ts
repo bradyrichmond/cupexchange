@@ -180,7 +180,6 @@ type EagerTrip = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly name: string;
   readonly store: string;
   readonly shipper: string;
   readonly cupPrice: string;
@@ -196,7 +195,6 @@ type LazyTrip = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly name: string;
   readonly store: string;
   readonly shipper: string;
   readonly cupPrice: string;

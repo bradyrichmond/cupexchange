@@ -296,7 +296,6 @@ export type DeleteLegoInput = {
 };
 
 export type CreateTripInput = {
-  name: string,
   store: string,
   shipper: string,
   cupPrice: string,
@@ -307,7 +306,6 @@ export type CreateTripInput = {
 };
 
 export type ModelTripConditionInput = {
-  name?: ModelStringInput | null,
   store?: ModelStringInput | null,
   shipper?: ModelStringInput | null,
   cupPrice?: ModelStringInput | null,
@@ -320,7 +318,6 @@ export type ModelTripConditionInput = {
 
 export type Trip = {
   __typename: "Trip",
-  name: string,
   store: string,
   shipper: string,
   cupPrice: string,
@@ -336,7 +333,6 @@ export type Trip = {
 };
 
 export type UpdateTripInput = {
-  name?: string | null,
   store?: string | null,
   shipper?: string | null,
   cupPrice?: string | null,
@@ -440,7 +436,6 @@ export type ModelLegoConnection = {
 };
 
 export type ModelTripFilterInput = {
-  name?: ModelStringInput | null,
   store?: ModelStringInput | null,
   shipper?: ModelStringInput | null,
   cupPrice?: ModelStringInput | null,
@@ -541,7 +536,6 @@ export type ModelSubscriptionLegoFilterInput = {
 };
 
 export type ModelSubscriptionTripFilterInput = {
-  name?: ModelSubscriptionStringInput | null,
   store?: ModelSubscriptionStringInput | null,
   shipper?: ModelSubscriptionStringInput | null,
   cupPrice?: ModelSubscriptionStringInput | null,
@@ -1006,7 +1000,6 @@ export type CreateTripMutationVariables = {
 export type CreateTripMutation = {
   createTrip?:  {
     __typename: "Trip",
-    name: string,
     store: string,
     shipper: string,
     cupPrice: string,
@@ -1030,7 +1023,6 @@ export type UpdateTripMutationVariables = {
 export type UpdateTripMutation = {
   updateTrip?:  {
     __typename: "Trip",
-    name: string,
     store: string,
     shipper: string,
     cupPrice: string,
@@ -1054,7 +1046,6 @@ export type DeleteTripMutationVariables = {
 export type DeleteTripMutation = {
   deleteTrip?:  {
     __typename: "Trip",
-    name: string,
     store: string,
     shipper: string,
     cupPrice: string,
@@ -1556,7 +1547,6 @@ export type GetTripQueryVariables = {
 export type GetTripQuery = {
   getTrip?:  {
     __typename: "Trip",
-    name: string,
     store: string,
     shipper: string,
     cupPrice: string,
@@ -1583,7 +1573,6 @@ export type ListTripsQuery = {
     __typename: "ModelTripConnection",
     items:  Array< {
       __typename: "Trip",
-      name: string,
       store: string,
       shipper: string,
       cupPrice: string,
@@ -1614,7 +1603,6 @@ export type SyncTripsQuery = {
     __typename: "ModelTripConnection",
     items:  Array< {
       __typename: "Trip",
-      name: string,
       store: string,
       shipper: string,
       cupPrice: string,
@@ -2072,7 +2060,6 @@ export type OnCreateTripSubscriptionVariables = {
 export type OnCreateTripSubscription = {
   onCreateTrip?:  {
     __typename: "Trip",
-    name: string,
     store: string,
     shipper: string,
     cupPrice: string,
@@ -2095,7 +2082,6 @@ export type OnUpdateTripSubscriptionVariables = {
 export type OnUpdateTripSubscription = {
   onUpdateTrip?:  {
     __typename: "Trip",
-    name: string,
     store: string,
     shipper: string,
     cupPrice: string,
@@ -2118,7 +2104,6 @@ export type OnDeleteTripSubscriptionVariables = {
 export type OnDeleteTripSubscription = {
   onDeleteTrip?:  {
     __typename: "Trip",
-    name: string,
     store: string,
     shipper: string,
     cupPrice: string,

@@ -5,20 +5,54 @@ import { DataGrid, GridColDef, GridEventListener, GridRowsProp } from '@mui/x-da
 import { Add } from '@mui/icons-material';
 import { selectUserCognitoGroups } from '../User/UserSlice';
 import { useNavigate } from 'react-router';
+import CreateTripForm from './CreateTripForm';
+import { getTrips, selectTrips } from './TripsSlice';
+import { LazyStore, LazyUser, Trip, User } from '../../models';
+import { DataStore } from 'aws-amplify';
+import { Store } from '../../models';
+import { formatRelative } from 'date-fns';
+
+interface TripType {
+    shipper: string | undefined;
+    store: string | undefined;
+    shippingPrice: string;
+    cupPrice: string;
+    orderExpiration: string;
+    id: string;
+}
 
 const Stores = () => {
     const [open, setOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const trips = useAppSelector(selectTrips);
+    const initialTripdata: TripType[] = [];
+    const [tripdata, setTripData] = useState(initialTripdata)
 
-    const rows: GridRowsProp = [{ name: 'Test Store', city: 'Test City', district: 'Test State', shipper: 'Test Shipper', cupPrice: '$18.00', shippingPrice: '$10.00', orderExpiration: '', id: 'TESTID'}];
+    useEffect(() => {
+        const buildRows = async () => {
+            await dispatch(getTrips(currentPage));
+            const tripDataResults = await Promise.all(trips.map(async (trip) => {
+                const shipper = await DataStore.query(User, trip.shipper);
+                const store = await DataStore.query(Store, trip.store);
+                const { id, shippingPrice, cupPrice, orderExpiration } = trip;
+                return { shipper: `${shipper?.first_name} ${shipper?.last_name}`, store: store?.name, shippingPrice, cupPrice, orderExpiration: formatRelative(Date.parse(orderExpiration), Date.now()), id };
+            }));
+            setTripData(tripDataResults);
+        }
+        
+        buildRows();
+    }, [currentPage]);
+
+    
+
+    const rows: GridRowsProp = tripdata;
 
     const columns: GridColDef[] = [
-        { field: 'name', headerName: 'Store Name', width: 300 },
-        { field: 'city', headerName: 'City', width: 150 },
-        { field: 'district', headerName: 'State', width: 150 },
+        { field: 'store', headerName: 'Store Name', width: 300 },
         { field: 'shipper', headerName: 'Shipper Name', width: 150 },
         { field: 'cupPrice', headerName: 'Cup Price', width: 150 },
         { field: 'shippingPrice', headerName: 'Shipping Price/3 Cups', width: 200 },
@@ -30,19 +64,24 @@ const Stores = () => {
         event,
         details,
       ) => {
-        navigate(`/stores/${params.row.id}`);
+        navigate(`/trips/${params.row.id}`);
     };
+
+    const handlePageChange = async (page: number) => {
+        await setCurrentPage(page);
+        await getTrips(currentPage);
+    }
 
     return (
         <Box height='100%' width='100%' display='flex' flexDirection='column' padding='2rem'>
-            {/* <Modal
+            <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <CreateTripForm />
-            </Modal> */}
+                <CreateTripForm close={handleClose}/>
+            </Modal>
             <Box>
                 <Typography fontSize='3rem'>Upcoming Trips</Typography>
             </Box>
@@ -50,7 +89,7 @@ const Stores = () => {
                 <Button onClick={handleOpen}><Add />Add Trip</Button>
             </Box>
             <Box marginTop='2rem' flex={1}>
-                <DataGrid onRowClick={handleRowClick} rows={rows} columns={columns} />
+                <DataGrid onRowClick={handleRowClick} rows={rows} columns={columns} onPageChange={handlePageChange}/>
             </Box>
         </Box>
     )

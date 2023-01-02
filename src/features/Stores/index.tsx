@@ -46,7 +46,7 @@ const Stores = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <CreateStoreForm />
+                <CreateStoreForm close={handleClose}/>
             </Modal>
             {userIsModerator && 
                 <Box marginLeft='2rem' marginRight='2rem' marginTop='2rem'>

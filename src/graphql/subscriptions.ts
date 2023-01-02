@@ -374,7 +374,6 @@ export const onDeleteLego = /* GraphQL */ `
 export const onCreateTrip = /* GraphQL */ `
   subscription OnCreateTrip($filter: ModelSubscriptionTripFilterInput) {
     onCreateTrip(filter: $filter) {
-      name
       store
       shipper
       cupPrice
@@ -393,7 +392,6 @@ export const onCreateTrip = /* GraphQL */ `
 export const onUpdateTrip = /* GraphQL */ `
   subscription OnUpdateTrip($filter: ModelSubscriptionTripFilterInput) {
     onUpdateTrip(filter: $filter) {
-      name
       store
       shipper
       cupPrice
@@ -412,7 +410,6 @@ export const onUpdateTrip = /* GraphQL */ `
 export const onDeleteTrip = /* GraphQL */ `
   subscription OnDeleteTrip($filter: ModelSubscriptionTripFilterInput) {
     onDeleteTrip(filter: $filter) {
-      name
       store
       shipper
       cupPrice

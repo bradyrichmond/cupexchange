@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Modal, Typography } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { Storage } from '@aws-amplify/storage';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getSingleStoreData, selectCurrentStoreData } from './StoresSlice';
+import { deleteStore, getSingleStoreData, selectCurrentStoreData } from './StoresSlice';
 import FileUpload from '../../utils/FileUpload';
 import { DataStore } from 'aws-amplify';
 import { Lego } from '../../models';
 import { createStoreInventory, getStoreInventory, selectCurrentStoreInventory } from './InventorySlice';
 import { formatRelative } from 'date-fns';
+import { selectUserCognitoGroups } from '../User/UserSlice';
+import DeleteStoreModal from './DeleteStoreModal';
 
 const StoreData = () => {
     const { id } = useParams();
     const [isAddingInventory, setIsAddingInventory] = useState(false);
+    const [isDeletingStore, setIsDeletingStore] = useState(false);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const currentStoreData = useAppSelector(selectCurrentStoreData);
     const currentStoreInventory = useAppSelector(selectCurrentStoreInventory);
-    const relativeUpdatedAt = formatRelative(Date.parse(currentStoreData?.updatedAt ?? ''), Date.now());
+    const userGroups = useAppSelector(selectUserCognitoGroups);
+    const userIsModerator = userGroups.includes('moderators');
+    const relativeUpdatedAt = currentStoreData?.updatedAt ? formatRelative(Date.parse(currentStoreData?.updatedAt ?? ''), Date.now()) : 'error';
 
     const startAddingInventory = () => {
         setIsAddingInventory(true);
@@ -25,6 +31,21 @@ const StoreData = () => {
 
     const stopAddingInventory = () => {
         setIsAddingInventory(false);
+    }
+
+    const startDeletingStore = () => {
+        setIsDeletingStore(true);
+    }
+
+    const confirmDeleteStore = () => {
+        if (id) {
+            dispatch(deleteStore(id))
+        }
+        navigate('/stores');
+    }
+
+    const stopDeletingStore = () => {
+        setIsDeletingStore(false);
     }
 
     const handleFileUploadComplete = async (results: (string | undefined)[]) => {
@@ -55,12 +76,22 @@ const StoreData = () => {
         <Box display='flex' flexDirection='column' margin='2rem'>
             <Modal
                 open={isAddingInventory}
-                onClose={stopAddingInventory}
+                onClose={stopDeletingStore}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
                 <Box height="100%" width="100%" display='flex' justifyContent='center' alignItems='center' borderRadius='1rem' padding='2rem'>
                     <FileUpload onComplete={handleFileUploadComplete} />
+                </Box>
+            </Modal>
+            <Modal
+                open={isDeletingStore}
+                onClose={() => setIsDeletingStore(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box height="100%" width="100%" display='flex' justifyContent='center' alignItems='center' borderRadius='1rem' padding='2rem'>
+                    <DeleteStoreModal cancel={stopDeletingStore} confirm={confirmDeleteStore} storeName={currentStoreData?.name ?? ' this store'} />
                 </Box>
             </Modal>
             <Box flex='row'>
@@ -74,6 +105,7 @@ const StoreData = () => {
                     </Box>
                     <Box flex='1' display='flex' justifyContent='flex-end' flexDirection='row'>
                         <Button onClick={startAddingInventory}><Refresh />Update Inventory</Button>
+                        {userIsModerator && <Button onClick={startDeletingStore}>Delete Store</Button>}
                     </Box>
                 </Box>
                 <Box display='flex' flexDirection='row'>

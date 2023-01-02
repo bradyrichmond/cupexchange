@@ -19,6 +19,13 @@ export const createStore = createAsyncThunk(
   }
 );
 
+export const deleteStore = createAsyncThunk(
+  'stores/deleteStore',
+  async (id: string) => {
+    DataStore.delete(Store, id);
+  }
+)
+
 export const getSingleStoreData = createAsyncThunk(
   'stores/getSingleStoreData',
   async (id: string) => {
@@ -71,6 +78,16 @@ export const storesSlice = createSlice({
         state.loading = false;
       })
       .addCase(getSingleStoreData.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(deleteStore.rejected, (state, action) => {
+        console.log('deleteStore failed');
+        state.loading = false;
+      })
+      .addCase(deleteStore.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(deleteStore.pending, (state, action) => {
         state.loading = true;
       })
   },

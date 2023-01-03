@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { DataStore } from 'aws-amplify';
+import { DataStore, Predicates } from 'aws-amplify';
 import { CreateAddressInput, CreateUserInput } from '../../API';
 import { User, Address, LazyUser } from '../../models';
 import { RootState } from '../../store';
@@ -21,6 +21,13 @@ export const createUserAddress = createAsyncThunk<string, CreateAddressInput> (
     return userAddress.id;
   }
 );
+
+export const getUsers = createAsyncThunk(
+  'users/getUsers',
+  async (page: number) => {
+    return await DataStore.query(User, Predicates.ALL, { page, limit: 50});
+  }
+)
 
 interface UserType {
   id: string
@@ -48,6 +55,7 @@ interface InitialState {
   loading: boolean
   addressId: string
   userData: UserType | undefined
+  users: User[]
 }
 
 const initialState: InitialState = {
@@ -57,7 +65,8 @@ const initialState: InitialState = {
   userName: '',
   loading: false,
   addressId:'',
-  userData: undefined
+  userData: undefined,
+  users: []
 }
 
 export const userSlice = createSlice({
@@ -110,6 +119,17 @@ export const userSlice = createSlice({
       state.loading = false;
       state.userData = action.payload;
     })
+    .addCase(getUsers.rejected, (state, action) => {
+      console.log('getUserFail');
+      state.loading = false;
+    })
+    .addCase(getUsers.pending, (state, action) => {
+      state.loading = true;
+    })
+    .addCase(getUsers.fulfilled, (state, action) => {
+      state.loading = false;
+      state.users = action.payload;
+    })
   },
 });
 
@@ -120,5 +140,6 @@ export const selectFbUsername = (state: RootState) => state.user.fbUsername;
 export const selectUserCognitoGroups = (state: RootState) => state.user.userGroups;
 export const selectAddressId = (state: RootState) => state.user.addressId;
 export const selectUserData = (state: RootState) => state.user.userData;
+export const selectUsers = (state: RootState) => state.user.users;
 
 export default userSlice.reducer;

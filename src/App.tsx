@@ -19,8 +19,9 @@ import Upcoming from './features/Trips';
 import { selectUserCognitoGroups, selectUserIsLoggedIn } from './features/User/UserSlice';
 import { useSelector } from 'react-redux';
 import StoreData from './features/Stores/StoreData';
+import Users from './features/User';
 
-const buildRoutes = (isLoggedIn: boolean, pathname: string, userGroups: string[]) => createBrowserRouter([
+const buildRoutes = (isLoggedIn: boolean, pathname: string, userIsModerator: boolean) => createBrowserRouter([
   {
     path: '/',
     element: isLoggedIn ? <Home /> : <Navigate to='/login' state={{goto: pathname}}/>,
@@ -40,6 +41,10 @@ const buildRoutes = (isLoggedIn: boolean, pathname: string, userGroups: string[]
       {
         path: 'upcoming/:id',
         element: <Box></Box>
+      },
+      {
+        path: 'users',
+        element: userIsModerator ? <Users /> : <Box>Access Denied</Box>
       }
     ]
   },
@@ -58,9 +63,10 @@ const buildRoutes = (isLoggedIn: boolean, pathname: string, userGroups: string[]
 export default function App() {
   const userIsLoggedIn = useSelector(selectUserIsLoggedIn);
   const userGroups = useSelector(selectUserCognitoGroups);
+  const userIsModerator = userGroups.includes('moderators');
   const pathname = window.location.pathname;
 
   return (
-    <RouterProvider router={buildRoutes(userIsLoggedIn, pathname, userGroups)} />
+    <RouterProvider router={buildRoutes(userIsLoggedIn, pathname, userIsModerator)} />
   );
 }

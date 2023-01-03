@@ -9,7 +9,7 @@ import FileUpload from '../../utils/FileUpload';
 import { DataStore } from 'aws-amplify';
 import { Lego } from '../../models';
 import { createStoreInventory, getStoreInventory, selectCurrentStoreInventory } from './InventorySlice';
-import { formatRelative } from 'date-fns';
+import { formatRelative, parseISO } from 'date-fns';
 import { selectUserCognitoGroups } from '../User/UserSlice';
 import DeleteStoreModal from './DeleteStoreModal';
 
@@ -23,7 +23,7 @@ const StoreData = () => {
     const currentStoreInventory = useAppSelector(selectCurrentStoreInventory);
     const userGroups = useAppSelector(selectUserCognitoGroups);
     const userIsModerator = userGroups.includes('moderators');
-    const relativeUpdatedAt = currentStoreData?.updatedAt ? formatRelative(Date.parse(currentStoreData?.updatedAt ?? ''), Date.now()) : 'error';
+    const relativeUpdatedAt = currentStoreData?.updatedAt ? formatRelative(parseISO(currentStoreData?.updatedAt), Date.now()) : 'loading...';
 
     const startAddingInventory = () => {
         setIsAddingInventory(true);

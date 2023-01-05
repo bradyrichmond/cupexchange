@@ -124,7 +124,7 @@ interface InventoryItemProps{
     imageKey: string | undefined
 }
 
-const InventoryItem = (props: InventoryItemProps) => {
+export const InventoryItem = (props: InventoryItemProps) => {
     const { imageKey } = props;
     const [url, setUrl] = useState('')
 

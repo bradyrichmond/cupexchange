@@ -29,6 +29,14 @@ export const getUsers = createAsyncThunk(
   }
 )
 
+export const getUserById = createAsyncThunk(
+  'users/getUserById',
+  async (id: string) => {
+    const userById = await DataStore.query(User, id);
+    return userById;
+  }
+)
+
 interface UserType {
   id: string
   first_name: string
@@ -55,7 +63,8 @@ interface InitialState {
   loading: boolean
   addressId: string
   userData: UserType | undefined
-  users: User[]
+  users: User[],
+  userById: User | undefined
 }
 
 const initialState: InitialState = {
@@ -66,7 +75,8 @@ const initialState: InitialState = {
   loading: false,
   addressId:'',
   userData: undefined,
-  users: []
+  users: [],
+  userById: undefined
 }
 
 export const userSlice = createSlice({
@@ -130,6 +140,17 @@ export const userSlice = createSlice({
       state.loading = false;
       state.users = action.payload;
     })
+    .addCase(getUserById.rejected, (state, action) => {
+      console.log('getUserFail');
+      state.loading = false;
+    })
+    .addCase(getUserById.pending, (state, action) => {
+      state.loading = true;
+    })
+    .addCase(getUserById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.userById = action.payload;
+    })
   },
 });
 
@@ -141,5 +162,6 @@ export const selectUserCognitoGroups = (state: RootState) => state.user.userGrou
 export const selectAddressId = (state: RootState) => state.user.addressId;
 export const selectUserData = (state: RootState) => state.user.userData;
 export const selectUsers = (state: RootState) => state.user.users;
+export const selectUserById = (state: RootState) => state.user.userById;
 
 export default userSlice.reducer;

@@ -20,6 +20,7 @@ import { selectUserCognitoGroups, selectUserIsLoggedIn } from './features/User/U
 import { useSelector } from 'react-redux';
 import StoreData from './features/Stores/StoreData';
 import Users from './features/User';
+import TripData from './features/Trips/TripData';
 
 const buildRoutes = (isLoggedIn: boolean, pathname: string, userIsModerator: boolean) => createBrowserRouter([
   {
@@ -40,7 +41,7 @@ const buildRoutes = (isLoggedIn: boolean, pathname: string, userIsModerator: boo
       },
       {
         path: 'upcoming/:id',
-        element: <Box></Box>
+        element: <TripData />
       },
       {
         path: 'users',

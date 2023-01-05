@@ -184,7 +184,7 @@ type EagerTrip = {
   readonly shipper: string;
   readonly cupPrice: string;
   readonly shippingPrice: string;
-  readonly orderExpiration: string;
+  readonly orderExpiration: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -199,7 +199,7 @@ type LazyTrip = {
   readonly shipper: string;
   readonly cupPrice: string;
   readonly shippingPrice: string;
-  readonly orderExpiration: string;
+  readonly orderExpiration: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

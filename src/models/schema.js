@@ -465,7 +465,7 @@ export const schema = {
                 "orderExpiration": {
                     "name": "orderExpiration",
                     "isArray": false,
-                    "type": "String",
+                    "type": "Int",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -536,5 +536,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.2",
-    "version": "001bfcc90ce0c97098fa4033d660b845"
+    "version": "ee96a9515260a90ee04b7777a6bc05e0"
 };

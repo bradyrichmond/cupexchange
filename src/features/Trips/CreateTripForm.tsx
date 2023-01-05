@@ -32,7 +32,8 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
 
     const handleFormSubmit = async (data: any) => {
         const { cupPrice, shippingPrice } = data;
-        await dispatch(createTrip({ shipper: userData?.id ?? '', cupPrice, shippingPrice, store, orderExpiration }));
+        const parsedOrderExpiration = Date.parse(orderExpiration);
+        await dispatch(createTrip({ shipper: userData?.id ?? '', cupPrice, shippingPrice, store, orderExpiration: parsedOrderExpiration }));
         await dispatch(getTrips(0));
         close();
     }

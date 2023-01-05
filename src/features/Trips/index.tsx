@@ -22,34 +22,16 @@ interface TripType {
 }
 
 const Stores = () => {
+    const initialTripData: TripType[] = [];
     const [open, setOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
+    const [tripData, setTripData] = useState(initialTripData);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const trips = useAppSelector(selectTrips);
-    const initialTripdata: TripType[] = [];
-    const [tripdata, setTripData] = useState(initialTripdata)
 
-    useEffect(() => {
-        const buildRows = async () => {
-            await dispatch(getTrips(currentPage));
-            const tripDataResults = await Promise.all(trips.map(async (trip) => {
-                const shipper = await DataStore.query(User, trip.shipper);
-                const store = await DataStore.query(Store, trip.store);
-                const { id, shippingPrice, cupPrice, orderExpiration } = trip;
-                return { shipper: `${shipper?.first_name} ${shipper?.last_name}`, store: store?.name, shippingPrice, cupPrice, orderExpiration: formatRelative(Date.parse(orderExpiration), Date.now()), id };
-            }));
-            setTripData(tripDataResults);
-        }
-        
-        buildRows();
-    }, [currentPage]);
-
-    
-
-    const rows: GridRowsProp = tripdata;
+    const rows: GridRowsProp = tripData;
 
     const columns: GridColDef[] = [
         { field: 'store', headerName: 'Store Name', width: 300 },
@@ -59,17 +41,46 @@ const Stores = () => {
         { field: 'orderExpiration', headerName: 'Taking Orders Until', width: 200 },
     ];
 
+    useEffect(() => {
+        const buildTrips = async () => {
+            const tripData = await Promise.all(trips.map(async (t) => {
+                const store = await DataStore.query(Store, t.store);
+                const shipper = await DataStore.query(User, t.shipper);
+                const storeName = store?.name;
+                const shipperName = `${shipper?.first_name} ${shipper?.last_name}`;
+                return {
+                    ...t,
+                    shipper: shipperName,
+                    store: storeName,
+                    orderExpiration: formatRelative(t.orderExpiration, Date.now())
+                }
+            }))
+            setTripData(tripData);
+        }
+
+        buildTrips();
+    }, trips)
+
+    useEffect(() => {
+        dispatch(getTrips(currentPage))
+    })
+
     const handleRowClick: GridEventListener<'rowClick'> = (
         params,
         event,
         details,
       ) => {
-        navigate(`/trips/${params.row.id}`);
+        navigate(`/upcoming/${params.row.id}`);
     };
+
+    const handleClose = async () => {
+        setOpen(false);
+        await setCurrentPage(0);
+    }
 
     const handlePageChange = async (page: number) => {
         await setCurrentPage(page);
-        await getTrips(currentPage);
+        await dispatch(getTrips(currentPage));
     }
 
     return (
@@ -80,7 +91,7 @@ const Stores = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <CreateTripForm close={handleClose}/>
+                <CreateTripForm close={handleClose} />
             </Modal>
             <Box>
                 <Typography fontSize='3rem'>Upcoming Trips</Typography>

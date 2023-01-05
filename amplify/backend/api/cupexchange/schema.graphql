@@ -57,5 +57,5 @@ type Trip @model @auth(rules: [
   shipper: String!
   cupPrice: String!
   shippingPrice: String!
-  orderExpiration: String!
+  orderExpiration: Int!
 }

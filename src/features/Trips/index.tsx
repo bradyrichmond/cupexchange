@@ -3,13 +3,9 @@ import { Box, Button, Modal, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { DataGrid, GridColDef, GridEventListener, GridRowsProp } from '@mui/x-data-grid';
 import { Add } from '@mui/icons-material';
-import { selectUserCognitoGroups } from '../User/UserSlice';
 import { useNavigate } from 'react-router';
 import CreateTripForm from './CreateTripForm';
 import { getTrips, selectTrips } from './TripsSlice';
-import { LazyStore, LazyUser, Trip, User } from '../../models';
-import { DataStore } from 'aws-amplify';
-import { Store } from '../../models';
 import { formatRelative } from 'date-fns';
 
 interface TripType {
@@ -42,28 +38,28 @@ const Stores = () => {
     ];
 
     useEffect(() => {
-        const buildTrips = async () => {
-            const tripData = await Promise.all(trips.map(async (t) => {
-                const store = await DataStore.query(Store, t.store);
-                const shipper = await DataStore.query(User, t.shipper);
-                const storeName = store?.name;
-                const shipperName = `${shipper?.first_name} ${shipper?.last_name}`;
-                return {
-                    ...t,
-                    shipper: shipperName,
-                    store: storeName,
-                    orderExpiration: formatRelative(t.orderExpiration, Date.now())
-                }
-            }))
-            setTripData(tripData);
-        }
+        if (trips && trips.length > 0) {
+            const buildTrips = async () => {
+                const tripData = await Promise.all(trips.map(async (t) => {
+                    const storeName = (await t.store)?.name;
+                    const shipperName = `${(await t.shipper)?.first_name} ${(await t.shipper)?.last_name}`;
+                    return {
+                        ...t,
+                        shipper: shipperName,
+                        store: storeName,
+                        orderExpiration: formatRelative(t.orderExpiration, Date.now())
+                    }
+                }))
+                setTripData(tripData);
+            }
 
-        buildTrips();
-    }, trips)
+            buildTrips();
+        }
+    }, [trips])
 
     useEffect(() => {
         dispatch(getTrips(currentPage))
-    })
+    }, [])
 
     const handleRowClick: GridEventListener<'rowClick'> = (
         params,

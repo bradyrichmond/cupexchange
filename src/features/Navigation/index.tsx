@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Badge, Box, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import StoreIcon from '@mui/icons-material/Store';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
@@ -8,10 +8,13 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { selectUserCognitoGroups } from '../User/UserSlice';
+import { ShoppingCartOutlined } from '@mui/icons-material';
+import { selectCartItems } from '../Orders/CartSlice';
 
 const Navigation = () => {
     const userGroups = useAppSelector(selectUserCognitoGroups);
     const userIsModerator = userGroups.includes('moderators');
+    const cartItems = useAppSelector(selectCartItems);
     const [expandMenu, setExpandMenu] = useState(false);
 
     const toggleMenu = () => {
@@ -33,6 +36,14 @@ const Navigation = () => {
                 <Link to='/upcoming'>
                     <AvTimerIcon htmlColor='rgba(255,255,255,255)' />
                     {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Upcoming Trips</Typography></Box>}
+                </Link>
+            </Box>
+            <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
+                <Link to="/cart">
+                    <Badge badgeContent={cartItems.length} >
+                        <ShoppingCartOutlined htmlColor='rgba(255,255,255,255)' />
+                    </Badge>
+                    {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Cart</Typography></Box>}
                 </Link>
             </Box>
             <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>

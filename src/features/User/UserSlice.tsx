@@ -1,14 +1,24 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { DataStore, Predicates } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import { CreateAddressInput, CreateUserInput } from '../../API';
-import { User, Address, LazyUser } from '../../models';
+import { createAddress, createUser } from '../../graphql/mutations';
+import { getUser, listUsers } from '../../graphql/queries';
+import { User } from '../../models';
 import { RootState } from '../../store';
 
 export const getUserData = createAsyncThunk<User, string>(
   'users/getUser',
   async (fbUsername: string) => {
-    const userData = await DataStore.query(User, (u) => u.fbUsername.eq(fbUsername));
-    return userData[0];
+    const userData = await (API.graphql(graphqlOperation(listUsers, {
+      filter: {
+          fbUsername: {
+              eq: fbUsername
+          }
+        }
+      })) as Promise<any>
+    );
+
+    return userData.data.listUsers.items[0];
   }
 )
 
@@ -16,24 +26,24 @@ export const createUserAddress = createAsyncThunk<string, CreateAddressInput> (
   'users/createUserAddress',
   async (addressData: CreateAddressInput) => {
     const { address, address2, city, district, postal_code } = addressData;
-    const userAddress = new Address({ address, address2, city, district, postal_code });
-    await DataStore.save(userAddress);
-    return userAddress.id;
+    const userAddress = await (API.graphql(graphqlOperation(createAddress, { input: { address, address2, city, district, postal_code } })) as Promise<any>)
+    return userAddress;
   }
 );
 
 export const getUsers = createAsyncThunk(
   'users/getUsers',
-  async (page: number) => {
-    return await DataStore.query(User, Predicates.ALL, { page, limit: 50});
+  async () => {
+    const users = await (API.graphql(graphqlOperation(listUsers)) as Promise<any>)
+    return users.data.listUsers.items;
   }
 )
 
 export const getUserById = createAsyncThunk(
   'users/getUserById',
   async (id: string) => {
-    const userById = await DataStore.query(User, id);
-    return userById;
+    const user = await (API.graphql(graphqlOperation(getUser, { id })) as Promise<any>)
+    return user.data;
   }
 )
 
@@ -45,12 +55,13 @@ interface UserType {
   email: string
 }
 
-export const createUser = createAsyncThunk<UserType, CreateUserInput>(
+export const createUserMutation = createAsyncThunk<UserType, CreateUserInput>(
   'users/createUser',
   async (userDataInput: CreateUserInput) => {
     const { fbUsername, first_name, last_name, userAddressId, email } = userDataInput;
-    const userDataRaw = await DataStore.save(new User({ fbUsername, first_name, last_name, userAddressId, email }));
-    const userData = { id: userDataRaw.id, first_name: userDataRaw.first_name, last_name: userDataRaw.last_name, fbUsername: userDataRaw.fbUsername, email: userDataRaw.email }
+    const userDataRaw = await (API.graphql(graphqlOperation(createUser, {input: { fbUsername, first_name, last_name, userAddressId, email } })) as Promise<any>);
+    const userDataResult = userDataRaw.result;
+    const userData = { id: userDataResult.id, first_name: userDataResult.first_name, last_name: userDataResult.last_name, fbUsername: userDataResult.fbUsername, email: userDataResult.email }
     return userData;
   }
 );
@@ -106,14 +117,14 @@ export const userSlice = createSlice({
       state.loading = false;
       state.addressId = action.payload;
     })
-    .addCase(createUser.rejected, (state, action) => {
-      console.log('createUserFail');
+    .addCase(createUserMutation.rejected, (state, action) => {
+      console.log('createUserMutationFail');
       state.loading = false;
     })
-    .addCase(createUser.pending, (state, action) => {
+    .addCase(createUserMutation.pending, (state, action) => {
       state.loading = true;
     })
-    .addCase(createUser.fulfilled, (state, action) => {
+    .addCase(createUserMutation.fulfilled, (state, action) => {
       state.loading = false;
       state.isLoggedIn = true;
       state.userData = action.payload;
@@ -141,7 +152,7 @@ export const userSlice = createSlice({
       state.users = action.payload;
     })
     .addCase(getUserById.rejected, (state, action) => {
-      console.log('getUserFail');
+      console.log('getUserFail', JSON.stringify(action));
       state.loading = false;
     })
     .addCase(getUserById.pending, (state, action) => {

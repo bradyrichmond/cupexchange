@@ -4,7 +4,7 @@ import { schema } from './schema';
 
 
 
-const { User, Address, Store, Inventory, Lego, Trip } = initSchema(schema);
+const { User, Address, Store, Inventory, Lego, Trip, Order } = initSchema(schema);
 
 export {
   User,
@@ -12,5 +12,6 @@ export {
   Store,
   Inventory,
   Lego,
-  Trip
+  Trip,
+  Order
 };

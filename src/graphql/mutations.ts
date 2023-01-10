@@ -209,12 +209,25 @@ export const createStore = /* GraphQL */ `
         userAddressId
         owner
       }
-      inventoryId
+      inventory {
+        id
+        items {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      storeLastUpdateById
+      storeInventoryId
     }
   }
 `;
@@ -257,12 +270,25 @@ export const updateStore = /* GraphQL */ `
         userAddressId
         owner
       }
-      inventoryId
+      inventory {
+        id
+        items {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      storeLastUpdateById
+      storeInventoryId
     }
   }
 `;
@@ -305,12 +331,25 @@ export const deleteStore = /* GraphQL */ `
         userAddressId
         owner
       }
-      inventoryId
+      inventory {
+        id
+        items {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      storeLastUpdateById
+      storeInventoryId
     }
   }
 `;
@@ -321,7 +360,20 @@ export const createInventory = /* GraphQL */ `
   ) {
     createInventory(input: $input, condition: $condition) {
       id
-      items
+      items {
+        items {
+          id
+          imageKey
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          inventoryItemsId
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -337,7 +389,20 @@ export const updateInventory = /* GraphQL */ `
   ) {
     updateInventory(input: $input, condition: $condition) {
       id
-      items
+      items {
+        items {
+          id
+          imageKey
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          inventoryItemsId
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -353,7 +418,20 @@ export const deleteInventory = /* GraphQL */ `
   ) {
     deleteInventory(input: $input, condition: $condition) {
       id
-      items
+      items {
+        items {
+          id
+          imageKey
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          inventoryItemsId
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -375,6 +453,7 @@ export const createLego = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      inventoryItemsId
     }
   }
 `;
@@ -391,6 +470,7 @@ export const updateLego = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      inventoryItemsId
     }
   }
 `;
@@ -407,6 +487,7 @@ export const deleteLego = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      inventoryItemsId
     }
   }
 `;
@@ -416,17 +497,84 @@ export const createTrip = /* GraphQL */ `
     $condition: ModelTripConditionInput
   ) {
     createTrip(input: $input, condition: $condition) {
-      store
-      shipper
+      store {
+        id
+        name
+        district
+        city
+        lastUpdateBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        inventory {
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        storeLastUpdateById
+        storeInventoryId
+      }
+      shipper {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
       cupPrice
       shippingPrice
       orderExpiration
+      maximumCups
       id
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      tripStoreId
+      tripShipperId
       owner
     }
   }
@@ -437,17 +585,84 @@ export const updateTrip = /* GraphQL */ `
     $condition: ModelTripConditionInput
   ) {
     updateTrip(input: $input, condition: $condition) {
-      store
-      shipper
+      store {
+        id
+        name
+        district
+        city
+        lastUpdateBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        inventory {
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        storeLastUpdateById
+        storeInventoryId
+      }
+      shipper {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
       cupPrice
       shippingPrice
       orderExpiration
+      maximumCups
       id
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      tripStoreId
+      tripShipperId
       owner
     }
   }
@@ -458,17 +673,453 @@ export const deleteTrip = /* GraphQL */ `
     $condition: ModelTripConditionInput
   ) {
     deleteTrip(input: $input, condition: $condition) {
-      store
-      shipper
+      store {
+        id
+        name
+        district
+        city
+        lastUpdateBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        inventory {
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        storeLastUpdateById
+        storeInventoryId
+      }
+      shipper {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
       cupPrice
       shippingPrice
       orderExpiration
+      maximumCups
       id
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      tripStoreId
+      tripShipperId
+      owner
+    }
+  }
+`;
+export const createOrder = /* GraphQL */ `
+  mutation CreateOrder(
+    $input: CreateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    createOrder(input: $input, condition: $condition) {
+      buyer {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      shipper {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      tracking
+      numberOfCups
+      trip {
+        store {
+          id
+          name
+          district
+          city
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          storeLastUpdateById
+          storeInventoryId
+        }
+        shipper {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        cupPrice
+        shippingPrice
+        orderExpiration
+        maximumCups
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        tripStoreId
+        tripShipperId
+        owner
+      }
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      orderBuyerId
+      orderShipperId
+      orderTripId
+      owner
+    }
+  }
+`;
+export const updateOrder = /* GraphQL */ `
+  mutation UpdateOrder(
+    $input: UpdateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    updateOrder(input: $input, condition: $condition) {
+      buyer {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      shipper {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      tracking
+      numberOfCups
+      trip {
+        store {
+          id
+          name
+          district
+          city
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          storeLastUpdateById
+          storeInventoryId
+        }
+        shipper {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        cupPrice
+        shippingPrice
+        orderExpiration
+        maximumCups
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        tripStoreId
+        tripShipperId
+        owner
+      }
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      orderBuyerId
+      orderShipperId
+      orderTripId
+      owner
+    }
+  }
+`;
+export const deleteOrder = /* GraphQL */ `
+  mutation DeleteOrder(
+    $input: DeleteOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    deleteOrder(input: $input, condition: $condition) {
+      buyer {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      shipper {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      tracking
+      numberOfCups
+      trip {
+        store {
+          id
+          name
+          district
+          city
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          storeLastUpdateById
+          storeInventoryId
+        }
+        shipper {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        cupPrice
+        shippingPrice
+        orderExpiration
+        maximumCups
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        tripStoreId
+        tripShipperId
+        owner
+      }
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      orderBuyerId
+      orderShipperId
+      orderTripId
       owner
     }
   }

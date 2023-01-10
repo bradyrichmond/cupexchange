@@ -1,8 +1,10 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '../../hooks';
-import { createStore, getStoreData } from './StoresSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { selectUserData } from '../User/UserSlice';
+import { createStoreMutation, getStoreData } from './StoresSlice';
+import { DISTRICTS } from '../../utils/constants';
 
 interface CreateStoreFormProps {
     close: () => void
@@ -10,11 +12,17 @@ interface CreateStoreFormProps {
 
 const CreateStoreForm = ({ close }: CreateStoreFormProps) => {
     const { register, handleSubmit } = useForm();
+    const [district, setDistrict] = useState('None');
     const dispatch = useAppDispatch();
+    const userData = useAppSelector(selectUserData);
+
+    const handleDistrictChange = (e:SelectChangeEvent<string>) => {
+        setDistrict(e.target.value);
+    }
 
     const handleCreateStore = async (data: any) => {
-        const { storeName, storeCity, storeState } = data;
-        await dispatch(createStore({ name: storeName, city: storeCity, district: storeState }));
+        const { storeName, storeCity } = data;
+        await dispatch(createStoreMutation({ name: storeName, city: storeCity, district, storeLastUpdateById: userData?.id ?? '' }));
         await dispatch(getStoreData());
         close();
     }
@@ -28,7 +36,20 @@ const CreateStoreForm = ({ close }: CreateStoreFormProps) => {
                 <form onSubmit={handleSubmit(handleCreateStore)}>
                     <TextField id="standard-basic" label="Store Name" variant="standard" {...register('storeName', { required: true, minLength: 2 })} />
                     <TextField id="standard-basic" label="Store City" variant="standard" {...register('storeCity', { required: true, minLength: 2 })} />
-                    <TextField id="standard-basic" label="Store State" variant="standard" {...register('storeState', { required: true, minLength: 2 })} />
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                        <InputLabel id="demo-simple-select-standard-label">Store</InputLabel>
+                        <Select
+                        onChange={handleDistrictChange}
+                        label="Store"
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            {DISTRICTS?.map((district: string) => {
+                                return (<MenuItem value={district} key={district}>{district}</MenuItem>)
+                            })}
+                        </Select>
+                    </FormControl>
                     <Button type='submit'>Create Store</Button>
                 </form>
             </Box>

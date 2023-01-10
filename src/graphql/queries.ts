@@ -232,12 +232,25 @@ export const getStore = /* GraphQL */ `
         userAddressId
         owner
       }
-      inventoryId
+      inventory {
+        id
+        items {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      storeLastUpdateById
+      storeInventoryId
     }
   }
 `;
@@ -269,12 +282,21 @@ export const listStores = /* GraphQL */ `
           userAddressId
           owner
         }
-        inventoryId
+        inventory {
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        storeLastUpdateById
+        storeInventoryId
       }
       nextToken
       startedAt
@@ -315,12 +337,21 @@ export const syncStores = /* GraphQL */ `
           userAddressId
           owner
         }
-        inventoryId
+        inventory {
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        storeLastUpdateById
+        storeInventoryId
       }
       nextToken
       startedAt
@@ -331,7 +362,20 @@ export const getInventory = /* GraphQL */ `
   query GetInventory($id: ID!) {
     getInventory(id: $id) {
       id
-      items
+      items {
+        items {
+          id
+          imageKey
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          inventoryItemsId
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -349,7 +393,10 @@ export const listInventories = /* GraphQL */ `
     listInventories(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        items
+        items {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -376,7 +423,10 @@ export const syncInventories = /* GraphQL */ `
     ) {
       items {
         id
-        items
+        items {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -398,6 +448,7 @@ export const getLego = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      inventoryItemsId
     }
   }
 `;
@@ -416,6 +467,7 @@ export const listLegos = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        inventoryItemsId
       }
       nextToken
       startedAt
@@ -443,6 +495,7 @@ export const syncLegos = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        inventoryItemsId
       }
       nextToken
       startedAt
@@ -452,17 +505,84 @@ export const syncLegos = /* GraphQL */ `
 export const getTrip = /* GraphQL */ `
   query GetTrip($id: ID!) {
     getTrip(id: $id) {
-      store
-      shipper
+      store {
+        id
+        name
+        district
+        city
+        lastUpdateBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        inventory {
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        storeLastUpdateById
+        storeInventoryId
+      }
+      shipper {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
       cupPrice
       shippingPrice
       orderExpiration
+      maximumCups
       id
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      tripStoreId
+      tripShipperId
       owner
     }
   }
@@ -475,17 +595,47 @@ export const listTrips = /* GraphQL */ `
   ) {
     listTrips(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        store
-        shipper
+        store {
+          id
+          name
+          district
+          city
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          storeLastUpdateById
+          storeInventoryId
+        }
+        shipper {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
         cupPrice
         shippingPrice
         orderExpiration
+        maximumCups
         id
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        tripStoreId
+        tripShipperId
         owner
       }
       nextToken
@@ -507,17 +657,319 @@ export const syncTrips = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        store
-        shipper
+        store {
+          id
+          name
+          district
+          city
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          storeLastUpdateById
+          storeInventoryId
+        }
+        shipper {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
         cupPrice
         shippingPrice
         orderExpiration
+        maximumCups
         id
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        tripStoreId
+        tripShipperId
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getOrder = /* GraphQL */ `
+  query GetOrder($id: ID!) {
+    getOrder(id: $id) {
+      buyer {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      shipper {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      tracking
+      numberOfCups
+      trip {
+        store {
+          id
+          name
+          district
+          city
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          storeLastUpdateById
+          storeInventoryId
+        }
+        shipper {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        cupPrice
+        shippingPrice
+        orderExpiration
+        maximumCups
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        tripStoreId
+        tripShipperId
+        owner
+      }
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      orderBuyerId
+      orderShipperId
+      orderTripId
+      owner
+    }
+  }
+`;
+export const listOrders = /* GraphQL */ `
+  query ListOrders(
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        buyer {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        shipper {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        tracking
+        numberOfCups
+        trip {
+          cupPrice
+          shippingPrice
+          orderExpiration
+          maximumCups
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          tripStoreId
+          tripShipperId
+          owner
+        }
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        orderBuyerId
+        orderShipperId
+        orderTripId
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncOrders = /* GraphQL */ `
+  query SyncOrders(
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncOrders(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        buyer {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        shipper {
+          id
+          fbUsername
+          first_name
+          last_name
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        tracking
+        numberOfCups
+        trip {
+          cupPrice
+          shippingPrice
+          orderExpiration
+          maximumCups
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          tripStoreId
+          tripShipperId
+          owner
+        }
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        orderBuyerId
+        orderShipperId
+        orderTripId
         owner
       }
       nextToken

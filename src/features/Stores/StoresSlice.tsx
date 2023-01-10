@@ -1,35 +1,42 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { DataStore } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import { LazyStore, Store } from '../../models';
-import { CreateStoreInput } from '../../API';
+import { CreateStoreInput, DeleteStoreInput } from '../../API';
 import { RootState } from '../../store';
+import { getStore, listStores } from '../../graphql/queries';
+import { createStore, deleteStore } from '../../graphql/mutations';
 
 export const getStoreData = createAsyncThunk(
     'stores/getStores',
     async () => {
-      return DataStore.query(Store);
+      const stores = await (API.graphql(graphqlOperation(listStores)) as Promise<any>);
+      return stores.data.listStores.items;
     }
 );
 
-export const createStore = createAsyncThunk(
+export const createStoreMutation = createAsyncThunk(
   'stores/createStore',
   async (storeData: CreateStoreInput) => {
-    const { name, city, district } = storeData;
-    DataStore.save(new Store({ name, city, district }));
+    return await (API.graphql(graphqlOperation(createStore, { input: storeData })) as Promise<any>);
   }
 );
 
-export const deleteStore = createAsyncThunk(
+export const deleteStoreMutation = createAsyncThunk(
   'stores/deleteStore',
-  async (id: string) => {
-    DataStore.delete(Store, id);
+  async (deleteData: DeleteStoreInput) => {
+    try {
+      return await (API.graphql(graphqlOperation(deleteStore, { input: deleteData })) as Promise<any>);
+    } catch (e) {
+      console.error(JSON.stringify(e));
+    }
   }
 )
 
 export const getSingleStoreData = createAsyncThunk(
   'stores/getSingleStoreData',
   async (id: string) => {
-    return DataStore.query(Store, id);
+    const currentStore = await (API.graphql(graphqlOperation(getStore, { id })) as Promise<any>);
+    return currentStore.data.getStore;
   }
 )
 
@@ -63,10 +70,13 @@ export const storesSlice = createSlice({
       .addCase(getStoreData.pending, (state, action) => {
         state.loading = true
       })
-      .addCase(createStore.rejected, (state, action) => {
+      .addCase(createStoreMutation.pending, (state, action) => {
+        state.loading = true
+      })
+      .addCase(createStoreMutation.rejected, (state, action) => {
         state.loading = false;
       })
-      .addCase(createStore.fulfilled, (state, action) => {
+      .addCase(createStoreMutation.fulfilled, (state, action) => {
         state.loading = false;
       })
       .addCase(getSingleStoreData.rejected, (state, action) => {
@@ -80,14 +90,14 @@ export const storesSlice = createSlice({
       .addCase(getSingleStoreData.pending, (state, action) => {
         state.loading = true;
       })
-      .addCase(deleteStore.rejected, (state, action) => {
-        console.log('deleteStore failed');
+      .addCase(deleteStoreMutation.rejected, (state, action) => {
+        console.log('deleteStoreMutation failed');
         state.loading = false;
       })
-      .addCase(deleteStore.fulfilled, (state, action) => {
+      .addCase(deleteStoreMutation.fulfilled, (state, action) => {
         state.loading = false;
       })
-      .addCase(deleteStore.pending, (state, action) => {
+      .addCase(deleteStoreMutation.pending, (state, action) => {
         state.loading = true;
       })
   },

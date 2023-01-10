@@ -12,8 +12,14 @@ type User @model @auth(rules: [
   last_name: String!
   address: Address @hasOne
   email: String!
-  banned: Boolean @auth(rules:[{allow: groups, groups: ["moderators"], operations: [update]}])
-  deleted: Boolean @auth(rules:[{allow: groups, groups: ["admins"], operations: [update]}])
+  banned: Boolean @auth(rules:[
+      {allow: groups, groups: ["moderators"], operations: [update]},
+      {allow: private, operations:[read]}
+    ])
+  deleted: Boolean @auth(rules:[
+    {allow: groups, groups: ["admins"], operations: [update]},
+    {allow: private, operations:[read]}
+  ])
 }
 
 type Address @model @auth(rules: [{ allow: private }]) {
@@ -33,13 +39,13 @@ type Store @model @auth(rules: [
   name: String!
   district: String!
   city: String!
-  lastUpdateBy: User!
-  inventoryId: String 
+  lastUpdateBy: User! @hasOne
+  inventory: Inventory @hasOne
 }
 
 type Inventory @model @auth(rules: [{ allow: private }]) {
   id: ID!
-  items: [String!]!
+  items: [Lego] @hasMany
 }
 
 type Lego @model @auth(rules: [{ allow: private }]) {
@@ -53,9 +59,23 @@ type Trip @model @auth(rules: [
     { allow: private, operations: [create, read] }
   ]) 
 {
-  store: String!
-  shipper: String!
+  store: Store! @hasOne
+  shipper: User! @hasOne
   cupPrice: String!
   shippingPrice: String!
-  orderExpiration: Int!
+  orderExpiration: Float!
+  maximumCups: Int
+}
+
+type Order @model @auth(rules: [
+  { allow: groups, groups: ["moderators", "admins"], operations: [update, delete] },
+  { allow: owner, operations: [update, delete] },
+  { allow: private, operations: [create, read] }
+]) 
+{
+  buyer: User! @hasOne
+  shipper: User! @hasOne
+  tracking: [String]!
+  numberOfCups: Int!
+  trip: Trip! @hasOne
 }

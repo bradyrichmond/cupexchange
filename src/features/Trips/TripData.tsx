@@ -1,53 +1,76 @@
+import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { formatRelative, parseISO } from 'date-fns';
-import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getStoreInventory, selectCurrentStoreInventory } from '../Stores/InventorySlice';
 import { InventoryItem } from '../Stores/StoreData';
-import { getSingleStoreData, selectCurrentStoreData } from '../Stores/StoresSlice';
-import { getUserById, selectUserById } from '../User/UserSlice';
 import { getSingleTrip, selectCurrentTrip } from './TripsSlice';
+import { addCartItem, emptyCart } from '../Orders/CartSlice';
+import { Inventory, Lego, Store, User } from '../../models';
+
+let initialInventory: Inventory | undefined;
+let initialInventoryItems: Lego[] | undefined;
+let initialStore: Store | undefined;
+let initialUser: User | undefined;
 
 const TripData = () => {
     const { id } = useParams();
+    const [inventory, setInventory] = useState(initialInventory);
+    const [inventoryItems, setInventoryItems] = useState(initialInventoryItems);
+    const [currentStore, setCurrentStore] = useState(initialStore);
+    const [shipper, setShipper] = useState(initialUser);
     const dispatch = useAppDispatch();
     const currentTrip = useAppSelector(selectCurrentTrip);
-    const storeData = useAppSelector(selectCurrentStoreData);
-    const storeName = storeData?.name;
-    const shipper = useAppSelector(selectUserById);
     const shipperName = `${shipper?.first_name} ${shipper?.last_name}`;
-    const title = `Trip to ${storeName} by ${shipperName}`;
-    const inventory = useAppSelector(selectCurrentStoreInventory);
-    const relativeUpdatedAt = storeData?.updatedAt ? formatRelative(parseISO(storeData?.updatedAt), Date.now()) : 'loading...';
+    const title = `Trip to ${currentStore?.name} by ${shipperName}`;
+    const relativeUpdatedAt = inventory ? formatRelative(parseISO(inventory.createdAt ?? ''), Date.now()) : 'loading...';
+
+    if (currentTrip) {
+        const fetchInventory = async () => {
+            const fetchedStore = await currentTrip.store;
+            setCurrentStore(fetchedStore);
+            const fetchedInventory = await fetchedStore.inventory;
+            if (fetchedInventory) {
+                setInventory(fetchedInventory);
+                const fetchedInventoryItems = await fetchedInventory.items.toArray();
+                setInventoryItems(fetchedInventoryItems);
+            }
+            const fetchedShipper = await currentTrip.shipper;
+            setShipper(fetchedShipper);
+        }
+
+        fetchInventory();
+    }
+    
 
     useEffect(() => {
+        dispatch(emptyCart);
         dispatch(getSingleTrip(id ?? ''));
     }, [])
 
-    useEffect(() => {
-        const getTripData = async () => {
-            await dispatch(getSingleStoreData(currentTrip?.store ?? ''));
-            await dispatch(getUserById(currentTrip?.shipper ?? ''));
-            await dispatch(getStoreInventory(storeData?.inventoryId ?? ''));
-        }
-
-        getTripData();
-    }, [currentTrip])
+    const addToOrder = (id: string) => {
+        dispatch(addCartItem(id));
+    }
 
     return (
         <Box padding='2rem' height='100%' width='100%'>
             <Typography fontSize='3rem'>{title}</Typography>
-            <Typography>Inventory current as of {relativeUpdatedAt}</Typography>
-            <Box display='flex' flexDirection='row'>
-                {inventory && inventory.map((i) => {
-                    return (
-                        <InventoryItem imageKey={i?.imageKey} />
-                    )
-                })}
-            </Box>
+            {inventoryItems && <>
+                <Typography>Inventory current as of {relativeUpdatedAt}</Typography>
+                <Box display='flex' flexDirection='row'>
+                    {inventoryItems && inventoryItems.map((i) => {
+                        return (
+                            <InventoryItem imageKey={i?.imageKey} addToOrder={addToOrder} itemId={i?.id ?? ''}/>
+                        )
+                    })}
+                </Box> 
+            </>}
+            {!inventoryItems && 
+                <Typography>No inventory data</Typography>
+            }
         </Box>
     )
 }
 
 export default TripData;
+

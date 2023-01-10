@@ -1,6 +1,6 @@
 import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncItem } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@aws-amplify/datastore";
 
 
 
@@ -93,9 +93,12 @@ type EagerStore = {
   readonly name: string;
   readonly district: string;
   readonly city: string;
-  readonly inventoryId?: string | null;
+  readonly lastUpdateBy: User;
+  readonly inventory?: Inventory | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly storeLastUpdateById: string;
+  readonly storeInventoryId?: string | null;
 }
 
 type LazyStore = {
@@ -107,9 +110,12 @@ type LazyStore = {
   readonly name: string;
   readonly district: string;
   readonly city: string;
-  readonly inventoryId?: string | null;
+  readonly lastUpdateBy: AsyncItem<User>;
+  readonly inventory: AsyncItem<Inventory | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly storeLastUpdateById: string;
+  readonly storeInventoryId?: string | null;
 }
 
 export declare type Store = LazyLoading extends LazyLoadingDisabled ? EagerStore : LazyStore
@@ -124,7 +130,7 @@ type EagerInventory = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly items: string[];
+  readonly items?: (Lego | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -135,7 +141,7 @@ type LazyInventory = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly items: string[];
+  readonly items: AsyncCollection<Lego>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -155,6 +161,7 @@ type EagerLego = {
   readonly imageKey: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly inventoryItemsId?: string | null;
 }
 
 type LazyLego = {
@@ -166,6 +173,7 @@ type LazyLego = {
   readonly imageKey: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly inventoryItemsId?: string | null;
 }
 
 export declare type Lego = LazyLoading extends LazyLoadingDisabled ? EagerLego : LazyLego
@@ -180,13 +188,16 @@ type EagerTrip = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly store: string;
-  readonly shipper: string;
+  readonly store: Store;
+  readonly shipper: User;
   readonly cupPrice: string;
   readonly shippingPrice: string;
   readonly orderExpiration: number;
+  readonly maximumCups?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly tripStoreId: string;
+  readonly tripShipperId: string;
 }
 
 type LazyTrip = {
@@ -195,17 +206,62 @@ type LazyTrip = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly store: string;
-  readonly shipper: string;
+  readonly store: AsyncItem<Store>;
+  readonly shipper: AsyncItem<User>;
   readonly cupPrice: string;
   readonly shippingPrice: string;
   readonly orderExpiration: number;
+  readonly maximumCups?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly tripStoreId: string;
+  readonly tripShipperId: string;
 }
 
 export declare type Trip = LazyLoading extends LazyLoadingDisabled ? EagerTrip : LazyTrip
 
 export declare const Trip: (new (init: ModelInit<Trip>) => Trip) & {
   copyOf(source: Trip, mutator: (draft: MutableModel<Trip>) => MutableModel<Trip> | void): Trip;
+}
+
+type EagerOrder = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Order, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly buyer: User;
+  readonly shipper: User;
+  readonly tracking: (string | null)[];
+  readonly numberOfCups: number;
+  readonly trip: Trip;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly orderBuyerId: string;
+  readonly orderShipperId: string;
+  readonly orderTripId: string;
+}
+
+type LazyOrder = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Order, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly buyer: AsyncItem<User>;
+  readonly shipper: AsyncItem<User>;
+  readonly tracking: (string | null)[];
+  readonly numberOfCups: number;
+  readonly trip: AsyncItem<Trip>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly orderBuyerId: string;
+  readonly orderShipperId: string;
+  readonly orderTripId: string;
+}
+
+export declare type Order = LazyLoading extends LazyLoadingDisabled ? EagerOrder : LazyOrder
+
+export declare const Order: (new (init: ModelInit<Order>) => Order) & {
+  copyOf(source: Order, mutator: (draft: MutableModel<Order>) => MutableModel<Order> | void): Order;
 }

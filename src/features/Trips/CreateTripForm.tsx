@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectUserData } from '../User/UserSlice';
 import { selectStoreData, getStoreData } from '../Stores/StoresSlice';
-import { createTrip, getTrips } from './TripsSlice';
+import { createTripMutation, getTrips } from './TripsSlice';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
 interface CreateTripFormProps {
@@ -33,7 +33,7 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
     const handleFormSubmit = async (data: any) => {
         const { cupPrice, shippingPrice } = data;
         const parsedOrderExpiration = Date.parse(orderExpiration);
-        await dispatch(createTrip({ shipper: userData?.id ?? '', cupPrice, shippingPrice, store, orderExpiration: parsedOrderExpiration }));
+        await dispatch(createTripMutation({ tripShipperId: userData?.id ?? '', cupPrice, shippingPrice, tripStoreId: store, orderExpiration: parsedOrderExpiration }));
         await dispatch(getTrips(0));
         close();
     }
@@ -57,7 +57,7 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
                                     <em>None</em>
                                 </MenuItem>
                                 {storeData?.map((store) => {
-                                    return (<MenuItem value={store.id}>{store.name}</MenuItem>)
+                                    return (<MenuItem value={store.id} key={store.id}>{store.name}</MenuItem>)
                                 })}
                             </Select>
                         </FormControl>
@@ -66,6 +66,7 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
                                 label="Taking orders until"
                                 renderInput={(params) => <TextField {...params} />}
                                 value={orderExpiration}
+                                minutesStep={5}
                                 onChange={(newValue) => {
                                     setOrderExpiration(newValue ?? '');
                                 }}

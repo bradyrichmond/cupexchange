@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Box, Button, TextField, Theme, Typography } from '@mui/material';
 import { makeStyles, createStyles } from '@mui/styles';
 import { useLocation, useNavigate } from 'react-router';
-import { setFbUsername, setUserGroups, createUserAddress, selectAddressId, createUser } from '../User/UserSlice';
+import { setFbUsername, setUserGroups, createUserAddress, selectAddressId, createUserMutation } from '../User/UserSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -28,7 +28,7 @@ const SignUp = () => {
         setIsLoading(true);
         const { firstName, lastName, address1, address2, city, usState, zipCode } = data;
         dispatch(createUserAddress({ address: address1, address2, city, district: usState, postal_code: zipCode }));
-        dispatch(createUser({ first_name: firstName, last_name: lastName, userAddressId: addressId, email: locData.state.email, fbUsername: locData.state.fbUsername }))
+        dispatch(createUserMutation({ first_name: firstName, last_name: lastName, userAddressId: addressId, email: locData.state.email, fbUsername: locData.state.fbUsername }))
         dispatch(setFbUsername(locData.state.fbUsername));
         dispatch(setUserGroups(locData.state.groups));
         navigate('/');

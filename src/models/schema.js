@@ -245,12 +245,41 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "inventoryId": {
-                    "name": "inventoryId",
+                "lastUpdateBy": {
+                    "name": "lastUpdateBy",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "storeLastUpdateById"
+                        ]
+                    }
+                },
+                "inventory": {
+                    "name": "inventory",
+                    "isArray": false,
+                    "type": {
+                        "model": "Inventory"
+                    },
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "storeInventoryId"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -267,6 +296,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "storeLastUpdateById": {
+                    "name": "storeLastUpdateById",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "storeInventoryId": {
+                    "name": "storeInventoryId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -318,10 +361,18 @@ export const schema = {
                 "items": {
                     "name": "items",
                     "isArray": true,
-                    "type": "String",
-                    "isRequired": true,
+                    "type": {
+                        "model": "Lego"
+                    },
+                    "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": false
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "inventoryItemsId"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -397,6 +448,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "inventoryItemsId": {
+                    "name": "inventoryItemsId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -405,6 +463,15 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "gsi-Inventory.items",
+                        "fields": [
+                            "inventoryItemsId"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -437,16 +504,38 @@ export const schema = {
                 "store": {
                     "name": "store",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "model": "Store"
+                    },
                     "isRequired": true,
-                    "attributes": []
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "tripStoreId"
+                        ]
+                    }
                 },
                 "shipper": {
                     "name": "shipper",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "model": "User"
+                    },
                     "isRequired": true,
-                    "attributes": []
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "tripShipperId"
+                        ]
+                    }
                 },
                 "cupPrice": {
                     "name": "cupPrice",
@@ -465,8 +554,15 @@ export const schema = {
                 "orderExpiration": {
                     "name": "orderExpiration",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "Float",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "maximumCups": {
+                    "name": "maximumCups",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -484,10 +580,187 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "tripStoreId": {
+                    "name": "tripStoreId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tripShipperId": {
+                    "name": "tripShipperId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 }
             },
             "syncable": true,
             "pluralName": "Trips",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groups": [
+                                    "moderators",
+                                    "admins"
+                                ],
+                                "operations": [
+                                    "update",
+                                    "delete"
+                                ]
+                            },
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "operations": [
+                                    "update",
+                                    "delete"
+                                ],
+                                "identityClaim": "cognito:username"
+                            },
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Order": {
+            "name": "Order",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "buyer": {
+                    "name": "buyer",
+                    "isArray": false,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "orderBuyerId"
+                        ]
+                    }
+                },
+                "shipper": {
+                    "name": "shipper",
+                    "isArray": false,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "orderShipperId"
+                        ]
+                    }
+                },
+                "tracking": {
+                    "name": "tracking",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": false
+                },
+                "numberOfCups": {
+                    "name": "numberOfCups",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "trip": {
+                    "name": "trip",
+                    "isArray": false,
+                    "type": {
+                        "model": "Trip"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "orderTripId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "orderBuyerId": {
+                    "name": "orderBuyerId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "orderShipperId": {
+                    "name": "orderShipperId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "orderTripId": {
+                    "name": "orderTripId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            },
+            "syncable": true,
+            "pluralName": "Orders",
             "attributes": [
                 {
                     "type": "model",
@@ -536,5 +809,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.2",
-    "version": "ee96a9515260a90ee04b7777a6bc05e0"
+    "version": "8a9858a635a4260d7ddadb72a16008f6"
 };

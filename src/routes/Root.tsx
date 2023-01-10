@@ -1,14 +1,14 @@
-import { Amplify, DataStore } from 'aws-amplify';
+import { Amplify, API, graphqlOperation } from 'aws-amplify';
 
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
 import awsExports from '../aws-exports';
 import { useLocation, useNavigate } from 'react-router';
-import { Box } from '@mui/material';
-import { User } from '../models';
+import { Box } from '@mui/material'
 import { getUserData, setFbUsername, setIsLoggedIn, setUserGroups } from '../features/User/UserSlice';
 import { useAppDispatch } from '../hooks';
+import { listUsers } from '../graphql/queries';
 
 Amplify.configure(awsExports);
 
@@ -28,18 +28,19 @@ export default function Login() {
     const groups = user.signInUserSession.accessToken.payload['cognito:groups'];
     
     if (fbUsername) {
-      const users = await DataStore.query(User, (u) => u.fbUsername.eq(fbUsername));
-      if (users.length < 1) {
+      const usersResult = await(API.graphql(graphqlOperation(listUsers, { filter: { fbUsername: { eq: fbUsername } } })) as Promise<any>);
+      const localUser = usersResult.data.listUsers.items[0] ?? false;
+
+      if (!localUser) {
         navigate('/signup', { state: { fbUsername, email, groups }});
+        return;
       }
 
-      if (users.length > 0) {
-        await dispatch(setFbUsername(user.username));
-        await dispatch(setIsLoggedIn(true));
-        await dispatch(setUserGroups(user.signInUserSession.accessToken.payload['cognito:groups']));
-        await dispatch(getUserData(fbUsername));
-        navigate(location.state.goto);
-      }
+      await dispatch(setFbUsername(user.username));
+      await dispatch(setIsLoggedIn(true));
+      await dispatch(setUserGroups(user.signInUserSession.accessToken.payload['cognito:groups']));
+      await dispatch(getUserData(fbUsername));
+      navigate(location.state.goto);
     }
   }
 

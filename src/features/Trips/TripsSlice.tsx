@@ -1,28 +1,40 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { DataStore, Predicates } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import { Trip } from '../../models';
 import { CreateTripInput } from '../../API';
 import { RootState } from '../../store';
+import { createTrip } from '../../graphql/mutations';
+import { getStore, getTrip, getUser, listTrips } from '../../graphql/queries';
 
 export const getTrips = createAsyncThunk(
     'trips/getTrips',
     async (page: number) => {
-      return await DataStore.query(Trip, (t) => t.orderExpiration.gt(Date.now()), { page, limit: 50});
+      const trips = await (API.graphql(graphqlOperation(listTrips, {
+        filter: {
+            orderExpiration: {
+                gt: Date.now()
+            }
+          }
+        })
+      ) as Promise<any>);
+      
+      return trips.data.listTrips.items;
     }
 );
 
 export const getSingleTrip = createAsyncThunk(
   'trips/getSingleTrip',
   async (id: string) => {
-    return await DataStore.query(Trip, id);
+    const trip = await (API.graphql(graphqlOperation(getTrip, { id })) as Promise<any>);
+    return trip.data.getTrip;
   }
 )
 
-export const createTrip = createAsyncThunk(
+export const createTripMutation = createAsyncThunk(
   'trips/createTrip',
   async (input: CreateTripInput) => {
-    const { store, shipper, cupPrice, shippingPrice, orderExpiration } = input;
-    await DataStore.save(new Trip({ store, shipper, cupPrice, shippingPrice, orderExpiration }));
+    const { tripStoreId, tripShipperId, cupPrice, shippingPrice, orderExpiration } = input;
+    await (API.graphql(graphqlOperation(createTrip, { input: { tripStoreId, tripShipperId, cupPrice, shippingPrice, orderExpiration } })) as Promise<any>);
   }
 )
 
@@ -56,14 +68,14 @@ export const storesSlice = createSlice({
       .addCase(getTrips.pending, (state, action) => {
         state.loading = true;
       })
-      .addCase(createTrip.rejected, (state, action) => {
+      .addCase(createTripMutation.rejected, (state, action) => {
         console.log('createTrip failed', JSON.stringify(action));
         state.loading = false;
       })
-      .addCase(createTrip.fulfilled, (state, action) => {
+      .addCase(createTripMutation.fulfilled, (state, action) => {
         state.loading = false;
       })
-      .addCase(createTrip.pending, (state, action) => {
+      .addCase(createTripMutation.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(getSingleTrip.rejected, (state, action) => {

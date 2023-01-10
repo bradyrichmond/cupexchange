@@ -1,45 +1,21 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { DataStore } from 'aws-amplify';
-import { Inventory, LazyInventory, LazyStore, Lego, Store } from '../../models';
-import { RootState } from '../../store';
+import { createInventory, updateStore } from '../../graphql/mutations';
+import { Lego } from '../../models';
+import { API, graphqlOperation } from 'aws-amplify';
 
 interface StoreInventoryInput {
     storeId: string
     items: string[]
 }
 
-export const getStoreInventory = createAsyncThunk(
-  'inventory/getStoreInventory',
-  async (id: string) => {
-    const inventory = await DataStore.query(Inventory, id);
-    const itemIds = inventory?.items ?? [];
-
-    let itemArray: (Lego | undefined)[] = []
-
-    for (let i = 0; i < itemIds?.length; i++) {
-      const currentItem = await DataStore.query(Lego, itemIds[i]);
-      itemArray.push(currentItem);
-    }
-
-    return itemArray;
-  }
-)
-
 export const createStoreInventory = createAsyncThunk(
     'inventory/createStoreInventory',
     async (input: StoreInventoryInput) => {
         const { items, storeId } = input;
 
-        const inventory = await DataStore.save(new Inventory({ items }))
-
-        const original = await DataStore.query(Store, storeId);
-        if (original) {
-            await DataStore.save(
-                Store.copyOf(original, updated => {
-                    updated.inventoryId = inventory.id;
-                })
-            );
-        }
+        const inventoryResponse = API.graphql(graphqlOperation(createInventory, { items }));
+        
+        API.graphql(graphqlOperation(updateStore, { inventory: inventoryResponse, id: storeId }))
     }
 )
 
@@ -70,21 +46,7 @@ export const storesSlice = createSlice({
       .addCase(createStoreInventory.pending, (state, action) => {
         state.loading = true;
       })
-      .addCase(getStoreInventory.rejected, (state, action) => {
-        console.log('getStoreInventory failed');
-        state.loading = false;
-      })
-      .addCase(getStoreInventory.fulfilled, (state, action) => {
-        state.loading = false;
-        state.currentInventory = action.payload;
-
-      })
-      .addCase(getStoreInventory.pending, (state, action) => {
-        state.loading = true;
-      })
   },
 });
-
-export const selectCurrentStoreInventory = (state: RootState) => state.inventory.currentInventory;
 
 export default storesSlice.reducer;

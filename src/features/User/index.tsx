@@ -10,8 +10,8 @@ const Users = () => {
     const users = useAppSelector(selectUsers)
     
     useEffect(() => {
-        dispatch(getUsers(currentPage));
-    }, [currentPage])
+        dispatch(getUsers());
+    }, [])
 
     const rows: GridRowsProp = users ?? [];
 

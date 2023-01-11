@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { API, graphqlOperation } from 'aws-amplify';
-import { LazyStore, Store } from '../../models';
+import { LazyStore, Store, Trip } from '../../models';
 import { CreateStoreInput, DeleteStoreInput } from '../../API';
 import { RootState } from '../../store';
-import { getStore, listStores } from '../../graphql/queries';
-import { createStore, deleteStore } from '../../graphql/mutations';
+import { getStore, listStores, listTrips } from '../../graphql/queries';
+import { createStore, deleteStore, deleteTrip } from '../../graphql/mutations';
 
 export const getStoreData = createAsyncThunk(
     'stores/getStores',
@@ -24,11 +24,7 @@ export const createStoreMutation = createAsyncThunk(
 export const deleteStoreMutation = createAsyncThunk(
   'stores/deleteStore',
   async (deleteData: DeleteStoreInput) => {
-    try {
-      return await (API.graphql(graphqlOperation(deleteStore, { input: deleteData })) as Promise<any>);
-    } catch (e) {
-      console.error(JSON.stringify(e));
-    }
+    return await (API.graphql(graphqlOperation(deleteStore, { input: deleteData })) as Promise<any>);
   }
 )
 

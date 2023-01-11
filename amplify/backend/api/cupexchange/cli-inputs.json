@@ -7,55 +7,7 @@
       "mode": "AMAZON_COGNITO_USER_POOLS",
       "cognitoUserPoolId": "authcupexchangee99ad8f8"
     },
-    "conflictResolution": {
-      "defaultResolutionStrategy": {
-        "type": "OPTIMISTIC_CONCURRENCY"
-      },
-      "perModelResolutionStrategy": [
-        {
-          "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
-          },
-          "entityName": "User"
-        },
-        {
-          "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
-          },
-          "entityName": "Address"
-        },
-        {
-          "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
-          },
-          "entityName": "Store"
-        },
-        {
-          "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
-          },
-          "entityName": "Inventory"
-        },
-        {
-          "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
-          },
-          "entityName": "Lego"
-        },
-        {
-          "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
-          },
-          "entityName": "Trip"
-        },
-        {
-          "resolutionStrategy": {
-            "type": "OPTIMISTIC_CONCURRENCY"
-          },
-          "entityName": "Order"
-        }
-      ]
-    },
+    "conflictResolution": {},
     "additionalAuthTypes": []
   }
 }

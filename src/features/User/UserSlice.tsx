@@ -152,7 +152,7 @@ export const userSlice = createSlice({
       state.users = action.payload;
     })
     .addCase(getUserById.rejected, (state, action) => {
-      console.log('getUserFail', JSON.stringify(action));
+      console.log('getUserFail');
       state.loading = false;
     })
     .addCase(getUserById.pending, (state, action) => {

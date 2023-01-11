@@ -69,7 +69,7 @@ export const storesSlice = createSlice({
         state.loading = true;
       })
       .addCase(createTripMutation.rejected, (state, action) => {
-        console.log('createTrip failed', JSON.stringify(action));
+        console.log('createTrip failed');
         state.loading = false;
       })
       .addCase(createTripMutation.fulfilled, (state, action) => {
@@ -79,7 +79,7 @@ export const storesSlice = createSlice({
         state.loading = true;
       })
       .addCase(getSingleTrip.rejected, (state, action) => {
-        console.log('getSingleTrip failed', JSON.stringify(action));
+        console.log('getSingleTrip failed');
         state.loading = false;
       })
       .addCase(getSingleTrip.fulfilled, (state, action) => {

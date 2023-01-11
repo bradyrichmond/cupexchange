@@ -18,18 +18,12 @@ export const onCreateUser = /* GraphQL */ `
         postal_code
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       email
       banned
       deleted
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       userAddressId
       owner
     }
@@ -51,18 +45,12 @@ export const onUpdateUser = /* GraphQL */ `
         postal_code
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       email
       banned
       deleted
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       userAddressId
       owner
     }
@@ -84,18 +72,12 @@ export const onDeleteUser = /* GraphQL */ `
         postal_code
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       email
       banned
       deleted
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       userAddressId
       owner
     }
@@ -112,9 +94,6 @@ export const onCreateAddress = /* GraphQL */ `
       postal_code
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -129,9 +108,6 @@ export const onUpdateAddress = /* GraphQL */ `
       postal_code
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -146,9 +122,6 @@ export const onDeleteAddress = /* GraphQL */ `
       postal_code
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -173,18 +146,12 @@ export const onCreateStore = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -192,19 +159,12 @@ export const onCreateStore = /* GraphQL */ `
         id
         items {
           nextToken
-          startedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       storeLastUpdateById
       storeInventoryId
     }
@@ -231,18 +191,12 @@ export const onUpdateStore = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -250,19 +204,12 @@ export const onUpdateStore = /* GraphQL */ `
         id
         items {
           nextToken
-          startedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       storeLastUpdateById
       storeInventoryId
     }
@@ -289,18 +236,12 @@ export const onDeleteStore = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -308,19 +249,12 @@ export const onDeleteStore = /* GraphQL */ `
         id
         items {
           nextToken
-          startedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       storeLastUpdateById
       storeInventoryId
     }
@@ -338,19 +272,12 @@ export const onCreateInventory = /* GraphQL */ `
           imageKey
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           inventoryItemsId
         }
         nextToken
-        startedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -366,19 +293,12 @@ export const onUpdateInventory = /* GraphQL */ `
           imageKey
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           inventoryItemsId
         }
         nextToken
-        startedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -394,19 +314,12 @@ export const onDeleteInventory = /* GraphQL */ `
           imageKey
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           inventoryItemsId
         }
         nextToken
-        startedAt
       }
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -417,9 +330,6 @@ export const onCreateLego = /* GraphQL */ `
       imageKey
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       inventoryItemsId
     }
   }
@@ -431,9 +341,6 @@ export const onUpdateLego = /* GraphQL */ `
       imageKey
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       inventoryItemsId
     }
   }
@@ -445,9 +352,6 @@ export const onDeleteLego = /* GraphQL */ `
       imageKey
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       inventoryItemsId
     }
   }
@@ -470,9 +374,6 @@ export const onCreateTrip = /* GraphQL */ `
           deleted
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           userAddressId
           owner
         }
@@ -480,15 +381,9 @@ export const onCreateTrip = /* GraphQL */ `
           id
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         storeLastUpdateById
         storeInventoryId
       }
@@ -506,18 +401,12 @@ export const onCreateTrip = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -528,9 +417,6 @@ export const onCreateTrip = /* GraphQL */ `
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       tripStoreId
       tripShipperId
       owner
@@ -555,9 +441,6 @@ export const onUpdateTrip = /* GraphQL */ `
           deleted
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           userAddressId
           owner
         }
@@ -565,15 +448,9 @@ export const onUpdateTrip = /* GraphQL */ `
           id
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         storeLastUpdateById
         storeInventoryId
       }
@@ -591,18 +468,12 @@ export const onUpdateTrip = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -613,9 +484,6 @@ export const onUpdateTrip = /* GraphQL */ `
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       tripStoreId
       tripShipperId
       owner
@@ -640,9 +508,6 @@ export const onDeleteTrip = /* GraphQL */ `
           deleted
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           userAddressId
           owner
         }
@@ -650,15 +515,9 @@ export const onDeleteTrip = /* GraphQL */ `
           id
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         storeLastUpdateById
         storeInventoryId
       }
@@ -676,18 +535,12 @@ export const onDeleteTrip = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -698,9 +551,6 @@ export const onDeleteTrip = /* GraphQL */ `
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       tripStoreId
       tripShipperId
       owner
@@ -724,18 +574,12 @@ export const onCreateOrder = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -753,18 +597,12 @@ export const onCreateOrder = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -778,9 +616,6 @@ export const onCreateOrder = /* GraphQL */ `
           city
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           storeLastUpdateById
           storeInventoryId
         }
@@ -794,9 +629,6 @@ export const onCreateOrder = /* GraphQL */ `
           deleted
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           userAddressId
           owner
         }
@@ -807,9 +639,6 @@ export const onCreateOrder = /* GraphQL */ `
         id
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         tripStoreId
         tripShipperId
         owner
@@ -817,9 +646,6 @@ export const onCreateOrder = /* GraphQL */ `
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       orderBuyerId
       orderShipperId
       orderTripId
@@ -844,18 +670,12 @@ export const onUpdateOrder = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -873,18 +693,12 @@ export const onUpdateOrder = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -898,9 +712,6 @@ export const onUpdateOrder = /* GraphQL */ `
           city
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           storeLastUpdateById
           storeInventoryId
         }
@@ -914,9 +725,6 @@ export const onUpdateOrder = /* GraphQL */ `
           deleted
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           userAddressId
           owner
         }
@@ -927,9 +735,6 @@ export const onUpdateOrder = /* GraphQL */ `
         id
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         tripStoreId
         tripShipperId
         owner
@@ -937,9 +742,6 @@ export const onUpdateOrder = /* GraphQL */ `
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       orderBuyerId
       orderShipperId
       orderTripId
@@ -964,18 +766,12 @@ export const onDeleteOrder = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -993,18 +789,12 @@ export const onDeleteOrder = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         userAddressId
         owner
       }
@@ -1018,9 +808,6 @@ export const onDeleteOrder = /* GraphQL */ `
           city
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           storeLastUpdateById
           storeInventoryId
         }
@@ -1034,9 +821,6 @@ export const onDeleteOrder = /* GraphQL */ `
           deleted
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           userAddressId
           owner
         }
@@ -1047,9 +831,6 @@ export const onDeleteOrder = /* GraphQL */ `
         id
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         tripStoreId
         tripShipperId
         owner
@@ -1057,9 +838,6 @@ export const onDeleteOrder = /* GraphQL */ `
       id
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       orderBuyerId
       orderShipperId
       orderTripId

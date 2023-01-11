@@ -43,7 +43,7 @@ const StoreData = () => {
 
     const confirmDeleteStore = () => {
         if (id) {
-            dispatch(deleteStoreMutation({ id, _version: 1 }))
+            dispatch(deleteStoreMutation({ id }))
         }
         navigate('/stores');
     }

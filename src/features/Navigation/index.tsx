@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { selectUserCognitoGroups } from '../User/UserSlice';
 import { ShoppingCartOutlined } from '@mui/icons-material';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import { selectCartItems } from '../Orders/CartSlice';
 
 const Navigation = () => {
@@ -45,6 +46,10 @@ const Navigation = () => {
                     </Badge>
                     {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Cart</Typography></Box>}
                 </Link>
+            </Box>
+            <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
+                <AutoFixHighIcon htmlColor='rgba(255,255,255,255)' />
+                {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Your Wishlist</Typography></Box>}
             </Box>
             <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
                 <ViewListIcon htmlColor='rgba(255,255,255,255)' />

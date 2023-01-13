@@ -364,9 +364,9 @@ export const schema = {
                     "type": {
                         "model": "Lego"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": [],
-                    "isArrayNullable": true,
+                    "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
@@ -809,5 +809,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.2",
-    "version": "8a9858a635a4260d7ddadb72a16008f6"
+    "version": "8ae8f6e36403097ed94039fd307eb1a8"
 };

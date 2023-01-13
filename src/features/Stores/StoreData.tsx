@@ -6,13 +6,14 @@ import { Storage } from '@aws-amplify/storage';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { deleteStoreMutation, getSingleStoreData, selectCurrentStoreData } from './StoresSlice';
 import FileUpload from '../../utils/FileUpload';
-import { DataStore } from 'aws-amplify';
+import { API, DataStore, graphqlOperation } from 'aws-amplify';
 import { Lego } from '../../models';
-import { createStoreInventory } from './InventorySlice';
+import { createStoreInventory, getStoreInventory, selectCurrentInventory } from './InventorySlice';
 import { formatRelative, parseISO } from 'date-fns';
-import { selectUserCognitoGroups } from '../User/UserSlice';
+import { getUserData, selectFbUsername, selectUserCognitoGroups, selectUserData } from '../User/UserSlice';
 import DeleteStoreModal from './DeleteStoreModal';
 import { selectCartItems, updateItem } from '../Orders/CartSlice';
+import { createLego } from '../../graphql/mutations';
 
 let initialInventory: Lego[] | undefined;
 
@@ -20,14 +21,16 @@ const StoreData = () => {
     const { id } = useParams();
     const [isAddingInventory, setIsAddingInventory] = useState(false);
     const [isDeletingStore, setIsDeletingStore] = useState(false);
-    const [inventory, setInventory] = useState(initialInventory);
-    const [inventoryUpdatedAt, setInventoryUpdatedAt] = useState('')
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const fbUsername = useAppSelector(selectFbUsername);
+    const currentUser = useAppSelector(selectUserData);
     const currentStoreData = useAppSelector(selectCurrentStoreData);
     const userGroups = useAppSelector(selectUserCognitoGroups);
     const userIsModerator = userGroups.includes('moderators');
-    const relativeUpdatedAt = inventory ? formatRelative(parseISO(inventoryUpdatedAt), Date.now()) : 'loading...';
+    const inventoryUpdatedAt = currentStoreData?.updatedAt;
+    const relativeUpdatedAt = inventoryUpdatedAt ? formatRelative(parseISO(inventoryUpdatedAt), Date.now()) : 'loading...';
+    const inventory = useAppSelector(selectCurrentInventory);
 
     const startAddingInventory = () => {
         setIsAddingInventory(true);
@@ -55,30 +58,28 @@ const StoreData = () => {
     const handleFileUploadComplete = async (results: (string | undefined)[]) => {
         stopAddingInventory();
         if (id) {
-            const legos: string[] = [];
-            for(let i = 0; i < results.length; i++) {
-                if (results[i]) {
-                    const lego = await DataStore.save(new Lego({ imageKey: results[i] ?? '' }));
-                    legos.push(lego.id);
-                }
-            }
-
-            await dispatch(createStoreInventory({items: legos, storeId: id}));
+            await dispatch(createStoreInventory({ lego:results, storeId: id, userId: currentUser?.id ?? '' }));
             await dispatch(getSingleStoreData(id));
         }
     }
 
     useEffect(() => {
         const fetchInventory = async () => {
-            const fetchedInventory = await currentStoreData?.inventory;
-            const fetchedInventoryItems = await fetchedInventory?.items.toArray()
-            const fetchedInventoryUpdatedAt = fetchedInventory?.createdAt;
-            setInventoryUpdatedAt(fetchedInventoryUpdatedAt ?? '');
-            setInventory(fetchedInventoryItems);
+            if (currentStoreData) {
+                try {
+                    dispatch(getStoreInventory( currentStoreData.storeInventoryId ?? ''))
+                } catch (e) {
+                    console.error(JSON.stringify(e))
+                }
+            }
         }
 
         fetchInventory();
     }, [currentStoreData])
+
+    useEffect(() => {
+        dispatch(getUserData(fbUsername));
+    }, [fbUsername])
 
     useEffect(() => {
         dispatch(getSingleStoreData(id ?? ''));

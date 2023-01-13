@@ -130,7 +130,7 @@ type EagerInventory = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly items?: (Lego | null)[] | null;
+  readonly items: Lego[];
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

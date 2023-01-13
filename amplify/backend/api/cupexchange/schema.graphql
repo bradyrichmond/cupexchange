@@ -45,7 +45,7 @@ type Store @model @auth(rules: [
 
 type Inventory @model @auth(rules: [{ allow: private }]) {
   id: ID!
-  items: [Lego] @hasMany
+  items: [Lego!]! @hasMany
 }
 
 type Lego @model @auth(rules: [{ allow: private }]) {

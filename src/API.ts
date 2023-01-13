@@ -219,7 +219,7 @@ export type Lego = {
   imageKey: string,
   createdAt: string,
   updatedAt: string,
-  inventoryItemsId?: string | null,
+  inventoryItemsId: string,
 };
 
 export type UpdateStoreInput = {
@@ -256,7 +256,7 @@ export type DeleteInventoryInput = {
 export type CreateLegoInput = {
   id?: string | null,
   imageKey: string,
-  inventoryItemsId?: string | null,
+  inventoryItemsId: string,
 };
 
 export type ModelLegoConditionInput = {
@@ -270,7 +270,7 @@ export type ModelLegoConditionInput = {
 export type UpdateLegoInput = {
   id: string,
   imageKey?: string | null,
-  inventoryItemsId?: string | null,
+  inventoryItemsId: string,
 };
 
 export type DeleteLegoInput = {
@@ -970,7 +970,7 @@ export type CreateInventoryMutation = {
         imageKey: string,
         createdAt: string,
         updatedAt: string,
-        inventoryItemsId?: string | null,
+        inventoryItemsId: string,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -996,7 +996,7 @@ export type UpdateInventoryMutation = {
         imageKey: string,
         createdAt: string,
         updatedAt: string,
-        inventoryItemsId?: string | null,
+        inventoryItemsId: string,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1022,7 +1022,7 @@ export type DeleteInventoryMutation = {
         imageKey: string,
         createdAt: string,
         updatedAt: string,
-        inventoryItemsId?: string | null,
+        inventoryItemsId: string,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1043,7 +1043,7 @@ export type CreateLegoMutation = {
     imageKey: string,
     createdAt: string,
     updatedAt: string,
-    inventoryItemsId?: string | null,
+    inventoryItemsId: string,
   } | null,
 };
 
@@ -1059,7 +1059,7 @@ export type UpdateLegoMutation = {
     imageKey: string,
     createdAt: string,
     updatedAt: string,
-    inventoryItemsId?: string | null,
+    inventoryItemsId: string,
   } | null,
 };
 
@@ -1075,7 +1075,7 @@ export type DeleteLegoMutation = {
     imageKey: string,
     createdAt: string,
     updatedAt: string,
-    inventoryItemsId?: string | null,
+    inventoryItemsId: string,
   } | null,
 };
 
@@ -1859,7 +1859,7 @@ export type GetInventoryQuery = {
         imageKey: string,
         createdAt: string,
         updatedAt: string,
-        inventoryItemsId?: string | null,
+        inventoryItemsId: string,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1902,7 +1902,7 @@ export type GetLegoQuery = {
     imageKey: string,
     createdAt: string,
     updatedAt: string,
-    inventoryItemsId?: string | null,
+    inventoryItemsId: string,
   } | null,
 };
 
@@ -1921,7 +1921,7 @@ export type ListLegosQuery = {
       imageKey: string,
       createdAt: string,
       updatedAt: string,
-      inventoryItemsId?: string | null,
+      inventoryItemsId: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -2552,7 +2552,7 @@ export type OnCreateInventorySubscription = {
         imageKey: string,
         createdAt: string,
         updatedAt: string,
-        inventoryItemsId?: string | null,
+        inventoryItemsId: string,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2577,7 +2577,7 @@ export type OnUpdateInventorySubscription = {
         imageKey: string,
         createdAt: string,
         updatedAt: string,
-        inventoryItemsId?: string | null,
+        inventoryItemsId: string,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2602,7 +2602,7 @@ export type OnDeleteInventorySubscription = {
         imageKey: string,
         createdAt: string,
         updatedAt: string,
-        inventoryItemsId?: string | null,
+        inventoryItemsId: string,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2622,7 +2622,7 @@ export type OnCreateLegoSubscription = {
     imageKey: string,
     createdAt: string,
     updatedAt: string,
-    inventoryItemsId?: string | null,
+    inventoryItemsId: string,
   } | null,
 };
 
@@ -2637,7 +2637,7 @@ export type OnUpdateLegoSubscription = {
     imageKey: string,
     createdAt: string,
     updatedAt: string,
-    inventoryItemsId?: string | null,
+    inventoryItemsId: string,
   } | null,
 };
 
@@ -2652,7 +2652,7 @@ export type OnDeleteLegoSubscription = {
     imageKey: string,
     createdAt: string,
     updatedAt: string,
-    inventoryItemsId?: string | null,
+    inventoryItemsId: string,
   } | null,
 };
 

@@ -11,7 +11,7 @@ export const getStoreData = createAsyncThunk(
     async () => {
       try {
         const stores = await (API.graphql(graphqlOperation(listStores)) as Promise<any>);
-        return stores.data.listStores.items;
+        return stores.data.listStores.items.sort((a: Store, b: Store) => a.name < b.name ? -1 : 1);
       } catch (e) {
         console.error(JSON.stringify(e));
       }

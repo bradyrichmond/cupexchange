@@ -21,13 +21,18 @@ import { useSelector } from 'react-redux';
 import StoreData from './features/Stores/StoreData';
 import Users from './features/User';
 import TripData from './features/Trips/TripData';
-import Orders from './features/Orders';
+import Orders from './features/Orders/Cart';
+import Cart from './features/Orders/Cart';
 
 const buildRoutes = (isLoggedIn: boolean, pathname: string, userIsModerator: boolean) => createBrowserRouter([
   {
     path: '/',
     element: isLoggedIn ? <Home /> : <Navigate to='/login' state={{goto: pathname}}/>,
     children: [
+      {
+        path: 'cart',
+        element: <Cart />
+      },
       {
         path: 'orders',
         element: <Orders />

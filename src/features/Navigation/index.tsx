@@ -18,6 +18,8 @@ const Navigation = () => {
     const cartItems = useAppSelector(selectCartItems);
     const [expandMenu, setExpandMenu] = useState(false);
 
+    const itemCount = cartItems.reduce((pre, curr) => pre + curr.count, 0);
+
     const toggleMenu = () => {
         setExpandMenu((current) => !current);
     }
@@ -41,7 +43,7 @@ const Navigation = () => {
             </Box>
             <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
                 <Link to="/cart">
-                    <Badge badgeContent={cartItems.length} >
+                    <Badge badgeContent={itemCount ?? 0} color='primary'>
                         <ShoppingCartOutlined htmlColor='rgba(255,255,255,255)' />
                     </Badge>
                     {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Cart</Typography></Box>}

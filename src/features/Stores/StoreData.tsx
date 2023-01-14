@@ -160,10 +160,9 @@ export const InventoryItem = (props: InventoryItemProps) => {
 
             getUrl();
         }
-    })
+    }, [])
 
     const addItemToCart = () => {
-        // TODO: Why can't I add to order after removing from order?
         if (addToOrder) {
             addToOrder(itemId);
         }
@@ -182,19 +181,29 @@ export const InventoryItem = (props: InventoryItemProps) => {
     }
 
     return (
-        <Box border='2px solid rgba(246,236,54,255)' borderRadius='1rem' padding='2rem' margin='2rem' flex='1' minWidth='200px'>
-            <img src={url} alt="" width='100%' height='100%'/>
-            {itemCount}
-            {addToOrder && itemCount < 1 && 
-                <Button onClick={addItemToCart}>Request a cup</Button>
-            }
-            {addToOrder && itemCount > 0 &&
-                <Box display='flex' flexDirection='row'>
-                    <Button onClick={subtractItem}><RemoveCircleOutline /></Button>
-                    <Typography paddingLeft='1rem' paddingRight='1rem'>{itemCount}</Typography>
-                    <Button onClick={addItem}><AddCircleOutline /></Button>
-                </Box>
-            }
+        <Box border='2px solid rgba(246,236,54,255)' borderRadius='1rem' padding='2rem' margin='2rem' flex='1' minWidth='200px' display='flex' flexDirection='column'>
+            <Box flex='1'>
+                <img src={url} alt=""  width='100%'/>
+            </Box>
+            <Box paddingTop='1rem'>
+                {addToOrder && itemCount < 1 && 
+                    <Button onClick={addItemToCart}>Request a cup</Button>
+                }
+                {addToOrder && itemCount > 0 &&
+                    <Counter itemCount={itemCount} addAction={addItem} minusAction={subtractItem}/>
+                }
+            </Box>
+        </Box>
+    )
+}
+
+export const Counter = (props: { minusAction: () => void, itemCount: number, addAction: () => void }) => {
+    const { minusAction, itemCount, addAction } = props;
+    return (
+        <Box display='flex' flexDirection='row'>
+            <Button onClick={minusAction}><RemoveCircleOutline /></Button>
+            <Typography paddingLeft='1rem' paddingRight='1rem'>{itemCount}</Typography>
+            <Button onClick={addAction}><AddCircleOutline /></Button>
         </Box>
     )
 }

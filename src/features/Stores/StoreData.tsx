@@ -12,7 +12,7 @@ import { createStoreInventory, getStoreInventory, selectCurrentInventory } from 
 import { formatRelative, parseISO } from 'date-fns';
 import { getUserData, selectFbUsername, selectUserCognitoGroups, selectUserData } from '../User/UserSlice';
 import DeleteStoreModal from './DeleteStoreModal';
-import { selectCartItems, updateItem } from '../Orders/CartSlice';
+import { removeCartItem, selectCartItems, updateItem } from '../Orders/CartSlice';
 import { createLego } from '../../graphql/mutations';
 
 let initialInventory: Lego[] | undefined;
@@ -163,6 +163,7 @@ export const InventoryItem = (props: InventoryItemProps) => {
     })
 
     const addItemToCart = () => {
+        // TODO: Why can't I add to order after removing from order?
         if (addToOrder) {
             addToOrder(itemId);
         }
@@ -173,20 +174,25 @@ export const InventoryItem = (props: InventoryItemProps) => {
     }
 
     const subtractItem = () => {
+        if (itemCount === 1) {
+            dispatch(removeCartItem(itemId));
+        }
+
         dispatch(updateItem({itemId, itemCount: itemCount - 1}));
     }
 
     return (
         <Box border='2px solid rgba(246,236,54,255)' borderRadius='1rem' padding='2rem' margin='2rem' flex='1' minWidth='200px'>
             <img src={url} alt="" width='100%' height='100%'/>
+            {itemCount}
             {addToOrder && itemCount < 1 && 
                 <Button onClick={addItemToCart}>Request a cup</Button>
             }
             {addToOrder && itemCount > 0 &&
                 <Box display='flex' flexDirection='row'>
-                    <Button onClick={addItem}><RemoveCircleOutline /></Button>
+                    <Button onClick={subtractItem}><RemoveCircleOutline /></Button>
                     <Typography paddingLeft='1rem' paddingRight='1rem'>{itemCount}</Typography>
-                    <Button onClick={subtractItem}><AddCircleOutline /></Button>
+                    <Button onClick={addItem}><AddCircleOutline /></Button>
                 </Box>
             }
         </Box>

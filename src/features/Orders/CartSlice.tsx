@@ -22,23 +22,33 @@ export const cartSlice = createSlice({
   reducers: {
     addCartItem: (state, action) => {
         const currentCartItems = state.cartItems;
-        const item = { itemId: action.payload, count: 1}
-        currentCartItems.push(item);
-        state.cartItems = currentCartItems;
+        if (currentCartItems.find((item) => item.itemId === action.payload)) {
+          const currentCartItems = state.cartItems.filter((item) => item.itemId !== action.payload);
+          const newCartItem = { itemId: action.payload.itemId ?? '', count: 1 };
+          currentCartItems.push(newCartItem);
+          state.cartItems = currentCartItems;
+        } else {
+          const item = { itemId: action.payload, count: 1 }
+          currentCartItems.push(item);
+          state.cartItems = currentCartItems;
+        }
     },
     removeCartItem: (state, action) => {
         const currentCartItems = state.cartItems.filter((item) => item.itemId !== action.payload);
-        state.cartItems = currentCartItems;
+        state.cartItems = currentCartItems ?? [];
     },
     emptyCart: (state, action) => {
         state.cartItems = [];
     },
     updateItem: (state, action) => {
-        const updatingCartItem = state.cartItems.find((item) => item.itemId === action.payload.itemId);
-        const filteredCartItems = state.cartItems.filter((item) => item.itemId !== action.payload.itemId);
-        const newCartItem = { itemId: updatingCartItem?.itemId ?? '', count: action.payload.count }
-        filteredCartItems.push(newCartItem);
-        state.cartItems = filteredCartItems;
+      try {
+        const currentCartItems = state.cartItems.filter((item) => item.itemId !== action.payload.itemId);
+        const newCartItem = { itemId: action.payload.itemId ?? '', count: action.payload.itemCount };
+        currentCartItems.push(newCartItem);
+        state.cartItems = currentCartItems;
+      } catch (e) {
+        console.error(JSON.stringify(e));
+      }
     }
   },
 });

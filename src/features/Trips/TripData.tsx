@@ -6,35 +6,27 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { InventoryItem } from '../Stores/StoreData';
 import { getSingleTrip, selectCurrentTrip } from './TripsSlice';
 import { addCartItem, emptyCart } from '../Orders/CartSlice';
-import { Inventory, Lego, Store, User } from '../../models';
+import { Store, User } from '../../models';
+import { getStoreInventory, selectCurrentInventory } from '../Stores/InventorySlice';
 
-let initialInventory: Inventory | undefined;
-let initialInventoryItems: Lego[] | undefined;
 let initialStore: Store | undefined;
 let initialUser: User | undefined;
 
 const TripData = () => {
     const { id } = useParams();
-    const [inventory, setInventory] = useState(initialInventory);
-    const [inventoryItems, setInventoryItems] = useState(initialInventoryItems);
     const [currentStore, setCurrentStore] = useState(initialStore);
     const [shipper, setShipper] = useState(initialUser);
     const dispatch = useAppDispatch();
     const currentTrip = useAppSelector(selectCurrentTrip);
+    const inventoryItems = useAppSelector(selectCurrentInventory)
     const shipperName = `${shipper?.first_name} ${shipper?.last_name}`;
     const title = `Trip to ${currentStore?.name} by ${shipperName}`;
-    const relativeUpdatedAt = inventory ? formatRelative(parseISO(inventory.createdAt ?? ''), Date.now()) : 'loading...';
+    const relativeUpdatedAt = currentStore?.updatedAt ? formatRelative(parseISO(currentStore.updatedAt ?? ''), Date.now()) : 'loading...';
 
     if (currentTrip) {
         const fetchInventory = async () => {
             const fetchedStore = await currentTrip.store;
             setCurrentStore(fetchedStore);
-            const fetchedInventory = await fetchedStore.inventory;
-            if (fetchedInventory) {
-                setInventory(fetchedInventory);
-                const fetchedInventoryItems = await fetchedInventory.items.toArray();
-                setInventoryItems(fetchedInventoryItems);
-            }
             const fetchedShipper = await currentTrip.shipper;
             setShipper(fetchedShipper);
         }
@@ -42,6 +34,9 @@ const TripData = () => {
         fetchInventory();
     }
     
+    useEffect(() => {
+        dispatch(getStoreInventory(currentStore?.storeInventoryId ?? ''))
+    }, [currentStore])
 
     useEffect(() => {
         dispatch(emptyCart);

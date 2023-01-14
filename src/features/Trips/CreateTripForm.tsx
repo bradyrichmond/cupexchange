@@ -31,9 +31,9 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
     }
 
     const handleFormSubmit = async (data: any) => {
-        const { cupPrice, shippingPrice } = data;
+        const { cupPrice, shippingPrice, cupLimit } = data;
         const parsedOrderExpiration = Date.parse(orderExpiration);
-        await dispatch(createTripMutation({ tripShipperId: userData?.id ?? '', cupPrice, shippingPrice, tripStoreId: store, orderExpiration: parsedOrderExpiration }));
+        await dispatch(createTripMutation({ tripShipperId: userData?.id ?? '', cupPrice, shippingPrice, tripStoreId: store, orderExpiration: parsedOrderExpiration, maximumCups: cupLimit }));
         await dispatch(getTrips(0));
         close();
     }
@@ -74,6 +74,10 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
                         </LocalizationProvider>
                         <TextField label="Cup Price" variant="standard" {...register('cupPrice', { required: true, minLength: 2 })} />
                         <TextField label="Shipping price per 3 cups" variant="standard" {...register('shippingPrice', { required: true, minLength: 1 })} />
+                        <Box paddingTop='1rem'>
+                            <InputLabel>Do you want to set a limit for the total number of cups you will fill? Leave blank for no limit.</InputLabel>
+                            <TextField id="standard-basic" label="Cup Limit" variant="standard" {...register('cupLimit')} />
+                        </Box>
                         <Button type='submit'>Create Trip</Button>
                     </Box>
                 </form>

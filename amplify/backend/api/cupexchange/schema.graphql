@@ -77,5 +77,13 @@ type Order @model @auth(rules: [
   shipper: User! @hasOne
   tracking: [String]!
   numberOfCups: Int!
+  orders: [OrderItem!]! @hasMany
   trip: Trip! @hasOne
+}
+
+type OrderItem @model @auth(rules: [
+  { allow: private }
+]) {
+  item: Lego! @hasOne
+  count: Int!
 }

@@ -379,6 +379,7 @@ export type Order = {
   shipper: User,
   tracking: Array< string | null >,
   numberOfCups: number,
+  orders?: ModelOrderItemConnection | null,
   trip: Trip,
   id: string,
   createdAt: string,
@@ -387,6 +388,23 @@ export type Order = {
   orderShipperId: string,
   orderTripId: string,
   owner?: string | null,
+};
+
+export type ModelOrderItemConnection = {
+  __typename: "ModelOrderItemConnection",
+  items:  Array<OrderItem | null >,
+  nextToken?: string | null,
+};
+
+export type OrderItem = {
+  __typename: "OrderItem",
+  item: Lego,
+  count: number,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+  orderOrdersId: string,
+  orderItemItemId: string,
 };
 
 export type UpdateOrderInput = {
@@ -399,6 +417,33 @@ export type UpdateOrderInput = {
 };
 
 export type DeleteOrderInput = {
+  id: string,
+};
+
+export type CreateOrderItemInput = {
+  count: number,
+  id?: string | null,
+  orderOrdersId: string,
+  orderItemItemId: string,
+};
+
+export type ModelOrderItemConditionInput = {
+  count?: ModelIntInput | null,
+  and?: Array< ModelOrderItemConditionInput | null > | null,
+  or?: Array< ModelOrderItemConditionInput | null > | null,
+  not?: ModelOrderItemConditionInput | null,
+  orderOrdersId?: ModelIDInput | null,
+  orderItemItemId?: ModelIDInput | null,
+};
+
+export type UpdateOrderItemInput = {
+  count?: number | null,
+  id: string,
+  orderOrdersId: string,
+  orderItemItemId: string,
+};
+
+export type DeleteOrderItemInput = {
   id: string,
 };
 
@@ -513,6 +558,15 @@ export type ModelOrderConnection = {
   __typename: "ModelOrderConnection",
   items:  Array<Order | null >,
   nextToken?: string | null,
+};
+
+export type ModelOrderItemFilterInput = {
+  count?: ModelIntInput | null,
+  and?: Array< ModelOrderItemFilterInput | null > | null,
+  or?: Array< ModelOrderItemFilterInput | null > | null,
+  not?: ModelOrderItemFilterInput | null,
+  orderOrdersId?: ModelIDInput | null,
+  orderItemItemId?: ModelIDInput | null,
 };
 
 export type ModelSubscriptionUserFilterInput = {
@@ -633,6 +687,12 @@ export type ModelSubscriptionOrderFilterInput = {
   numberOfCups?: ModelSubscriptionIntInput | null,
   and?: Array< ModelSubscriptionOrderFilterInput | null > | null,
   or?: Array< ModelSubscriptionOrderFilterInput | null > | null,
+};
+
+export type ModelSubscriptionOrderItemFilterInput = {
+  count?: ModelSubscriptionIntInput | null,
+  and?: Array< ModelSubscriptionOrderItemFilterInput | null > | null,
+  or?: Array< ModelSubscriptionOrderItemFilterInput | null > | null,
 };
 
 export type CreateUserMutationVariables = {
@@ -1370,6 +1430,19 @@ export type CreateOrderMutation = {
     },
     tracking: Array< string | null >,
     numberOfCups: number,
+    orders?:  {
+      __typename: "ModelOrderItemConnection",
+      items:  Array< {
+        __typename: "OrderItem",
+        count: number,
+        id: string,
+        createdAt: string,
+        updatedAt: string,
+        orderOrdersId: string,
+        orderItemItemId: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     trip:  {
       __typename: "Trip",
       store:  {
@@ -1478,6 +1551,19 @@ export type UpdateOrderMutation = {
     },
     tracking: Array< string | null >,
     numberOfCups: number,
+    orders?:  {
+      __typename: "ModelOrderItemConnection",
+      items:  Array< {
+        __typename: "OrderItem",
+        count: number,
+        id: string,
+        createdAt: string,
+        updatedAt: string,
+        orderOrdersId: string,
+        orderItemItemId: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     trip:  {
       __typename: "Trip",
       store:  {
@@ -1586,6 +1672,19 @@ export type DeleteOrderMutation = {
     },
     tracking: Array< string | null >,
     numberOfCups: number,
+    orders?:  {
+      __typename: "ModelOrderItemConnection",
+      items:  Array< {
+        __typename: "OrderItem",
+        count: number,
+        id: string,
+        createdAt: string,
+        updatedAt: string,
+        orderOrdersId: string,
+        orderItemItemId: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     trip:  {
       __typename: "Trip",
       store:  {
@@ -1631,6 +1730,81 @@ export type DeleteOrderMutation = {
     orderShipperId: string,
     orderTripId: string,
     owner?: string | null,
+  } | null,
+};
+
+export type CreateOrderItemMutationVariables = {
+  input: CreateOrderItemInput,
+  condition?: ModelOrderItemConditionInput | null,
+};
+
+export type CreateOrderItemMutation = {
+  createOrderItem?:  {
+    __typename: "OrderItem",
+    item:  {
+      __typename: "Lego",
+      id: string,
+      imageKey: string,
+      createdAt: string,
+      updatedAt: string,
+      inventoryItemsId: string,
+    },
+    count: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    orderOrdersId: string,
+    orderItemItemId: string,
+  } | null,
+};
+
+export type UpdateOrderItemMutationVariables = {
+  input: UpdateOrderItemInput,
+  condition?: ModelOrderItemConditionInput | null,
+};
+
+export type UpdateOrderItemMutation = {
+  updateOrderItem?:  {
+    __typename: "OrderItem",
+    item:  {
+      __typename: "Lego",
+      id: string,
+      imageKey: string,
+      createdAt: string,
+      updatedAt: string,
+      inventoryItemsId: string,
+    },
+    count: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    orderOrdersId: string,
+    orderItemItemId: string,
+  } | null,
+};
+
+export type DeleteOrderItemMutationVariables = {
+  input: DeleteOrderItemInput,
+  condition?: ModelOrderItemConditionInput | null,
+};
+
+export type DeleteOrderItemMutation = {
+  deleteOrderItem?:  {
+    __typename: "OrderItem",
+    item:  {
+      __typename: "Lego",
+      id: string,
+      imageKey: string,
+      createdAt: string,
+      updatedAt: string,
+      inventoryItemsId: string,
+    },
+    count: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    orderOrdersId: string,
+    orderItemItemId: string,
   } | null,
 };
 
@@ -2113,6 +2287,19 @@ export type GetOrderQuery = {
     },
     tracking: Array< string | null >,
     numberOfCups: number,
+    orders?:  {
+      __typename: "ModelOrderItemConnection",
+      items:  Array< {
+        __typename: "OrderItem",
+        count: number,
+        id: string,
+        createdAt: string,
+        updatedAt: string,
+        orderOrdersId: string,
+        orderItemItemId: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     trip:  {
       __typename: "Trip",
       store:  {
@@ -2202,6 +2389,10 @@ export type ListOrdersQuery = {
       },
       tracking: Array< string | null >,
       numberOfCups: number,
+      orders?:  {
+        __typename: "ModelOrderItemConnection",
+        nextToken?: string | null,
+      } | null,
       trip:  {
         __typename: "Trip",
         cupPrice: string,
@@ -2222,6 +2413,60 @@ export type ListOrdersQuery = {
       orderShipperId: string,
       orderTripId: string,
       owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetOrderItemQueryVariables = {
+  id: string,
+};
+
+export type GetOrderItemQuery = {
+  getOrderItem?:  {
+    __typename: "OrderItem",
+    item:  {
+      __typename: "Lego",
+      id: string,
+      imageKey: string,
+      createdAt: string,
+      updatedAt: string,
+      inventoryItemsId: string,
+    },
+    count: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    orderOrdersId: string,
+    orderItemItemId: string,
+  } | null,
+};
+
+export type ListOrderItemsQueryVariables = {
+  filter?: ModelOrderItemFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListOrderItemsQuery = {
+  listOrderItems?:  {
+    __typename: "ModelOrderItemConnection",
+    items:  Array< {
+      __typename: "OrderItem",
+      item:  {
+        __typename: "Lego",
+        id: string,
+        imageKey: string,
+        createdAt: string,
+        updatedAt: string,
+        inventoryItemsId: string,
+      },
+      count: number,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      orderOrdersId: string,
+      orderItemItemId: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -2943,6 +3188,19 @@ export type OnCreateOrderSubscription = {
     },
     tracking: Array< string | null >,
     numberOfCups: number,
+    orders?:  {
+      __typename: "ModelOrderItemConnection",
+      items:  Array< {
+        __typename: "OrderItem",
+        count: number,
+        id: string,
+        createdAt: string,
+        updatedAt: string,
+        orderOrdersId: string,
+        orderItemItemId: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     trip:  {
       __typename: "Trip",
       store:  {
@@ -3050,6 +3308,19 @@ export type OnUpdateOrderSubscription = {
     },
     tracking: Array< string | null >,
     numberOfCups: number,
+    orders?:  {
+      __typename: "ModelOrderItemConnection",
+      items:  Array< {
+        __typename: "OrderItem",
+        count: number,
+        id: string,
+        createdAt: string,
+        updatedAt: string,
+        orderOrdersId: string,
+        orderItemItemId: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     trip:  {
       __typename: "Trip",
       store:  {
@@ -3157,6 +3428,19 @@ export type OnDeleteOrderSubscription = {
     },
     tracking: Array< string | null >,
     numberOfCups: number,
+    orders?:  {
+      __typename: "ModelOrderItemConnection",
+      items:  Array< {
+        __typename: "OrderItem",
+        count: number,
+        id: string,
+        createdAt: string,
+        updatedAt: string,
+        orderOrdersId: string,
+        orderItemItemId: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     trip:  {
       __typename: "Trip",
       store:  {
@@ -3202,5 +3486,77 @@ export type OnDeleteOrderSubscription = {
     orderShipperId: string,
     orderTripId: string,
     owner?: string | null,
+  } | null,
+};
+
+export type OnCreateOrderItemSubscriptionVariables = {
+  filter?: ModelSubscriptionOrderItemFilterInput | null,
+};
+
+export type OnCreateOrderItemSubscription = {
+  onCreateOrderItem?:  {
+    __typename: "OrderItem",
+    item:  {
+      __typename: "Lego",
+      id: string,
+      imageKey: string,
+      createdAt: string,
+      updatedAt: string,
+      inventoryItemsId: string,
+    },
+    count: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    orderOrdersId: string,
+    orderItemItemId: string,
+  } | null,
+};
+
+export type OnUpdateOrderItemSubscriptionVariables = {
+  filter?: ModelSubscriptionOrderItemFilterInput | null,
+};
+
+export type OnUpdateOrderItemSubscription = {
+  onUpdateOrderItem?:  {
+    __typename: "OrderItem",
+    item:  {
+      __typename: "Lego",
+      id: string,
+      imageKey: string,
+      createdAt: string,
+      updatedAt: string,
+      inventoryItemsId: string,
+    },
+    count: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    orderOrdersId: string,
+    orderItemItemId: string,
+  } | null,
+};
+
+export type OnDeleteOrderItemSubscriptionVariables = {
+  filter?: ModelSubscriptionOrderItemFilterInput | null,
+};
+
+export type OnDeleteOrderItemSubscription = {
+  onDeleteOrderItem?:  {
+    __typename: "OrderItem",
+    item:  {
+      __typename: "Lego",
+      id: string,
+      imageKey: string,
+      createdAt: string,
+      updatedAt: string,
+      inventoryItemsId: string,
+    },
+    count: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    orderOrdersId: string,
+    orderItemItemId: string,
   } | null,
 };

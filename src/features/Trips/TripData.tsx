@@ -39,7 +39,7 @@ const TripData = () => {
     }, [currentStore])
 
     useEffect(() => {
-        dispatch(emptyCart);
+        dispatch(emptyCart({}));
         dispatch(getSingleTrip(id ?? ''));
     }, [])
 

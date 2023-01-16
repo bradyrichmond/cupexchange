@@ -659,6 +659,17 @@ export const createOrder = /* GraphQL */ `
       }
       tracking
       numberOfCups
+      orders {
+        items {
+          count
+          id
+          createdAt
+          updatedAt
+          orderOrdersId
+          orderItemItemId
+        }
+        nextToken
+      }
       trip {
         store {
           id
@@ -758,6 +769,17 @@ export const updateOrder = /* GraphQL */ `
       }
       tracking
       numberOfCups
+      orders {
+        items {
+          count
+          id
+          createdAt
+          updatedAt
+          orderOrdersId
+          orderItemItemId
+        }
+        nextToken
+      }
       trip {
         store {
           id
@@ -857,6 +879,17 @@ export const deleteOrder = /* GraphQL */ `
       }
       tracking
       numberOfCups
+      orders {
+        items {
+          count
+          id
+          createdAt
+          updatedAt
+          orderOrdersId
+          orderItemItemId
+        }
+        nextToken
+      }
       trip {
         store {
           id
@@ -899,6 +932,72 @@ export const deleteOrder = /* GraphQL */ `
       orderShipperId
       orderTripId
       owner
+    }
+  }
+`;
+export const createOrderItem = /* GraphQL */ `
+  mutation CreateOrderItem(
+    $input: CreateOrderItemInput!
+    $condition: ModelOrderItemConditionInput
+  ) {
+    createOrderItem(input: $input, condition: $condition) {
+      item {
+        id
+        imageKey
+        createdAt
+        updatedAt
+        inventoryItemsId
+      }
+      count
+      id
+      createdAt
+      updatedAt
+      orderOrdersId
+      orderItemItemId
+    }
+  }
+`;
+export const updateOrderItem = /* GraphQL */ `
+  mutation UpdateOrderItem(
+    $input: UpdateOrderItemInput!
+    $condition: ModelOrderItemConditionInput
+  ) {
+    updateOrderItem(input: $input, condition: $condition) {
+      item {
+        id
+        imageKey
+        createdAt
+        updatedAt
+        inventoryItemsId
+      }
+      count
+      id
+      createdAt
+      updatedAt
+      orderOrdersId
+      orderItemItemId
+    }
+  }
+`;
+export const deleteOrderItem = /* GraphQL */ `
+  mutation DeleteOrderItem(
+    $input: DeleteOrderItemInput!
+    $condition: ModelOrderItemConditionInput
+  ) {
+    deleteOrderItem(input: $input, condition: $condition) {
+      item {
+        id
+        imageKey
+        createdAt
+        updatedAt
+        inventoryItemsId
+      }
+      count
+      id
+      createdAt
+      updatedAt
+      orderOrdersId
+      orderItemItemId
     }
   }
 `;

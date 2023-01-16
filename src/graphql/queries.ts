@@ -413,6 +413,17 @@ export const getOrder = /* GraphQL */ `
       }
       tracking
       numberOfCups
+      orders {
+        items {
+          count
+          id
+          createdAt
+          updatedAt
+          orderOrdersId
+          orderItemItemId
+        }
+        nextToken
+      }
       trip {
         store {
           id
@@ -494,6 +505,9 @@ export const listOrders = /* GraphQL */ `
         }
         tracking
         numberOfCups
+        orders {
+          nextToken
+        }
         trip {
           cupPrice
           shippingPrice
@@ -513,6 +527,51 @@ export const listOrders = /* GraphQL */ `
         orderShipperId
         orderTripId
         owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getOrderItem = /* GraphQL */ `
+  query GetOrderItem($id: ID!) {
+    getOrderItem(id: $id) {
+      item {
+        id
+        imageKey
+        createdAt
+        updatedAt
+        inventoryItemsId
+      }
+      count
+      id
+      createdAt
+      updatedAt
+      orderOrdersId
+      orderItemItemId
+    }
+  }
+`;
+export const listOrderItems = /* GraphQL */ `
+  query ListOrderItems(
+    $filter: ModelOrderItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrderItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        item {
+          id
+          imageKey
+          createdAt
+          updatedAt
+          inventoryItemsId
+        }
+        count
+        id
+        createdAt
+        updatedAt
+        orderOrdersId
+        orderItemItemId
       }
       nextToken
     }

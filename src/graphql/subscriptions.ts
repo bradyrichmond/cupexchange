@@ -608,6 +608,17 @@ export const onCreateOrder = /* GraphQL */ `
       }
       tracking
       numberOfCups
+      orders {
+        items {
+          count
+          id
+          createdAt
+          updatedAt
+          orderOrdersId
+          orderItemItemId
+        }
+        nextToken
+      }
       trip {
         store {
           id
@@ -704,6 +715,17 @@ export const onUpdateOrder = /* GraphQL */ `
       }
       tracking
       numberOfCups
+      orders {
+        items {
+          count
+          id
+          createdAt
+          updatedAt
+          orderOrdersId
+          orderItemItemId
+        }
+        nextToken
+      }
       trip {
         store {
           id
@@ -800,6 +822,17 @@ export const onDeleteOrder = /* GraphQL */ `
       }
       tracking
       numberOfCups
+      orders {
+        items {
+          count
+          id
+          createdAt
+          updatedAt
+          orderOrdersId
+          orderItemItemId
+        }
+        nextToken
+      }
       trip {
         store {
           id
@@ -842,6 +875,69 @@ export const onDeleteOrder = /* GraphQL */ `
       orderShipperId
       orderTripId
       owner
+    }
+  }
+`;
+export const onCreateOrderItem = /* GraphQL */ `
+  subscription OnCreateOrderItem(
+    $filter: ModelSubscriptionOrderItemFilterInput
+  ) {
+    onCreateOrderItem(filter: $filter) {
+      item {
+        id
+        imageKey
+        createdAt
+        updatedAt
+        inventoryItemsId
+      }
+      count
+      id
+      createdAt
+      updatedAt
+      orderOrdersId
+      orderItemItemId
+    }
+  }
+`;
+export const onUpdateOrderItem = /* GraphQL */ `
+  subscription OnUpdateOrderItem(
+    $filter: ModelSubscriptionOrderItemFilterInput
+  ) {
+    onUpdateOrderItem(filter: $filter) {
+      item {
+        id
+        imageKey
+        createdAt
+        updatedAt
+        inventoryItemsId
+      }
+      count
+      id
+      createdAt
+      updatedAt
+      orderOrdersId
+      orderItemItemId
+    }
+  }
+`;
+export const onDeleteOrderItem = /* GraphQL */ `
+  subscription OnDeleteOrderItem(
+    $filter: ModelSubscriptionOrderItemFilterInput
+  ) {
+    onDeleteOrderItem(filter: $filter) {
+      item {
+        id
+        imageKey
+        createdAt
+        updatedAt
+        inventoryItemsId
+      }
+      count
+      id
+      createdAt
+      updatedAt
+      orderOrdersId
+      orderItemItemId
     }
   }
 `;

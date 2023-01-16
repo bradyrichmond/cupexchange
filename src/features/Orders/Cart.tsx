@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { CartItem, removeCartItem, selectCartItems, updateItem } from './CartSlice';
+import { CartItem, emptyCart, removeCartItem, selectCartItems, updateItem } from './CartSlice';
 import { Storage } from 'aws-amplify';
 import { useLegoData } from '../../hooks/legoHooks';
 import { Counter } from '../Stores/StoreData';
 import { selectCurrentTrip } from '../Trips/TripsSlice';
+import { createOrderAction } from './OrderSlice';
+import { useNavigate } from 'react-router';
 
 const Cart = () => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const cartItemList = useAppSelector(selectCartItems);
     const tripData = useAppSelector(selectCurrentTrip);
     const perCup = parseFloat(tripData?.cupPrice ?? '0');
@@ -16,6 +20,17 @@ const Cart = () => {
     const shippingUnits = Math.ceil(cupCount / 3);
     const shippingCost = parseFloat(tripData?.shippingPrice ?? '') * shippingUnits;
     const total = parseFloat(shippingCost.toString()) + subtotal;
+    
+    const submitOrder = async () => {
+        const shipper = await tripData?.shipper;
+        await dispatch(createOrderAction({ tracking: [], numberOfCups: cupCount, orderBuyerId: '', orderShipperId: shipper?.id ?? '', orderTripId: tripData?.id ?? '' }));
+        navigate('/orders');
+    }
+
+    const cancelOrder = async () => {
+        await dispatch(emptyCart({}));
+        navigate('/trips');
+    }
 
     return (
         <Box>
@@ -39,6 +54,10 @@ const Cart = () => {
                     <Box flex='1'>Total:</Box>
                     <Box flex='1'>${total}</Box>
                 </Box>
+            </Box>
+            <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+                <Box><Button onClick={submitOrder}>Submit Order</Button></Box>
+                <Box><Button onClick={cancelOrder}>Cancel Order</Button></Box>
             </Box>
         </Box>
     )

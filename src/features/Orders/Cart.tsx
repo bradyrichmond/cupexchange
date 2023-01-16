@@ -8,6 +8,7 @@ import { Counter } from '../Stores/StoreData';
 import { selectCurrentTrip } from '../Trips/TripsSlice';
 import { createOrderAction } from './OrderSlice';
 import { useNavigate } from 'react-router';
+import { selectUserData } from '../User/UserSlice';
 
 const Cart = () => {
     const dispatch = useAppDispatch();
@@ -20,10 +21,12 @@ const Cart = () => {
     const shippingUnits = Math.ceil(cupCount / 3);
     const shippingCost = parseFloat(tripData?.shippingPrice ?? '') * shippingUnits;
     const total = parseFloat(shippingCost.toString()) + subtotal;
+    const currentUser = useAppSelector(selectUserData);
     
     const submitOrder = async () => {
         const shipper = await tripData?.shipper;
-        await dispatch(createOrderAction({ tracking: [], numberOfCups: cupCount, orderBuyerId: '', orderShipperId: shipper?.id ?? '', orderTripId: tripData?.id ?? '' }));
+        await dispatch(createOrderAction({ tracking: [], numberOfCups: cupCount, orderBuyerId: currentUser?.id ?? '', orderShipperId: shipper?.id ?? '', orderTripId: tripData?.id ?? '' }));
+        await dispatch(emptyCart({}));
         navigate('/orders');
     }
 

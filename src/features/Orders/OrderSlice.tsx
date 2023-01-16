@@ -32,8 +32,10 @@ export const createOrderAction = createAsyncThunk(
 export const getMyOrders = createAsyncThunk<{ outgoingOrders: Order[], incomingOrders: Order[] }, string>(
     'orders/getMyOrders',
     async (userId: string) => {
-        const outgoingOrders = await (API.graphql(graphqlOperation(listOrders, { filter: { buyerId: { eq: userId } } })) as Promise<any>);
-        const incomingOrders = await (API.graphql(graphqlOperation(listOrders, { filter: { shipperId: { eq: userId } } })) as Promise<any>);
+        const outgoingOrdersRaw = await (API.graphql(graphqlOperation(listOrders, { filter: { orderBuyerId: { eq: userId } } })) as Promise<any>);
+        const incomingOrdersRaw = await (API.graphql(graphqlOperation(listOrders, { filter: { orderShipperId: { eq: userId } } })) as Promise<any>);
+        const outgoingOrders = outgoingOrdersRaw.data.listOrders.items;
+        const incomingOrders = incomingOrdersRaw.data.listOrders.items;
         return { outgoingOrders, incomingOrders };
     }
 );

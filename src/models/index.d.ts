@@ -236,6 +236,7 @@ type EagerOrder = {
   readonly numberOfCups: number;
   readonly orders: OrderItem[];
   readonly trip: Trip;
+  readonly total: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly orderBuyerId: string;
@@ -255,6 +256,7 @@ type LazyOrder = {
   readonly numberOfCups: number;
   readonly orders: AsyncCollection<OrderItem>;
   readonly trip: AsyncItem<Trip>;
+  readonly total: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly orderBuyerId: string;

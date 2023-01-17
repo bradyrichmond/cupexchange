@@ -737,6 +737,13 @@ export const schema = {
                         ]
                     }
                 },
+                "total": {
+                    "name": "total",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -925,5 +932,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.2",
-    "version": "fbd02df8617280d4bc7db80d50e008b8"
+    "version": "c52c70240f6b0224c6c60493df4bc481"
 };

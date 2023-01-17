@@ -79,6 +79,7 @@ type Order @model @auth(rules: [
   numberOfCups: Int!
   orders: [OrderItem!]! @hasMany
   trip: Trip! @hasOne
+  total: Float!
 }
 
 type OrderItem @model @auth(rules: [

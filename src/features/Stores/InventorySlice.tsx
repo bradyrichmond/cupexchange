@@ -1,32 +1,26 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { Lego } from '../../models';
-import { API, graphqlOperation } from 'aws-amplify';
-import { createInventory, createLego, updateStore } from '../../graphql/mutations';
-import { CreateLegoInput, UpdateStoreInput } from '../../API';
-import { listLegos } from '../../graphql/queries';
+import { Inventory, Lego } from '../../models';
+import { DataStore } from 'aws-amplify';
 import { RootState } from '../../store';
 
 export const createStoreInventory = createAsyncThunk(
     'inventory/createStoreInventory',
     async (input: { lego: (string | undefined)[], storeId: string, userId: string }) => {
-      const inventoryResponse = await (API.graphql(graphqlOperation(createInventory, { input: { } })) as Promise<any>);
-      const inventoryResponseId = inventoryResponse.data.createInventory.id;
-
+      const inventoryResponse = await DataStore.save(new Inventory({}));
+      const inventoryResponseId = inventoryResponse.id;
+      
       await Promise.all(input.lego.map(async (lego: string | undefined) => {
         if (lego) {
-          return await (API.graphql(graphqlOperation(createLego, { input: { imageKey: lego ?? '', inventoryItemsId: inventoryResponseId } })) as Promise<any>);
+          return await DataStore.save(new Lego({ imageKey: lego, inventoryItemsId: inventoryResponseId }));
         }
       }));
-
-      await (API.graphql(graphqlOperation(updateStore, { input: { storeInventoryId: inventoryResponseId, id: input.storeId, storeLastUpdateById: input.userId} })) as Promise<any>);
     }
 )
 
 export const getStoreInventory = createAsyncThunk(
   'inventory/getStoreInventory',
   async (id: string) => {
-    const fetchedLego = await (API.graphql(graphqlOperation(listLegos, { filter: { inventoryItemsId: { eq: id } } })) as Promise<any>);
-    return fetchedLego.data.listLegos.items;
+    return await DataStore.query(Lego, (L) => L.inventoryItemsId.eq(id));
   }
 )
 

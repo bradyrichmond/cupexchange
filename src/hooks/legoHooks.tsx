@@ -1,6 +1,5 @@
-import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { getLego } from '../graphql/queries';
+import { DataStore } from 'aws-amplify';
 import { Lego } from '../models';
 
 let initialLegoDataState: Lego | undefined;
@@ -10,8 +9,8 @@ export const useLegoData = (id: string) => {
     
     useEffect(() => {
         const getLegoData = async () => {
-            const initialLegoData = await (API.graphql(graphqlOperation(getLego, { id })) as Promise<any>);
-            setLegoData(initialLegoData.data.getLego);
+            const initialLegoData = await DataStore.query(Lego, id);
+            setLegoData(initialLegoData);
         }
 
         getLegoData();

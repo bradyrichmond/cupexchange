@@ -25,7 +25,7 @@ const Cart = () => {
     
     const submitOrder = async () => {
         const shipper = await tripData?.shipper;
-        await dispatch(createOrderAction({ tracking: [], numberOfCups: cupCount, orderBuyerId: currentUser?.id ?? '', orderShipperId: shipper?.id ?? '', orderTripId: tripData?.id ?? '' }));
+        await dispatch(createOrderAction({ orderInput: { tracking: [], numberOfCups: cupCount, orderBuyerId: currentUser?.id ?? '', orderShipperId: shipper?.id ?? '', orderTripId: tripData?.id ?? '', total }, orderItems: cartItemList,  buyer: currentUser, shipper: shipper, trip: tripData }));
         await dispatch(emptyCart({}));
         navigate('/orders');
     }

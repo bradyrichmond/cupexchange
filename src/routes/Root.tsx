@@ -1,4 +1,4 @@
-import { Amplify, API, graphqlOperation } from 'aws-amplify';
+import { Amplify, DataStore } from 'aws-amplify';
 
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { Box } from '@mui/material'
 import { getUserData, setFbUsername, setIsLoggedIn, setUserGroups } from '../features/User/UserSlice';
 import { useAppDispatch } from '../hooks';
-import { listUsers } from '../graphql/queries';
+import { User } from '../models';
 
 Amplify.configure(awsExports);
 
@@ -28,8 +28,8 @@ export default function Login() {
     const groups = user.signInUserSession.accessToken.payload['cognito:groups'];
     
     if (fbUsername) {
-      const usersResult = await(API.graphql(graphqlOperation(listUsers, { filter: { fbUsername: { eq: fbUsername } } })) as Promise<any>);
-      const localUser = usersResult.data.listUsers.items[0] ?? false;
+      const userResult = await DataStore.query(User);
+      const localUser = userResult[0] ?? false;
 
       if (!localUser) {
         navigate('/signup', { state: { fbUsername, email, groups }});

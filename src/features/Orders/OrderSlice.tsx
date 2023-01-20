@@ -1,9 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { API, graphqlOperation } from 'aws-amplify';
+import { DataStore } from 'aws-amplify';
 import { CreateOrderInput } from '../../API';
-import { createOrder } from '../../graphql/mutations';
-import { listOrders } from '../../graphql/queries';
-import { Order } from '../../models';
+import { Lego, Order, OrderItem, Trip, User } from '../../models';
 import { RootState } from '../../store';
 
 interface InitialState {
@@ -18,24 +16,38 @@ const initialState: InitialState = {
   incomingOrders: []
 }
 
+interface CreateOrderInputProps {
+    orderInput: CreateOrderInput
+    buyer: User | undefined
+    shipper: User | undefined
+    trip: Trip | undefined
+    orderItems: {itemId: string, count: number}[]
+}
+
 export const createOrderAction = createAsyncThunk(
     'orders/createOrderAction',
-    async (input: CreateOrderInput) => {
-        try {
-            await API.graphql(graphqlOperation(createOrder, { input }));
-        } catch (e) {
-            console.error(JSON.stringify(e));
+    async (input: CreateOrderInputProps) => {
+        const { tracking, numberOfCups, total, orderBuyerId, orderShipperId, orderTripId } = input.orderInput;
+        const { orderItems } = input;
+        if (input.trip && input.buyer && input.shipper) {
+            const tripData = await DataStore.save(new Order({ tracking, numberOfCups, total, orderBuyerId, orderShipperId, orderTripId, buyer: input.buyer, shipper: input.shipper, trip: input.trip }));
+            for (let i = 0; i < orderItems.length; i++) {
+                const { itemId, count } = orderItems[i];
+                const item = await DataStore.query(Lego, { id: itemId });
+                if (item) {
+                    DataStore.save(new OrderItem({ item, count, orderItemItemId: itemId, orderOrdersId: tripData.id }))
+                }
+            }
         }
     }
 )
 
-export const getMyOrders = createAsyncThunk<{ outgoingOrders: Order[], incomingOrders: Order[] }, string>(
+export const getMyOrders = createAsyncThunk<{ outgoingOrders: (Order | undefined)[], incomingOrders: (Order | undefined)[] }, string>(
     'orders/getMyOrders',
     async (userId: string) => {
-        const outgoingOrdersRaw = await (API.graphql(graphqlOperation(listOrders, { filter: { orderBuyerId: { eq: userId } } })) as Promise<any>);
-        const incomingOrdersRaw = await (API.graphql(graphqlOperation(listOrders, { filter: { orderShipperId: { eq: userId } } })) as Promise<any>);
-        const outgoingOrders = outgoingOrdersRaw.data.listOrders.items;
-        const incomingOrders = incomingOrdersRaw.data.listOrders.items;
+        const incomingOrders = await DataStore.query(Order, order => order.orderShipperId.eq(userId));
+        const outgoingOrders = await DataStore.query(Order, order => order.orderBuyerId.eq(userId));
+        
         return { outgoingOrders, incomingOrders };
     }
 );

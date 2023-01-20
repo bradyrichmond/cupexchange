@@ -1,42 +1,45 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { API, graphqlOperation } from 'aws-amplify';
-import { Trip } from '../../models';
-import { CreateTripInput } from '../../API';
+import { DataStore, SortDirection } from 'aws-amplify';
+import { Store, Trip, User } from '../../models';
 import { RootState } from '../../store';
-import { createTrip } from '../../graphql/mutations';
-import { getStore, getTrip, getUser, listTrips } from '../../graphql/queries';
 
 export const getTrips = createAsyncThunk(
     'trips/getTrips',
     async (page: number) => {
-      const trips = await (API.graphql(graphqlOperation(listTrips, {
-        filter: {
-            orderExpiration: {
-                gt: Date.now()
-            }
-          }
-        })
-      ) as Promise<any>);
-      
-      return trips.data.listTrips.items;
+      return await DataStore.query(Trip, t => t.orderExpiration.gt(Date.now()), {
+        sort: t => t.orderExpiration(SortDirection.ASCENDING)
+      });
     }
 );
 
 export const getSingleTrip = createAsyncThunk(
   'trips/getSingleTrip',
   async (id: string) => {
-    const trip = await (API.graphql(graphqlOperation(getTrip, { id })) as Promise<any>);
-    return trip.data.getTrip;
+    return await DataStore.query(Trip, id)
   }
-)
+);
+
+interface CreateTripInput {
+  tripStoreId: string
+  tripShipperId: string
+  cupPrice: string
+  shippingPrice: string
+  orderExpiration: number
+  store: string
+  shipper?: User
+  maximumCups: number
+}
 
 export const createTripMutation = createAsyncThunk(
   'trips/createTrip',
   async (input: CreateTripInput) => {
-    const { tripStoreId, tripShipperId, cupPrice, shippingPrice, orderExpiration } = input;
-    await (API.graphql(graphqlOperation(createTrip, { input: { tripStoreId, tripShipperId, cupPrice, shippingPrice, orderExpiration } })) as Promise<any>);
+    const { tripStoreId, tripShipperId, cupPrice, shippingPrice, orderExpiration, store, shipper } = input;
+    const storeData = await DataStore.query(Store, { id:  store ?? '' });
+    if (storeData && shipper) {
+      await DataStore.save(new Trip({ tripStoreId, tripShipperId, cupPrice, shippingPrice, orderExpiration, store: storeData, shipper }));
+    }
   }
-)
+);
 
 interface TripsState {
   loading: Boolean

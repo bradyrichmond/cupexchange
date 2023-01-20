@@ -54,8 +54,10 @@ const Navigation = () => {
                 {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Your Wishlist</Typography></Box>}
             </Box>
             <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
-                <ViewListIcon htmlColor='rgba(255,255,255,255)' />
-                {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Your Orders</Typography></Box>}
+                <Link to='/orders'>
+                    <ViewListIcon htmlColor='rgba(255,255,255,255)' />
+                    {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Orders</Typography></Box>}
+                </Link>
             </Box>
             {userIsModerator &&
                 <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>

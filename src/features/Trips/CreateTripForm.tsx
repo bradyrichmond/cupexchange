@@ -33,7 +33,7 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
     const handleFormSubmit = async (data: any) => {
         const { cupPrice, shippingPrice, cupLimit } = data;
         const parsedOrderExpiration = Date.parse(orderExpiration);
-        await dispatch(createTripMutation({ tripShipperId: userData?.id ?? '', cupPrice, shippingPrice, tripStoreId: store, orderExpiration: parsedOrderExpiration, maximumCups: cupLimit }));
+        await dispatch(createTripMutation({ tripShipperId: userData?.id ?? '', cupPrice, shippingPrice, tripStoreId: store, orderExpiration: parsedOrderExpiration, maximumCups: cupLimit, store: store ?? '', shipper: userData }));
         await dispatch(getTrips(0));
         close();
     }

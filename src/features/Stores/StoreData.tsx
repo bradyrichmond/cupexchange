@@ -46,7 +46,7 @@ const StoreData = () => {
 
     const confirmDeleteStore = () => {
         if (id) {
-            dispatch(deleteStoreMutation({ id }))
+            dispatch(deleteStoreMutation(id))
         }
         navigate('/stores');
     }

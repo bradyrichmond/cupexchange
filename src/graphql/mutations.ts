@@ -179,6 +179,13 @@ export const createStore = /* GraphQL */ `
       inventory {
         id
         items {
+          items {
+            id
+            imageKey
+            createdAt
+            updatedAt
+            inventoryItemsId
+          }
           nextToken
         }
         createdAt
@@ -227,6 +234,13 @@ export const updateStore = /* GraphQL */ `
       inventory {
         id
         items {
+          items {
+            id
+            imageKey
+            createdAt
+            updatedAt
+            inventoryItemsId
+          }
           nextToken
         }
         createdAt
@@ -275,6 +289,13 @@ export const deleteStore = /* GraphQL */ `
       inventory {
         id
         items {
+          items {
+            id
+            imageKey
+            createdAt
+            updatedAt
+            inventoryItemsId
+          }
           nextToken
         }
         createdAt
@@ -411,6 +432,16 @@ export const createTrip = /* GraphQL */ `
           fbUsername
           first_name
           last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+          }
           email
           banned
           deleted
@@ -421,6 +452,16 @@ export const createTrip = /* GraphQL */ `
         }
         inventory {
           id
+          items {
+            items {
+              id
+              imageKey
+              createdAt
+              updatedAt
+              inventoryItemsId
+            }
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -481,6 +522,16 @@ export const updateTrip = /* GraphQL */ `
           fbUsername
           first_name
           last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+          }
           email
           banned
           deleted
@@ -491,6 +542,16 @@ export const updateTrip = /* GraphQL */ `
         }
         inventory {
           id
+          items {
+            items {
+              id
+              imageKey
+              createdAt
+              updatedAt
+              inventoryItemsId
+            }
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -551,6 +612,16 @@ export const deleteTrip = /* GraphQL */ `
           fbUsername
           first_name
           last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+          }
           email
           banned
           deleted
@@ -561,6 +632,16 @@ export const deleteTrip = /* GraphQL */ `
         }
         inventory {
           id
+          items {
+            items {
+              id
+              imageKey
+              createdAt
+              updatedAt
+              inventoryItemsId
+            }
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -661,6 +742,13 @@ export const createOrder = /* GraphQL */ `
       numberOfCups
       orders {
         items {
+          item {
+            id
+            imageKey
+            createdAt
+            updatedAt
+            inventoryItemsId
+          }
           count
           id
           createdAt
@@ -676,6 +764,37 @@ export const createOrder = /* GraphQL */ `
           name
           district
           city
+          lastUpdateBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            userAddressId
+            owner
+          }
+          inventory {
+            id
+            items {
+              nextToken
+            }
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
           storeLastUpdateById
@@ -686,6 +805,16 @@ export const createOrder = /* GraphQL */ `
           fbUsername
           first_name
           last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+          }
           email
           banned
           deleted
@@ -705,6 +834,7 @@ export const createOrder = /* GraphQL */ `
         tripShipperId
         owner
       }
+      total
       id
       createdAt
       updatedAt
@@ -771,6 +901,13 @@ export const updateOrder = /* GraphQL */ `
       numberOfCups
       orders {
         items {
+          item {
+            id
+            imageKey
+            createdAt
+            updatedAt
+            inventoryItemsId
+          }
           count
           id
           createdAt
@@ -786,6 +923,37 @@ export const updateOrder = /* GraphQL */ `
           name
           district
           city
+          lastUpdateBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            userAddressId
+            owner
+          }
+          inventory {
+            id
+            items {
+              nextToken
+            }
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
           storeLastUpdateById
@@ -796,6 +964,16 @@ export const updateOrder = /* GraphQL */ `
           fbUsername
           first_name
           last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+          }
           email
           banned
           deleted
@@ -815,6 +993,7 @@ export const updateOrder = /* GraphQL */ `
         tripShipperId
         owner
       }
+      total
       id
       createdAt
       updatedAt
@@ -881,6 +1060,13 @@ export const deleteOrder = /* GraphQL */ `
       numberOfCups
       orders {
         items {
+          item {
+            id
+            imageKey
+            createdAt
+            updatedAt
+            inventoryItemsId
+          }
           count
           id
           createdAt
@@ -896,6 +1082,37 @@ export const deleteOrder = /* GraphQL */ `
           name
           district
           city
+          lastUpdateBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            userAddressId
+            owner
+          }
+          inventory {
+            id
+            items {
+              nextToken
+            }
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
           storeLastUpdateById
@@ -906,6 +1123,16 @@ export const deleteOrder = /* GraphQL */ `
           fbUsername
           first_name
           last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+          }
           email
           banned
           deleted
@@ -925,6 +1152,7 @@ export const deleteOrder = /* GraphQL */ `
         tripShipperId
         owner
       }
+      total
       id
       createdAt
       updatedAt

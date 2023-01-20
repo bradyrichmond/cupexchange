@@ -1,49 +1,51 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { API, graphqlOperation } from 'aws-amplify';
-import { LazyStore, Store, Trip } from '../../models';
-import { CreateStoreInput, DeleteStoreInput, UpdateStoreInput } from '../../API';
+import { DataStore, Predicates, SortDirection } from 'aws-amplify';
+import { LazyStore, Store, Trip, User } from '../../models';
 import { RootState } from '../../store';
-import { getStore, listStores, listTrips } from '../../graphql/queries';
-import { createStore, deleteStore, deleteTrip, updateStore } from '../../graphql/mutations';
 
 export const getStoreData = createAsyncThunk(
     'stores/getStores',
     async () => {
-      try {
-        const stores = await (API.graphql(graphqlOperation(listStores)) as Promise<any>);
-        return stores.data.listStores.items.sort((a: Store, b: Store) => a.name < b.name ? -1 : 1);
-      } catch (e) {
-        console.error(JSON.stringify(e));
-      }
+      return await DataStore.query(Store, Predicates.ALL, {
+        sort: s => s.name(SortDirection.ASCENDING)
+      });
     }
 );
+
+interface CreateStoreInput {
+  name: string
+  district: string
+  city: string
+  storeLastUpdateById: string
+  lastUpdateBy: User
+}
 
 export const createStoreMutation = createAsyncThunk(
   'stores/createStore',
   async (storeData: CreateStoreInput) => {
-    return await (API.graphql(graphqlOperation(createStore, { input: storeData })) as Promise<any>);
+    const { name, district, city, storeLastUpdateById, lastUpdateBy } = storeData;
+    return await DataStore.save(new Store({ name, district, city, storeLastUpdateById, lastUpdateBy }));
   }
 );
 
 export const deleteStoreMutation = createAsyncThunk(
   'stores/deleteStore',
-  async (deleteData: DeleteStoreInput) => {
-    return await (API.graphql(graphqlOperation(deleteStore, { input: deleteData })) as Promise<any>);
+  async (id: string) => {
+    return await DataStore.delete(Store, id)
   }
 )
 
 export const getSingleStoreData = createAsyncThunk(
   'stores/getSingleStoreData',
   async (id: string) => {
-    const currentStore = await (API.graphql(graphqlOperation(getStore, { id })) as Promise<any>);
-    return currentStore.data.getStore;
+    return await DataStore.query(Store, id);
   }
 )
 
 interface StoreState {
-  storeData: Array<LazyStore> | undefined
+  storeData?: Array<LazyStore>
   loading: Boolean
-  currentStoreData: LazyStore | undefined
+  currentStoreData?: LazyStore
 }
 
 const initialState: StoreState = {

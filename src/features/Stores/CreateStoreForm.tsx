@@ -22,9 +22,11 @@ const CreateStoreForm = ({ close }: CreateStoreFormProps) => {
 
     const handleCreateStore = async (data: any) => {
         const { storeName, storeCity } = data;
-        await dispatch(createStoreMutation({ name: storeName, city: storeCity, district, storeLastUpdateById: userData?.id ?? '' }));
-        await dispatch(getStoreData());
-        close();
+        if (userData) {
+            await dispatch(createStoreMutation({ name: storeName, city: storeCity, district, storeLastUpdateById: userData?.id ?? '', lastUpdateBy: userData }));
+            await dispatch(getStoreData());
+            close();
+        }
     }
 
     return (

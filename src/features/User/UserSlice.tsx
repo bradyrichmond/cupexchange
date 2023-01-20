@@ -1,67 +1,46 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { API, graphqlOperation } from 'aws-amplify';
+import { API, DataStore, graphqlOperation } from 'aws-amplify';
 import { CreateAddressInput, CreateUserInput } from '../../API';
 import { createAddress, createUser } from '../../graphql/mutations';
 import { getUser, listUsers } from '../../graphql/queries';
-import { User } from '../../models';
+import { Address, User } from '../../models';
 import { RootState } from '../../store';
 
 export const getUserData = createAsyncThunk<User, string>(
   'users/getUser',
   async (fbUsername: string) => {
-    const userData = await (API.graphql(graphqlOperation(listUsers, {
-      filter: {
-          fbUsername: {
-              eq: fbUsername
-          }
-        }
-      })) as Promise<any>
-    );
-
-    return userData.data.listUsers.items[0];
+    const users = await DataStore.query(User, u => u.fbUsername.eq(fbUsername));
+    return users[0];
   }
 )
 
-export const createUserAddress = createAsyncThunk<string, CreateAddressInput> (
+export const createUserAddress = createAsyncThunk<void, CreateAddressInput> (
   'users/createUserAddress',
   async (addressData: CreateAddressInput) => {
     const { address, address2, city, district, postal_code } = addressData;
-    const userAddress = await (API.graphql(graphqlOperation(createAddress, { input: { address, address2, city, district, postal_code } })) as Promise<any>)
-    return userAddress;
+    await DataStore.save(new Address({ address, address2, city, district, postal_code }))
   }
 );
 
 export const getUsers = createAsyncThunk(
   'users/getUsers',
   async () => {
-    const users = await (API.graphql(graphqlOperation(listUsers)) as Promise<any>)
-    return users.data.listUsers.items;
+    return await DataStore.query(User);
   }
 )
 
 export const getUserById = createAsyncThunk(
   'users/getUserById',
   async (id: string) => {
-    const user = await (API.graphql(graphqlOperation(getUser, { id })) as Promise<any>)
-    return user.data;
+    return await DataStore.query(User, id);
   }
 )
 
-interface UserType {
-  id: string
-  first_name: string
-  last_name: string
-  fbUsername: string
-  email: string
-}
-
-export const createUserMutation = createAsyncThunk<UserType, CreateUserInput>(
+export const createUserMutation = createAsyncThunk<User, CreateUserInput>(
   'users/createUser',
   async (userDataInput: CreateUserInput) => {
     const { fbUsername, first_name, last_name, userAddressId, email } = userDataInput;
-    const userDataRaw = await (API.graphql(graphqlOperation(createUser, {input: { fbUsername, first_name, last_name, userAddressId, email } })) as Promise<any>);
-    const userDataResult = userDataRaw.result;
-    const userData = { id: userDataResult.id, first_name: userDataResult.first_name, last_name: userDataResult.last_name, fbUsername: userDataResult.fbUsername, email: userDataResult.email }
+    const userData = await DataStore.save(new User({ fbUsername, first_name, last_name, userAddressId, email }));
     return userData;
   }
 );
@@ -73,7 +52,7 @@ interface InitialState {
   userName: string
   loading: boolean
   addressId: string
-  userData: UserType | undefined
+  userData: User | undefined
   users: User[],
   userById: User | undefined
 }
@@ -115,7 +94,6 @@ export const userSlice = createSlice({
     })
     .addCase(createUserAddress.fulfilled, (state, action) => {
       state.loading = false;
-      state.addressId = action.payload;
     })
     .addCase(createUserMutation.rejected, (state, action) => {
       console.log('createUserMutationFail');

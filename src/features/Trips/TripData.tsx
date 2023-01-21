@@ -6,11 +6,13 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { InventoryItem } from '../Stores/StoreData';
 import { getSingleTrip, selectCurrentTrip } from './TripsSlice';
 import { addCartItem, emptyCart } from '../Orders/CartSlice';
-import { Store, User } from '../../models';
 import { getStoreInventory, selectCurrentInventory } from '../Stores/InventorySlice';
+import { getStoreById, getUserById } from '../../utils/base';
+import { UserType } from '../User/UserSlice';
+import { StoreType } from '../Stores/StoresSlice';
 
-let initialStore: Store | undefined;
-let initialUser: User | undefined;
+let initialStore: StoreType | undefined;
+let initialUser: UserType | undefined;
 
 const TripData = () => {
     const { id } = useParams();
@@ -25,9 +27,9 @@ const TripData = () => {
 
     if (currentTrip) {
         const fetchInventory = async () => {
-            const fetchedStore = await currentTrip.store;
+            const fetchedStore = await getStoreById(currentTrip.tripStoreId);
             setCurrentStore(fetchedStore);
-            const fetchedShipper = await currentTrip.shipper;
+            const fetchedShipper = await getUserById(currentTrip.tripShipperId);
             setShipper(fetchedShipper);
         }
 

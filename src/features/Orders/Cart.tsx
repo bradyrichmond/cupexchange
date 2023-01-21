@@ -10,6 +10,7 @@ import { createOrderAction } from './OrderSlice';
 import { useNavigate } from 'react-router';
 import { selectUserData } from '../User/UserSlice';
 import { User } from '../../models';
+import { getUserById } from '../../utils/base';
 
 const Cart = () => {
     const dispatch = useAppDispatch();
@@ -26,9 +27,9 @@ const Cart = () => {
     
     const submitOrder = async () => {
         const userData = await DataStore.query(User, currentUser?.id ?? '');
-        const shipper = await tripData?.shipper;
+        const shipper = await getUserById(tripData?.tripShipperId ?? '');
         if (userData) {
-            await dispatch(createOrderAction({ orderInput: { tracking: [], numberOfCups: cupCount, orderBuyerId: currentUser?.id ?? '', orderShipperId: shipper?.id ?? '', orderTripId: tripData?.id ?? '', total }, orderItems: cartItemList,  buyer: userData, shipper: shipper, trip: tripData }));
+            await dispatch(createOrderAction({ orderInput: { tracking: [], numberOfCups: cupCount, orderBuyerId: currentUser?.id ?? '', orderShipperId: shipper?.id ?? '', orderTripId: tripData?.id ?? '', total }, orderItems: cartItemList }));
             await dispatch(emptyCart({}));
             navigate('/orders');
         }

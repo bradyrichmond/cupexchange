@@ -6,16 +6,46 @@ import { RootState } from '../../store';
 export const getTrips = createAsyncThunk(
     'trips/getTrips',
     async (page: number) => {
-      return await DataStore.query(Trip, t => t.orderExpiration.gt(Date.now()), {
+      const trips = await DataStore.query(Trip, t => t.orderExpiration.gt(Date.now()), {
         sort: t => t.orderExpiration(SortDirection.ASCENDING)
+      });
+
+      return trips.map(t => { 
+        return {
+          id: t.id,
+          cupPrice: t.cupPrice,
+          shippingPrice: t.shippingPrice,
+          maximumCups: t.maximumCups,
+          createdAt: t.createdAt,
+          updatedAt: t.updatedAt,
+          tripStoreId: t.tripStoreId,
+          tripShipperId: t.tripShipperId,
+          orderExpiration: t.orderExpiration
+        }
       });
     }
 );
 
+interface TripType {
+  id: string
+  cupPrice: string
+  shippingPrice: string
+  maximumCups?: number | null
+  createdAt?: string | null
+  updatedAt?: string | null
+  tripStoreId: string
+  tripShipperId: string
+  orderExpiration: number
+}
+
 export const getSingleTrip = createAsyncThunk(
   'trips/getSingleTrip',
-  async (id: string) => {
-    return await DataStore.query(Trip, id)
+  async (tripId: string) => {
+    const tripData = await DataStore.query(Trip, tripId);
+    if (tripData) {
+      const { id, cupPrice, shippingPrice, maximumCups, createdAt, updatedAt, tripStoreId, tripShipperId, orderExpiration } = tripData;
+      return { id, cupPrice, shippingPrice, maximumCups, createdAt, updatedAt, tripStoreId, tripShipperId, orderExpiration };
+    }
   }
 );
 
@@ -43,8 +73,8 @@ export const createTripMutation = createAsyncThunk(
 
 interface TripsState {
   loading: Boolean
-  trips: Trip[]
-  currentTrip: Trip | undefined
+  trips: TripType[]
+  currentTrip: TripType | undefined
 }
 
 const initialState: TripsState = {

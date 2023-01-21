@@ -3,6 +3,7 @@ import { DataStore } from 'aws-amplify';
 import { CreateOrderInput } from '../../API';
 import { Lego, Order, OrderItem, Trip, User } from '../../models';
 import { RootState } from '../../store';
+import { getUserById } from '../../utils/base';
 
 interface InitialState {
     loading: boolean
@@ -18,9 +19,6 @@ const initialState: InitialState = {
 
 interface CreateOrderInputProps {
     orderInput: CreateOrderInput
-    buyer: User | undefined
-    shipper: User | undefined
-    trip: Trip | undefined
     orderItems: {itemId: string, count: number}[]
 }
 
@@ -29,8 +27,11 @@ export const createOrderAction = createAsyncThunk(
     async (input: CreateOrderInputProps) => {
         const { tracking, numberOfCups, total, orderBuyerId, orderShipperId, orderTripId } = input.orderInput;
         const { orderItems } = input;
-        if (input.trip && input.buyer && input.shipper) {
-            const tripData = await DataStore.save(new Order({ tracking, numberOfCups, total, orderBuyerId, orderShipperId, orderTripId, buyer: input.buyer, shipper: input.shipper, trip: input.trip }));
+        const buyer = await DataStore.query(User, orderBuyerId);
+        const shipper = await DataStore.query(User, orderShipperId);
+        const trip = await DataStore.query(Trip, orderTripId);
+        if (buyer && shipper && trip) {
+            const tripData = await DataStore.save(new Order({ tracking, numberOfCups, total, orderBuyerId, orderShipperId, orderTripId, buyer, shipper, trip }));
             for (let i = 0; i < orderItems.length; i++) {
                 const { itemId, count } = orderItems[i];
                 const item = await DataStore.query(Lego, { id: itemId });

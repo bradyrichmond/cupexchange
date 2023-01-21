@@ -24,7 +24,7 @@ interface CreateStoreInput {
   lastUpdateBy: User
 }
 
-interface StoreType {
+export interface StoreType {
   id: string
   name: string
   city: string

@@ -4,7 +4,7 @@ import { CreateAddressInput, CreateUserInput } from '../../API';
 import { Address, User } from '../../models';
 import { RootState } from '../../store';
 
-interface UserType {
+export interface UserType {
   id: string
   first_name: string
   last_name: string
@@ -19,7 +19,7 @@ export const getUserData = createAsyncThunk<UserType, string>(
     const { id, first_name, last_name, fbUsername, email } = users[0];
     return { id, first_name, last_name, fbUsername, email }
   }
-)
+);
 
 export const createUserAddress = createAsyncThunk<void, CreateAddressInput> (
   'users/createUserAddress',
@@ -34,14 +34,14 @@ export const getUsers = createAsyncThunk(
   async () => {
     return await DataStore.query(User);
   }
-)
+);
 
 export const getUserById = createAsyncThunk(
   'users/getUserById',
   async (id: string) => {
     return await DataStore.query(User, id);
   }
-)
+);
 
 export const createUserMutation = createAsyncThunk<User, CreateUserInput>(
   'users/createUser',

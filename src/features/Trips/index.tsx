@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import CreateTripForm from './CreateTripForm';
 import { getTrips, selectTrips } from './TripsSlice';
 import { formatRelative } from 'date-fns';
+import { getStoreById, getUserById } from '../../utils/base';
 
 interface TripType {
     shipper: string | undefined;
@@ -41,8 +42,11 @@ const Stores = () => {
         if (trips && trips.length > 0) {
             const buildTrips = async () => {
                 const tripData = await Promise.all(trips.map(async (t) => {
-                    const storeName = (await t.store)?.name;
-                    const shipperName = `${(await t.shipper)?.first_name} ${(await t.shipper)?.last_name}`;
+                    const store = await getStoreById(t.tripStoreId);
+                    const storeName = store?.name
+                    const shipper = await getUserById(t.tripShipperId);
+                    const shipperName = `${shipper?.first_name} ${shipper?.last_name}`;
+                    
                     return {
                         ...t,
                         shipper: shipperName,

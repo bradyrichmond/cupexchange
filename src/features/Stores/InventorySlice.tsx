@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { Inventory, Lego } from '../../models';
+import { Inventory, Lego, Store } from '../../models';
 import { DataStore } from 'aws-amplify';
 import { RootState } from '../../store';
 
@@ -19,6 +19,12 @@ export const createStoreInventory = createAsyncThunk(
           return await DataStore.save(new Lego({ imageKey: lego, inventoryItemsId: inventoryResponseId }));
         }
       }));
+      const store = await DataStore.query(Store, input.storeId);
+      if (store) {
+        await DataStore.save(Store.copyOf(store, updated => {
+          updated.storeInventoryId = inventoryResponseId;
+        }))
+      }
     }
 )
 

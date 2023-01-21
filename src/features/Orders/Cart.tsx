@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { CartItem, emptyCart, removeCartItem, selectCartItems, updateItem } from './CartSlice';
-import { Storage } from 'aws-amplify';
+import { DataStore, Storage } from 'aws-amplify';
 import { useLegoData } from '../../hooks/legoHooks';
 import { Counter } from '../Stores/StoreData';
 import { selectCurrentTrip } from '../Trips/TripsSlice';
 import { createOrderAction } from './OrderSlice';
 import { useNavigate } from 'react-router';
 import { selectUserData } from '../User/UserSlice';
+import { User } from '../../models';
 
 const Cart = () => {
     const dispatch = useAppDispatch();
@@ -24,10 +25,13 @@ const Cart = () => {
     const currentUser = useAppSelector(selectUserData);
     
     const submitOrder = async () => {
+        const userData = await DataStore.query(User, currentUser?.id ?? '');
         const shipper = await tripData?.shipper;
-        await dispatch(createOrderAction({ orderInput: { tracking: [], numberOfCups: cupCount, orderBuyerId: currentUser?.id ?? '', orderShipperId: shipper?.id ?? '', orderTripId: tripData?.id ?? '', total }, orderItems: cartItemList,  buyer: currentUser, shipper: shipper, trip: tripData }));
-        await dispatch(emptyCart({}));
-        navigate('/orders');
+        if (userData) {
+            await dispatch(createOrderAction({ orderInput: { tracking: [], numberOfCups: cupCount, orderBuyerId: currentUser?.id ?? '', orderShipperId: shipper?.id ?? '', orderTripId: tripData?.id ?? '', total }, orderItems: cartItemList,  buyer: userData, shipper: shipper, trip: tripData }));
+            await dispatch(emptyCart({}));
+            navigate('/orders');
+        }
     }
 
     const cancelOrder = async () => {

@@ -5,6 +5,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectUserData } from '../User/UserSlice';
 import { createStoreMutation, getStoreData } from './StoresSlice';
 import { DISTRICTS } from '../../utils/constants';
+import { DataStore } from 'aws-amplify';
+import { User } from '../../models';
 
 interface CreateStoreFormProps {
     close: () => void
@@ -14,7 +16,7 @@ const CreateStoreForm = ({ close }: CreateStoreFormProps) => {
     const { register, handleSubmit } = useForm();
     const [district, setDistrict] = useState('None');
     const dispatch = useAppDispatch();
-    const userData = useAppSelector(selectUserData);
+    const currentUser = useAppSelector(selectUserData);
 
     const handleDistrictChange = (e:SelectChangeEvent<string>) => {
         setDistrict(e.target.value);
@@ -22,6 +24,7 @@ const CreateStoreForm = ({ close }: CreateStoreFormProps) => {
 
     const handleCreateStore = async (data: any) => {
         const { storeName, storeCity } = data;
+        const userData = await DataStore.query(User, currentUser?.id ?? '');
         if (userData) {
             await dispatch(createStoreMutation({ name: storeName, city: storeCity, district, storeLastUpdateById: userData?.id ?? '', lastUpdateBy: userData }));
             await dispatch(getStoreData());

@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Box, Button, Modal } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getStoreData, selectStoreData } from './StoresSlice';
 import { DataGrid, GridColDef, GridEventListener, GridRowsProp } from '@mui/x-data-grid';
 import { Add } from '@mui/icons-material';
 import CreateStoreForm from './CreateStoreForm';
-import { selectUserCognitoGroups } from '../User/UserSlice';
+import { selectUserCognitoGroups, selectUserData } from '../User/UserSlice';
 import { useNavigate } from 'react-router';
+import { DataStore } from 'aws-amplify';
+import { Store, User } from '../../models';
 
 const Stores = () => {
     const [open, setOpen] = useState(false);
@@ -16,11 +18,42 @@ const Stores = () => {
     const dispatch = useAppDispatch();
     const storeData = useAppSelector(selectStoreData);
     const userGroups = useAppSelector(selectUserCognitoGroups);
+    const currentUser = useAppSelector(selectUserData)
     const userIsModerator = userGroups.includes('moderators');
+
+    const fileReader = new FileReader();
     
     useEffect(() => {
         dispatch(getStoreData());
     }, [])
+
+    const bulkAdd = async (e: ChangeEvent<HTMLInputElement>) => {
+        const files = e.target?.files;
+        const userData = await DataStore.query(User, currentUser?.id ?? '')
+        if (files && userData) {
+            const file = files[0]
+            fileReader.onload = function (event) {
+                const csvOutput = event.target?.result;
+                const stores = csvOutput?.toString().split('\n')
+
+                if (stores) {
+                    for(let i = 0; i < stores?.length; i++) {
+                        const store = stores[i].split(',');
+                        const city = store[0];
+                        const district = store[1];
+                        const storeName = store[2];
+                        if (city && district && storeName) {
+                            DataStore.save(new Store({ name: storeName, city, district, lastUpdateBy: userData, storeLastUpdateById: currentUser?.id ?? '' }));
+                        }
+                    }
+
+                    dispatch(getStoreData());
+                }
+            };
+
+            fileReader.readAsText(file);
+        }
+    }
 
     const rows: GridRowsProp = storeData ?? [];
 
@@ -51,6 +84,15 @@ const Stores = () => {
             {userIsModerator && 
                 <Box marginLeft='2rem' marginRight='2rem' marginTop='2rem'>
                     <Button onClick={handleOpen}><Add />Add Store</Button>
+                    <Box>
+                        <input
+                            type="file"
+                            name="file"
+                            accept=".csv"
+                            style={{ display: "block", margin: "10px auto" }}
+                            onChange={bulkAdd}
+                        />
+                    </Box>
                 </Box>
             }
             <Box margin='2rem' flex={1}>

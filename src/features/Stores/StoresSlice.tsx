@@ -6,9 +6,13 @@ import { RootState } from '../../store';
 export const getStoreData = createAsyncThunk(
     'stores/getStores',
     async () => {
-      return await DataStore.query(Store, Predicates.ALL, {
+      const stores = await DataStore.query(Store, Predicates.ALL, {
         sort: s => s.name(SortDirection.ASCENDING)
       });
+      return stores.map((storeData) => {
+        const { id, name, city, district, storeInventoryId, updatedAt } = storeData;
+        return { id, name, city, district, storeInventoryId, updatedAt };
+      })
     }
 );
 
@@ -18,6 +22,15 @@ interface CreateStoreInput {
   city: string
   storeLastUpdateById: string
   lastUpdateBy: User
+}
+
+interface StoreType {
+  id: string
+  name: string
+  city: string
+  district: string
+  storeInventoryId?: string | null
+  updatedAt?: string | null
 }
 
 export const createStoreMutation = createAsyncThunk(
@@ -37,15 +50,19 @@ export const deleteStoreMutation = createAsyncThunk(
 
 export const getSingleStoreData = createAsyncThunk(
   'stores/getSingleStoreData',
-  async (id: string) => {
-    return await DataStore.query(Store, id);
+  async (storeId: string) => {
+    const storeData = await DataStore.query(Store, storeId);
+    if (storeData) {
+      const { id, name, city, district, storeInventoryId, updatedAt } = storeData;
+      return { id, name, city, district, storeInventoryId, updatedAt };
+    }
   }
 )
 
 interface StoreState {
-  storeData?: Array<LazyStore>
+  storeData?: Array<StoreType>
   loading: Boolean
-  currentStoreData?: LazyStore
+  currentStoreData?: StoreType
 }
 
 const initialState: StoreState = {

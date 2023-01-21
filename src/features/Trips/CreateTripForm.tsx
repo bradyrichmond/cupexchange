@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
@@ -8,6 +8,8 @@ import { selectUserData } from '../User/UserSlice';
 import { selectStoreData, getStoreData } from '../Stores/StoresSlice';
 import { createTripMutation, getTrips } from './TripsSlice';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import { DataStore } from 'aws-amplify';
+import { User } from '../../models';
 
 interface CreateTripFormProps {
     close: () => void
@@ -17,10 +19,10 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
     const { register, handleSubmit } = useForm();
     const [store, setStore] = useState('None');
     const [orderExpiration, setOrderExpiration] = useState('');
-    const userData = useAppSelector(selectUserData);
+    const currentUser = useAppSelector(selectUserData);
     const storeData = useAppSelector(selectStoreData);
     const dispatch = useAppDispatch();
-    const userFullName = `${userData?.first_name} ${userData?.last_name}`
+    const userFullName = `${currentUser?.first_name} ${currentUser?.last_name}`
 
     useEffect(() => {
         dispatch(getStoreData());
@@ -33,8 +35,11 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
     const handleFormSubmit = async (data: any) => {
         const { cupPrice, shippingPrice, cupLimit } = data;
         const parsedOrderExpiration = Date.parse(orderExpiration);
-        await dispatch(createTripMutation({ tripShipperId: userData?.id ?? '', cupPrice, shippingPrice, tripStoreId: store, orderExpiration: parsedOrderExpiration, maximumCups: cupLimit, store: store ?? '', shipper: userData }));
-        await dispatch(getTrips(0));
+        const userData = await DataStore.query(User, currentUser?.id ?? '');
+        if (userData) {
+            await dispatch(createTripMutation({ tripShipperId: currentUser?.id ?? '', cupPrice, shippingPrice, tripStoreId: store, orderExpiration: parsedOrderExpiration, maximumCups: cupLimit, store: store ?? '', shipper: userData }));
+            await dispatch(getTrips(0));
+        }
         close();
     }
 

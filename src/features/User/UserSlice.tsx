@@ -1,16 +1,23 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { API, DataStore, graphqlOperation } from 'aws-amplify';
+import { DataStore } from 'aws-amplify';
 import { CreateAddressInput, CreateUserInput } from '../../API';
-import { createAddress, createUser } from '../../graphql/mutations';
-import { getUser, listUsers } from '../../graphql/queries';
 import { Address, User } from '../../models';
 import { RootState } from '../../store';
 
-export const getUserData = createAsyncThunk<User, string>(
+interface UserType {
+  id: string
+  first_name: string
+  last_name: string
+  fbUsername: string
+  email: string
+}
+
+export const getUserData = createAsyncThunk<UserType, string>(
   'users/getUser',
-  async (fbUsername: string) => {
-    const users = await DataStore.query(User, u => u.fbUsername.eq(fbUsername));
-    return users[0];
+  async (username: string) => {
+    const users = await DataStore.query(User, u => u.fbUsername.eq(username));
+    const { id, first_name, last_name, fbUsername, email } = users[0];
+    return { id, first_name, last_name, fbUsername, email }
   }
 )
 
@@ -52,7 +59,7 @@ interface InitialState {
   userName: string
   loading: boolean
   addressId: string
-  userData: User | undefined
+  userData: UserType | undefined
   users: User[],
   userById: User | undefined
 }

@@ -28,19 +28,21 @@ export default function Login() {
     const groups = user.signInUserSession.accessToken.payload['cognito:groups'];
     
     if (fbUsername) {
-      const userResult = await DataStore.query(User);
+      const userResult = await DataStore.query(User, u => u.fbUsername.eq(fbUsername));
       const localUser = userResult[0] ?? false;
 
-      if (!localUser) {
+      if (userResult.length > 0 && !localUser) {
         navigate('/signup', { state: { fbUsername, email, groups }});
         return;
       }
 
-      await dispatch(setFbUsername(user.username));
-      await dispatch(setIsLoggedIn(true));
-      await dispatch(setUserGroups(user.signInUserSession.accessToken.payload['cognito:groups']));
-      await dispatch(getUserData(fbUsername));
-      navigate(location.state.goto);
+      if (userResult.length > 0) {
+        await dispatch(setFbUsername(user.username));
+        await dispatch(setIsLoggedIn(true));
+        await dispatch(setUserGroups(user.signInUserSession.accessToken.payload['cognito:groups']));
+        await dispatch(getUserData(fbUsername));
+        navigate(location.state.goto);
+      }
     }
   }
 

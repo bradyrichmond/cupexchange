@@ -3,6 +3,11 @@ import { Inventory, Lego } from '../../models';
 import { DataStore } from 'aws-amplify';
 import { RootState } from '../../store';
 
+interface LegoType {
+  id: string
+  imageKey: string
+}
+
 export const createStoreInventory = createAsyncThunk(
     'inventory/createStoreInventory',
     async (input: { lego: (string | undefined)[], storeId: string, userId: string }) => {
@@ -20,13 +25,19 @@ export const createStoreInventory = createAsyncThunk(
 export const getStoreInventory = createAsyncThunk(
   'inventory/getStoreInventory',
   async (id: string) => {
-    return await DataStore.query(Lego, (L) => L.inventoryItemsId.eq(id));
+    try {
+      const lego = await DataStore.query(Lego, (L) => L.inventoryItemsId.eq(id));
+      const legoList: LegoType[] = lego.map((l) => { return { id: l.id, imageKey: l.imageKey } });
+      return legoList;
+    } catch (e) {
+      console.error(JSON.stringify(e));
+    }
   }
 )
 
 interface StoreState {
   loading: Boolean
-  currentInventory: (Lego | undefined)[] | undefined;
+  currentInventory: (LegoType | undefined)[] | undefined;
 }
 
 const initialState: StoreState = {

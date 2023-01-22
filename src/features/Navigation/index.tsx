@@ -11,6 +11,7 @@ import { selectUserCognitoGroups } from '../User/UserSlice';
 import { ShoppingCartOutlined } from '@mui/icons-material';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import { selectCartItems } from '../Orders/CartSlice';
+import legoHead from '../../images/lego_head.png';
 
 const Navigation = () => {
     const userGroups = useAppSelector(selectUserCognitoGroups);
@@ -25,48 +26,55 @@ const Navigation = () => {
     }
 
     return (
-        <Box display='flex' flexDirection='column' padding='1rem' borderRight='10px solid rgba(246,236,54,255)' height='100%' bgcolor='rgba(208,16,18,255)'>
-            <Box marginBottom='1rem' onClick={toggleMenu}>
-                <MenuIcon htmlColor='rgba(255,255,255,255)'/>
-            </Box>
-            <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
-                <Link to='/stores'>
-                    <StoreIcon htmlColor='rgba(255,255,255,255)' />
-                    {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Stores</Typography></Box>}
-                </Link>
-            </Box>
-            <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
-                <Link to='/upcoming'>
-                    <AvTimerIcon htmlColor='rgba(255,255,255,255)' />
-                    {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Upcoming Trips</Typography></Box>}
-                </Link>
-            </Box>
-            <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
-                <Link to="/cart">
-                    <Badge badgeContent={itemCount ?? 0} color='primary'>
-                        <ShoppingCartOutlined htmlColor='rgba(255,255,255,255)' />
-                    </Badge>
-                    {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Cart</Typography></Box>}
-                </Link>
-            </Box>
-            <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
-                <AutoFixHighIcon htmlColor='rgba(255,255,255,255)' />
-                {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Your Wishlist</Typography></Box>}
-            </Box>
-            <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
-                <Link to='/orders'>
-                    <ViewListIcon htmlColor='rgba(255,255,255,255)' />
-                    {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>Orders</Typography></Box>}
-                </Link>
-            </Box>
-            {userIsModerator &&
-                <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
-                    <Link to='/users'>
-                        <ManageAccountsIcon htmlColor='rgba(255,255,255,255)' />
-                        {expandMenu && <Box display='flex' justifyContent='center' alignItems='center'><Typography color='rgba(255,255,255,255)' display='inline' paddingLeft='1rem'>User Management</Typography></Box>}
+        <Box display='flex' flexDirection='column' padding='2rem' height='100%' bgcolor='rgba(0,0,0,255)' justifyContent='center' alignItems='center'>
+            <Box justifyContent='center' alignItems='center' display='flex' flexDirection='column' flex='1'>
+
+                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                    <Link to='/stores'>
+                        <StoreIcon htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
                     </Link>
                 </Box>
-            }
+
+                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                    <Link to='/upcoming'>
+                        <AvTimerIcon htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
+                    </Link>
+                </Box>
+
+                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                    <Link to="/cart">
+                        <Badge badgeContent={itemCount ?? 0} color='primary'>
+                            <ShoppingCartOutlined htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
+                        </Badge>
+                    </Link>
+                </Box>
+
+                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                    <Link to='/'>
+                        <AutoFixHighIcon htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
+                    </Link>
+                </Box>
+
+                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                    <Link to='/orders'>
+                        <ViewListIcon htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
+                    </Link>
+                </Box>
+
+                {userIsModerator &&
+                    <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                        <Link to='/users'>
+                            <ManageAccountsIcon htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
+                        </Link>
+                    </Box>
+                }
+                
+            </Box>
+            <Box display='flex' justifyContent='center' alignItems='center' marginBottom='2rem'>
+                <Link to="/account">
+                    <img src={legoHead} width='50px' height='50px'/>
+                </Link>
+            </Box>
         </Box>
     )
 }

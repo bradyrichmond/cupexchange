@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Box, Button, Modal } from '@mui/material';
+import { Box, Button, Modal, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getStoreData, selectStoreData } from './StoresSlice';
 import { DataGrid, GridColDef, GridEventListener, GridRowsProp } from '@mui/x-data-grid';
@@ -58,9 +58,9 @@ const Stores = () => {
     const rows: GridRowsProp = storeData ?? [];
 
     const columns: GridColDef[] = [
-        { field: 'name', headerName: 'Store Name', width: 300 },
-        { field: 'city', headerName: 'City', width: 150 },
-        { field: 'district', headerName: 'State', width: 150 },
+        { field: 'name', headerName: 'Store Name', width: 450 },
+        { field: 'city', headerName: 'City', width: 300 },
+        { field: 'district', headerName: 'State', width: 300 },
     ];
 
     const handleRowClick: GridEventListener<'rowClick'> = (
@@ -81,22 +81,24 @@ const Stores = () => {
             >
                 <CreateStoreForm close={handleClose}/>
             </Modal>
+            <Box display='flex' justifyContent='center' alignItems='center'>
+                <Typography fontSize='3rem' fontWeight='bold' padding='2rem'>
+                    Lego Stores
+                </Typography>
+            </Box>
             {userIsModerator && 
-                <Box marginLeft='2rem' marginRight='2rem' marginTop='2rem'>
-                    <Button onClick={handleOpen}><Add />Add Store</Button>
-                    <Box>
-                        <input
-                            type="file"
-                            name="file"
-                            accept=".csv"
-                            style={{ display: "block", margin: "10px auto" }}
-                            onChange={bulkAdd}
-                        />
+                <Box marginLeft='2rem' marginRight='2rem' marginTop='2rem' display='flex' flexDirection='row'>
+                    <Button variant="contained"  onClick={handleOpen}><Add />Add Store</Button>
+                    <Box paddingLeft='2rem'>
+                        <Button variant="contained" component="label">
+                            Bulk Upload
+                            <input hidden accept=".csv" type="file" onChange={bulkAdd} />
+                        </Button>
                     </Box>
                 </Box>
             }
             <Box margin='2rem' flex={1}>
-                <DataGrid onRowClick={handleRowClick} rows={rows} columns={columns} />
+                <DataGrid onRowClick={handleRowClick} rows={rows} columns={columns} style={{background: 'rgba(255, 255, 255, 255)', borderRadius: '2rem', color: 'rgba(131,133,146,255)', padding: '2rem', fontSize: '1.5rem', fontWeight: 'bold' }} />
             </Box>
         </Box>
     )

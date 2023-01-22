@@ -31,11 +31,11 @@ const Stores = () => {
     const rows: GridRowsProp = tripData;
 
     const columns: GridColDef[] = [
-        { field: 'store', headerName: 'Store Name', width: 300 },
-        { field: 'shipper', headerName: 'Shipper Name', width: 150 },
-        { field: 'cupPrice', headerName: 'Cup Price', width: 150 },
-        { field: 'shippingPrice', headerName: 'Shipping Price/3 Cups', width: 200 },
-        { field: 'orderExpiration', headerName: 'Taking Orders Until', width: 200 },
+        { field: 'store', headerName: 'Store Name', width: 450 },
+        { field: 'shipper', headerName: 'Shipper Name', width: 300 },
+        { field: 'cupPrice', headerName: 'Cup Price', width: 300 },
+        { field: 'shippingPrice', headerName: 'Shipping Price/3 Cups', width: 300 },
+        { field: 'orderExpiration', headerName: 'Taking Orders Until', width: 300 },
     ];
 
     useEffect(() => {
@@ -46,7 +46,7 @@ const Stores = () => {
                     const storeName = store?.name
                     const shipper = await getUserById(t.tripShipperId);
                     const shipperName = `${shipper?.first_name} ${shipper?.last_name}`;
-                    
+
                     return {
                         ...t,
                         shipper: shipperName,
@@ -93,14 +93,14 @@ const Stores = () => {
             >
                 <CreateTripForm close={handleClose} />
             </Modal>
-            <Box>
-                <Typography fontSize='3rem'>Upcoming Trips</Typography>
+            <Box display='flex' alignItems='center' justifyContent='center' paddingBottom='2rem'>
+                <Typography fontSize='3rem' fontWeight='bold'>Upcoming Trips</Typography>
             </Box>
             <Box>
-                <Button onClick={handleOpen}><Add />Add Trip</Button>
+                <Button onClick={handleOpen} variant='contained'><Add />Add Trip</Button>
             </Box>
             <Box marginTop='2rem' flex={1}>
-                <DataGrid onRowClick={handleRowClick} rows={rows} columns={columns} onPageChange={handlePageChange}/>
+                <DataGrid onRowClick={handleRowClick} rows={rows} columns={columns} onPageChange={handlePageChange} style={{background: 'rgba(255, 255, 255, 255)', borderRadius: '2rem', color: 'rgba(131,133,146,255)', padding: '2rem', fontSize: '1.5rem', fontWeight: 'bold' }}/>
             </Box>
         </Box>
     )

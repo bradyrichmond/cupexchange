@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Card, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { API } from 'aws-amplify';
 import { format } from 'date-fns';
@@ -21,27 +21,33 @@ const Orders = () => {
     return (
         <Box display='flex' flexDirection='column' padding='2rem'>
             <Box>
-                <Typography fontSize='3rem'>Outgoing Orders</Typography>
-                <Box>
-                    {
-                        outgoingOrders.map((order) => {
-                            if (order) {
-                                return <OrderItems orderData={order} />;
+                <Box display='flex' justifyContent='center' alignItems='center' paddingBottom='2rem'><Typography variant='h1'>Outgoing Orders</Typography></Box>
+                    <Card sx={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
+                            {outgoingOrders.length > 0 ?
+                                outgoingOrders.map((order) => {
+                                    if (order) {
+                                        return <OrderItems orderData={order} />;
+                                    }
+                                })
+                                :
+                                <Typography variant='h2'>No outgoing orders</Typography>
                             }
-                        })
-                    }
-                </Box>
+                    </Card>
             </Box>
             <Box>
-                <Typography fontSize='3rem'>Incoming Orders</Typography>
+                <Box display='flex' justifyContent='center' alignItems='center' paddingBottom='2rem' paddingTop='2rem'><Typography variant='h1'>Incoming Orders</Typography></Box>
                 <Box>
-                    {
-                        incomingOrders.map((order) => {
-                            if (order) {
-                                return <OrderItems orderData={order} />;
-                            }
-                        })
-                    }
+                    <Card sx={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
+                        {incomingOrders.length > 0 ?
+                            incomingOrders.map((order) => {
+                                if (order) {
+                                    return <OrderItems orderData={order} />;
+                                }
+                            })
+                            :
+                            <Typography variant='h2'>No incoming orders</Typography>
+                        }
+                    </Card>
                 </Box>
             </Box>
         </Box>

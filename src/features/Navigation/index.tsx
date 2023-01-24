@@ -27,21 +27,21 @@ const Navigation = () => {
 
     return (
         <Box display='flex' flexDirection='column' padding='2rem' height='100%' bgcolor='rgba(0,0,0,255)' justifyContent='center' alignItems='center'>
-            <Box justifyContent='center' alignItems='center' display='flex' flexDirection='column' flex='1'>
+            <Box justifyContent='center' alignItems='center' display='flex' flexDirection='column' flex='1' paddingTop='20rem' paddingBottom='20rem'>
 
-                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px' flex='1'>
                     <Link to='/stores'>
                         <StoreIcon htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
                     </Link>
                 </Box>
 
-                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px' flex='1'>
                     <Link to='/upcoming'>
                         <AvTimerIcon htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
                     </Link>
                 </Box>
 
-                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px' flex='1'>
                     <Link to="/cart">
                         <Badge badgeContent={itemCount ?? 0} color='primary'>
                             <ShoppingCartOutlined htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
@@ -49,20 +49,20 @@ const Navigation = () => {
                     </Link>
                 </Box>
 
-                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px' flex='1'>
                     <Link to='/'>
                         <AutoFixHighIcon htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
                     </Link>
                 </Box>
 
-                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px' flex='1'>
                     <Link to='/orders'>
                         <ViewListIcon htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
                     </Link>
                 </Box>
 
                 {userIsModerator &&
-                    <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px'>
+                    <Box marginBottom='2rem' display='flex' flexDirection='row' alignItems='center' fontSize='50px' flex='1'>
                         <Link to='/users'>
                             <ManageAccountsIcon htmlColor='rgba(131,133,146,255)' fontSize='inherit' />
                         </Link>

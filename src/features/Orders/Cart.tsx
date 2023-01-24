@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { CartItem, emptyCart, removeCartItem, selectCartItems, updateItem } from './CartSlice';
 import { DataStore, Storage } from 'aws-amplify';
@@ -42,30 +42,53 @@ const Cart = () => {
 
     return (
         <Box>
-            {
-                cartItemList.map((item) => {
-                    return (
-                        <Item cartItem={item}/>
-                    )
-                })
-            }
-            <Box borderTop='2px solid rgba(246,236,54,255)' padding='2rem'>
-                <Box display='flex' flexDirection='row'>
-                    <Box flex='1'>Subtotal:</Box>
-                    <Box flex='1'>${subtotal}</Box>
-                </Box>
-                <Box display='flex' flexDirection='row'>
-                    <Box flex='1'>Shipping:</Box>
-                    <Box flex='1'>${shippingCost}</Box>
-                </Box>
-                <Box display='flex' flexDirection='row'>
-                    <Box flex='1'>Total:</Box>
-                    <Box flex='1'>${total}</Box>
-                </Box>
+            <Box display='flex' justifyContent='center' alignItems='center' paddingBottom='2rem'>
+                <Typography variant='h1'>Cart</Typography>
             </Box>
-            <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
-                <Box><Button onClick={submitOrder}>Submit Order</Button></Box>
-                <Box><Button onClick={cancelOrder}>Cancel Order</Button></Box>
+            <Box padding='2rem' display='flex' flexDirection='row'>
+                <Box flex='1'>
+                    <Card sx={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <CardContent>
+                            {cartItemList.length > 0 ?
+                                cartItemList.map((item) => {
+                                    return (
+                                        <Item cartItem={item}/>
+                                    )
+                                })
+                                :
+                                <Typography variant='h2'>No items in cart</Typography>
+                            }
+                        </CardContent>
+                    </Card>
+                </Box>
+                <Box paddingLeft='3rem'>
+                    <Card>
+                        <CardContent>
+                            <Box display='flex' flexDirection='row'>
+                                <Typography variant='h3'>Subtotal:</Typography>
+                                <Box flex='1' display='flex' justifyContent='flex-end'>
+                                    <Typography variant='h3'>${subtotal}</Typography>
+                                </Box>
+                            </Box>
+                            <Box display='flex' flexDirection='row'>
+                                <Typography variant='h3'>Shipping:</Typography>
+                                <Box flex='1' display='flex' justifyContent='flex-end'>
+                                    <Typography variant='h3'>${Number.isNaN(shippingCost) ? '0' : shippingCost}</Typography>
+                                </Box>
+                            </Box>
+                            <Box display='flex' flexDirection='row'>
+                                <Typography variant='h3'>Total:</Typography>
+                                <Box flex='1' display='flex' justifyContent='flex-end'>
+                                    <Typography variant='h3'>${Number.isNaN(total) ? '0' : total}</Typography>
+                                </Box>
+                            </Box>
+                        </CardContent>
+                        <Box display='flex' flexDirection='row' alignItems='center' justifyContent='center' padding='1rem'>
+                            <Box><Button variant='contained' color='secondary' onClick={cancelOrder}>Cancel Order</Button></Box>
+                            <Box paddingLeft='1rem'><Button variant='contained' onClick={submitOrder}>Submit Order</Button></Box>
+                        </Box>
+                    </Card>
+                </Box>
             </Box>
         </Box>
     )

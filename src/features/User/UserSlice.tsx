@@ -77,6 +77,18 @@ export const createUserMutation = createAsyncThunk<User, CreateUserInput>(
   }
 );
 
+export const banUser = createAsyncThunk(
+  'users/banUser',
+  async (id: string) => {
+    const user = await DataStore.query(User, id);
+    if (user) {
+      await DataStore.save(User.copyOf(user, updated => {
+        updated.banned = true;
+      }))
+    }
+  }
+)
+
 interface InitialState {
   isLoggedIn: boolean
   fbUsername: string
@@ -182,6 +194,16 @@ export const userSlice = createSlice({
     .addCase(getUserById.fulfilled, (state, action) => {
       state.loading = false;
       state.userById = action.payload;
+    })
+    .addCase(banUser.rejected, (state, action) => {
+      console.log('ban user fail');
+      state.loading = false;
+    })
+    .addCase(banUser.pending, (state, action) => {
+      state.loading = true;
+    })
+    .addCase(banUser.fulfilled, (state, action) => {
+      state.loading = false;
     })
   },
 });

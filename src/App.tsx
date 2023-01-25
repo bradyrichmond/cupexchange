@@ -24,6 +24,7 @@ import TripData from './features/Trips/TripData';
 import Orders from './features/Orders';
 import Cart from './features/Orders/Cart';
 import Profile from './features/User/Profile';
+import UserData from './features/User/UserData';
 
 const buildRoutes = (isLoggedIn: boolean, pathname: string, userIsModerator: boolean) => createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const buildRoutes = (isLoggedIn: boolean, pathname: string, userIsModerator: boo
       {
         path: 'users',
         element: userIsModerator ? <Users /> : <Box>Access Denied</Box>
+      },
+      {
+        path: 'users/:id',
+        element: <UserData />
       },
       {
         path: 'profile',

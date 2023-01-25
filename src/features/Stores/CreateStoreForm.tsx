@@ -42,7 +42,7 @@ const CreateStoreForm = ({ close }: CreateStoreFormProps) => {
                     <TextField id="standard-basic" label="Store Name" variant="standard" {...register('storeName', { required: true, minLength: 2 })} />
                     <TextField id="standard-basic" label="Store City" variant="standard" {...register('storeCity', { required: true, minLength: 2 })} />
                     <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                        <InputLabel id="demo-simple-select-standard-label">State</InputLabel>
+                        <InputLabel>State</InputLabel>
                         <Select
                         onChange={handleDistrictChange}
                         label="State"

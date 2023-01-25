@@ -10,14 +10,16 @@ export interface UserType {
   last_name: string
   fbUsername: string
   email: string
+  userAddressId?: string | null
+  paypalMeURL?: string
 }
 
 export const getUserData = createAsyncThunk<UserType, string>(
   'users/getUser',
   async (username: string) => {
     const users = await DataStore.query(User, u => u.fbUsername.eq(username));
-    const { id, first_name, last_name, fbUsername, email } = users[0];
-    return { id, first_name, last_name, fbUsername, email }
+    const { id, first_name, last_name, fbUsername, email, userAddressId } = users[0];
+    return { id, first_name, last_name, fbUsername, email, userAddressId };
   }
 );
 
@@ -25,9 +27,32 @@ export const createUserAddress = createAsyncThunk<void, CreateAddressInput> (
   'users/createUserAddress',
   async (addressData: CreateAddressInput) => {
     const { address, address2, city, district, postal_code } = addressData;
-    await DataStore.save(new Address({ address, address2, city, district, postal_code }))
+    await DataStore.save(new Address({ address, address2, city, district, postal_code }));
   }
 );
+
+interface UpdateUserInput {
+  id: string
+  userAddressId?: string
+}
+
+export const updateUserAddress = createAsyncThunk(
+  'users/updateUser',
+  async (input: UpdateUserInput) => {
+    const currentUser = await DataStore.query(User, input.id);
+    if (currentUser) {
+      const userData = await DataStore.save(User.copyOf(currentUser, updated => {
+
+        if (input.userAddressId) {
+          updated.userAddressId = input.userAddressId;
+        }
+
+      }))
+
+      return userData;
+    }
+  }
+)
 
 export const getUsers = createAsyncThunk(
   'users/getUsers',
@@ -122,6 +147,17 @@ export const userSlice = createSlice({
       state.loading = true;
     })
     .addCase(getUserData.fulfilled, (state, action) => {
+      state.loading = false;
+      state.userData = action.payload;
+    })
+    .addCase(updateUserAddress.rejected, (state, action) => {
+      console.log('updateUserAddressFail');
+      state.loading = false;
+    })
+    .addCase(updateUserAddress.pending, (state, action) => {
+      state.loading = true;
+    })
+    .addCase(updateUserAddress.fulfilled, (state, action) => {
       state.loading = false;
       state.userData = action.payload;
     })

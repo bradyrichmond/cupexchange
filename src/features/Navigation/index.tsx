@@ -71,7 +71,7 @@ const Navigation = () => {
                 
             </Box>
             <Box display='flex' justifyContent='center' alignItems='center' marginBottom='2rem'>
-                <Link to="/account">
+                <Link to="/profile">
                     <img src={legoHead} width='50px' height='50px'/>
                 </Link>
             </Box>

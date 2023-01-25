@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { Box, Button, TextField, Theme, Typography } from '@mui/material';
+import { Box, Button, TextField, Theme, Typography, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import { makeStyles, createStyles } from '@mui/styles';
 import { useLocation, useNavigate } from 'react-router';
 import { setFbUsername, setUserGroups, createUserAddress, selectAddressId, createUserMutation } from '../User/UserSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { DISTRICTS } from '../../utils/constants';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     textInputSpacing: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 const SignUp = () => {
     const { register, handleSubmit } = useForm();
     const classes = useStyles();
+    const [district, setDistrict] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const locData = useLocation();
     const navigate = useNavigate();
@@ -34,6 +36,10 @@ const SignUp = () => {
         navigate('/');
     }
 
+    const handleDistrictChange = (e:SelectChangeEvent<string>) => {
+        setDistrict(e.target.value);
+    }
+
     return (
         <Box display='flex' justifyContent='center' alignItems='center' height='100%'>
             {isLoading && <Typography>Loading...</Typography>}
@@ -44,20 +50,33 @@ const SignUp = () => {
                     <Box display='flex' flexDirection='column' fontSize='2rem'>
                         <Typography fontSize='2rem' paddingBottom='1rem'>Name</Typography>
                         <Box display='flex' flexDirection='row'>
-                            <TextField id="standard-basic" label="First Name" variant="standard" {...register('firstName', { required: true, minLength: 2 })} />
-                            <TextField id="standard-basic" label="Last Name" variant="standard" {...register('lastName', { required: true, minLength: 2 })} />
+                            <TextField label="First Name" variant="standard" {...register('firstName', { required: true, minLength: 2 })} />
+                            <TextField label="Last Name" variant="standard" {...register('lastName', { required: true, minLength: 2 })} />
                         </Box>
                     </Box>
                     <Box marginTop='1rem'>
                         <Typography fontSize='2rem' paddingBottom='1rem'>Address</Typography>
                         <Box>
-                            <TextField id="standard-basic" label="Address 1" variant="standard" {...register('address1', { required: true })}/>
-                            <TextField id="standard-basic" label="Address 2" variant="standard" {...register('address2')}/>
+                            <TextField label="Address 1" variant="standard" {...register('address1', { required: true })}/>
+                            <TextField label="Address 2" variant="standard" {...register('address2')}/>
                         </Box>
                         <Box>
-                            <TextField id="standard-basic" label="City" variant="standard" {...register('city', { required: true, minLength: 2 })} />
-                            <TextField id="standard-basic" label="State" variant="standard" {...register('usState', { required: true, minLength: 2 })} />
-                            <TextField id="standard-basic" label="Zip Code" variant="standard" {...register('zipCode', { required: true, minLength: 5 })} />
+                            <TextField label="City" variant="standard" {...register('city', { required: true, minLength: 2 })} />
+                            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                                <InputLabel>State</InputLabel>
+                                <Select
+                                onChange={handleDistrictChange}
+                                label="State"
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    {DISTRICTS?.map((district: string) => {
+                                        return (<MenuItem value={district} key={district}>{district}</MenuItem>)
+                                    })}
+                                </Select>
+                            </FormControl>
+                            <TextField label="Zip Code" variant="standard" {...register('zipCode', { required: true, minLength: 5 })} />
                         </Box>
                     </Box>
                     <Box marginTop='1rem'>

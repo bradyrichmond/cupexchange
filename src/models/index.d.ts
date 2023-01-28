@@ -159,6 +159,7 @@ type EagerLego = {
   };
   readonly id: string;
   readonly imageKey: string;
+  readonly labels?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly inventoryItemsId?: string | null;
@@ -171,6 +172,7 @@ type LazyLego = {
   };
   readonly id: string;
   readonly imageKey: string;
+  readonly labels?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly inventoryItemsId?: string | null;

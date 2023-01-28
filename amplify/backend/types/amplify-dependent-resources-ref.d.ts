@@ -18,6 +18,12 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolName": "string"
     }
   },
+  "predictions": {
+    "legoLabels": {
+      "region": "string",
+      "type": "string"
+    }
+  },
   "storage": {
     "storeInventoryImages": {
       "BucketName": "string",

@@ -1,10 +1,10 @@
 import React, { ChangeEvent } from 'react';
 import { Button } from '@mui/material';
-import { Storage } from 'aws-amplify';
+import { Predictions, Storage } from 'aws-amplify';
 import {v4 as uuidv4} from 'uuid';
 
 interface FileUploadInput {
-    onComplete: (results: (string | undefined)[]) => void;
+    onComplete: (results: { imageKey: string | undefined, labels: any[] | undefined }[]) => void;
 }
 
 const FileUpload = (props: FileUploadInput) => {
@@ -19,16 +19,30 @@ const FileUpload = (props: FileUploadInput) => {
     const uploadFiles = async (files: FileList | null) => {
         if (files && files?.length > 0) {
             const filesArray = Array.from(files);
-            const results: (string | undefined)[] = [];
+            const results: ({ imageKey: string | undefined, labels: any[] | undefined })[] = [];
 
             for (let i = 0; i < filesArray.length; i++) {
+                const FILE = filesArray[i];
+                const response = await Predictions.identify({
+                    labels: {
+                        source: { file: FILE },
+                        type: 'LABELS'
+                    }
+                });
+
+                const labels = response?.labels?.map((label: any) => {
+                    if (label?.metadata?.confidence > 70) {
+                        return label.name;
+                    }
+                })
+
                 const guidName = uuidv4();
                 const file = filesArray[i];
                 const result = await Storage.put(`${guidName}_${file.name}`, file, {
                     level: 'public',
                     contentType: file.type
                 });
-                results.push(result.key);
+                results.push({imageKey: result.key, labels});
             }
 
             return results;

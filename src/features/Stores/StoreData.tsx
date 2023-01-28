@@ -6,16 +6,12 @@ import { Storage } from '@aws-amplify/storage';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { deleteStoreMutation, getSingleStoreData, selectCurrentStoreData } from './StoresSlice';
 import FileUpload from '../../utils/FileUpload';
-import { API, DataStore, graphqlOperation } from 'aws-amplify';
 import { Lego } from '../../models';
 import { createStoreInventory, getStoreInventory, selectCurrentInventory } from './InventorySlice';
 import { formatRelative, parseISO } from 'date-fns';
 import { getUserData, selectFbUsername, selectUserCognitoGroups, selectUserData } from '../User/UserSlice';
 import DeleteStoreModal from './DeleteStoreModal';
 import { removeCartItem, selectCartItems, updateItem } from '../Orders/CartSlice';
-import { createLego } from '../../graphql/mutations';
-
-let initialInventory: Lego[] | undefined;
 
 const StoreData = () => {
     const { id } = useParams();
@@ -55,10 +51,10 @@ const StoreData = () => {
         setIsDeletingStore(false);
     }
 
-    const handleFileUploadComplete = async (results: (string | undefined)[]) => {
+    const handleFileUploadComplete = async (results: { imageKey: string | undefined, labels: any[] | undefined }[]) => {
         stopAddingInventory();
         if (id) {
-            await dispatch(createStoreInventory({ lego:results, storeId: id, userId: currentUser?.id ?? '' }));
+            await dispatch(createStoreInventory({ lego: results, storeId: id, userId: currentUser?.id ?? '' }));
             await dispatch(getSingleStoreData(id));
         }
     }

@@ -51,6 +51,7 @@ type Inventory @model @auth(rules: [{ allow: private }]) {
 type Lego @model @auth(rules: [{ allow: private }]) {
   id: ID!
   imageKey: String!
+  labels: [String]
 }
 
 type Trip @model @auth(rules: [

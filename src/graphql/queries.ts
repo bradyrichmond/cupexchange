@@ -18,12 +18,18 @@ export const getUser = /* GraphQL */ `
         postal_code
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       email
       banned
       deleted
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       userAddressId
       owner
     }
@@ -50,16 +56,70 @@ export const listUsers = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         userAddressId
         owner
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncUsers = /* GraphQL */ `
+  query SyncUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncUsers(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -74,6 +134,9 @@ export const getAddress = /* GraphQL */ `
       postal_code
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -93,8 +156,43 @@ export const listAddresses = /* GraphQL */ `
         postal_code
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncAddresses = /* GraphQL */ `
+  query SyncAddresses(
+    $filter: ModelAddressFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAddresses(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        address
+        address2
+        district
+        city
+        postal_code
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -119,12 +217,18 @@ export const getStore = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         userAddressId
         owner
       }
@@ -136,15 +240,25 @@ export const getStore = /* GraphQL */ `
             imageKey
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
             inventoryItemsId
           }
           nextToken
+          startedAt
         }
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       storeLastUpdateById
       storeInventoryId
     }
@@ -176,12 +290,18 @@ export const listStores = /* GraphQL */ `
             postal_code
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
           }
           email
           banned
           deleted
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           userAddressId
           owner
         }
@@ -193,19 +313,112 @@ export const listStores = /* GraphQL */ `
               imageKey
               createdAt
               updatedAt
+              _version
+              _deleted
+              _lastChangedAt
               inventoryItemsId
             }
             nextToken
+            startedAt
           }
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
         }
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         storeLastUpdateById
         storeInventoryId
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncStores = /* GraphQL */ `
+  query SyncStores(
+    $filter: ModelStoreFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncStores(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        district
+        city
+        lastUpdateBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        inventory {
+          id
+          items {
+            items {
+              id
+              imageKey
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              inventoryItemsId
+            }
+            nextToken
+            startedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        storeLastUpdateById
+        storeInventoryId
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -219,12 +432,19 @@ export const getInventory = /* GraphQL */ `
           imageKey
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           inventoryItemsId
         }
         nextToken
+        startedAt
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -243,14 +463,62 @@ export const listInventories = /* GraphQL */ `
             imageKey
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
             inventoryItemsId
           }
           nextToken
+          startedAt
         }
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncInventories = /* GraphQL */ `
+  query SyncInventories(
+    $filter: ModelInventoryFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncInventories(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        items {
+          items {
+            id
+            imageKey
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            inventoryItemsId
+          }
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -261,6 +529,9 @@ export const getLego = /* GraphQL */ `
       imageKey
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       inventoryItemsId
     }
   }
@@ -277,9 +548,41 @@ export const listLegos = /* GraphQL */ `
         imageKey
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         inventoryItemsId
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncLegos = /* GraphQL */ `
+  query SyncLegos(
+    $filter: ModelLegoFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncLegos(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        imageKey
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        inventoryItemsId
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -305,12 +608,18 @@ export const getTrip = /* GraphQL */ `
             postal_code
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
           }
           email
           banned
           deleted
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           userAddressId
           owner
         }
@@ -322,15 +631,25 @@ export const getTrip = /* GraphQL */ `
               imageKey
               createdAt
               updatedAt
+              _version
+              _deleted
+              _lastChangedAt
               inventoryItemsId
             }
             nextToken
+            startedAt
           }
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
         }
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         storeLastUpdateById
         storeInventoryId
       }
@@ -348,12 +667,18 @@ export const getTrip = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         userAddressId
         owner
       }
@@ -364,6 +689,9 @@ export const getTrip = /* GraphQL */ `
       id
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       tripStoreId
       tripShipperId
       owner
@@ -397,12 +725,18 @@ export const listTrips = /* GraphQL */ `
               postal_code
               createdAt
               updatedAt
+              _version
+              _deleted
+              _lastChangedAt
             }
             email
             banned
             deleted
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
             userAddressId
             owner
           }
@@ -410,12 +744,19 @@ export const listTrips = /* GraphQL */ `
             id
             items {
               nextToken
+              startedAt
             }
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
           }
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           storeLastUpdateById
           storeInventoryId
         }
@@ -433,12 +774,18 @@ export const listTrips = /* GraphQL */ `
             postal_code
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
           }
           email
           banned
           deleted
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           userAddressId
           owner
         }
@@ -449,11 +796,131 @@ export const listTrips = /* GraphQL */ `
         id
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         tripStoreId
         tripShipperId
         owner
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncTrips = /* GraphQL */ `
+  query SyncTrips(
+    $filter: ModelTripFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncTrips(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        store {
+          id
+          name
+          district
+          city
+          lastUpdateBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            userAddressId
+            owner
+          }
+          inventory {
+            id
+            items {
+              nextToken
+              startedAt
+            }
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          storeLastUpdateById
+          storeInventoryId
+        }
+        shipper {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        cupPrice
+        shippingPrice
+        orderExpiration
+        maximumCups
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        tripStoreId
+        tripShipperId
+        owner
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -474,12 +941,18 @@ export const getOrder = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         userAddressId
         owner
       }
@@ -497,12 +970,18 @@ export const getOrder = /* GraphQL */ `
           postal_code
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
         }
         email
         banned
         deleted
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         userAddressId
         owner
       }
@@ -515,16 +994,23 @@ export const getOrder = /* GraphQL */ `
             imageKey
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
             inventoryItemsId
           }
           count
           id
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           orderOrdersId
           orderItemItemId
         }
         nextToken
+        startedAt
       }
       trip {
         store {
@@ -546,12 +1032,18 @@ export const getOrder = /* GraphQL */ `
               postal_code
               createdAt
               updatedAt
+              _version
+              _deleted
+              _lastChangedAt
             }
             email
             banned
             deleted
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
             userAddressId
             owner
           }
@@ -559,12 +1051,19 @@ export const getOrder = /* GraphQL */ `
             id
             items {
               nextToken
+              startedAt
             }
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
           }
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           storeLastUpdateById
           storeInventoryId
         }
@@ -582,12 +1081,18 @@ export const getOrder = /* GraphQL */ `
             postal_code
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
           }
           email
           banned
           deleted
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           userAddressId
           owner
         }
@@ -598,6 +1103,9 @@ export const getOrder = /* GraphQL */ `
         id
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         tripStoreId
         tripShipperId
         owner
@@ -606,6 +1114,9 @@ export const getOrder = /* GraphQL */ `
       id
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       orderBuyerId
       orderShipperId
       orderTripId
@@ -635,12 +1146,18 @@ export const listOrders = /* GraphQL */ `
             postal_code
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
           }
           email
           banned
           deleted
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           userAddressId
           owner
         }
@@ -658,12 +1175,18 @@ export const listOrders = /* GraphQL */ `
             postal_code
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
           }
           email
           banned
           deleted
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           userAddressId
           owner
         }
@@ -676,16 +1199,23 @@ export const listOrders = /* GraphQL */ `
               imageKey
               createdAt
               updatedAt
+              _version
+              _deleted
+              _lastChangedAt
               inventoryItemsId
             }
             count
             id
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
             orderOrdersId
             orderItemItemId
           }
           nextToken
+          startedAt
         }
         trip {
           store {
@@ -703,6 +1233,9 @@ export const listOrders = /* GraphQL */ `
               deleted
               createdAt
               updatedAt
+              _version
+              _deleted
+              _lastChangedAt
               userAddressId
               owner
             }
@@ -710,9 +1243,15 @@ export const listOrders = /* GraphQL */ `
               id
               createdAt
               updatedAt
+              _version
+              _deleted
+              _lastChangedAt
             }
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
             storeLastUpdateById
             storeInventoryId
           }
@@ -730,12 +1269,18 @@ export const listOrders = /* GraphQL */ `
               postal_code
               createdAt
               updatedAt
+              _version
+              _deleted
+              _lastChangedAt
             }
             email
             banned
             deleted
             createdAt
             updatedAt
+            _version
+            _deleted
+            _lastChangedAt
             userAddressId
             owner
           }
@@ -746,6 +1291,9 @@ export const listOrders = /* GraphQL */ `
           id
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           tripStoreId
           tripShipperId
           owner
@@ -754,12 +1302,213 @@ export const listOrders = /* GraphQL */ `
         id
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         orderBuyerId
         orderShipperId
         orderTripId
         owner
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncOrders = /* GraphQL */ `
+  query SyncOrders(
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncOrders(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        buyer {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        shipper {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        tracking
+        numberOfCups
+        orders {
+          items {
+            item {
+              id
+              imageKey
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              inventoryItemsId
+            }
+            count
+            id
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            orderOrdersId
+            orderItemItemId
+          }
+          nextToken
+          startedAt
+        }
+        trip {
+          store {
+            id
+            name
+            district
+            city
+            lastUpdateBy {
+              id
+              fbUsername
+              first_name
+              last_name
+              email
+              banned
+              deleted
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              userAddressId
+              owner
+            }
+            inventory {
+              id
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            storeLastUpdateById
+            storeInventoryId
+          }
+          shipper {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            userAddressId
+            owner
+          }
+          cupPrice
+          shippingPrice
+          orderExpiration
+          maximumCups
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          tripStoreId
+          tripShipperId
+          owner
+        }
+        total
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        orderBuyerId
+        orderShipperId
+        orderTripId
+        owner
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -771,12 +1520,18 @@ export const getOrderItem = /* GraphQL */ `
         imageKey
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         inventoryItemsId
       }
       count
       id
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       orderOrdersId
       orderItemItemId
     }
@@ -795,16 +1550,62 @@ export const listOrderItems = /* GraphQL */ `
           imageKey
           createdAt
           updatedAt
+          _version
+          _deleted
+          _lastChangedAt
           inventoryItemsId
         }
         count
         id
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         orderOrdersId
         orderItemItemId
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncOrderItems = /* GraphQL */ `
+  query SyncOrderItems(
+    $filter: ModelOrderItemFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncOrderItems(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        item {
+          id
+          imageKey
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          inventoryItemsId
+        }
+        count
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        orderOrdersId
+        orderItemItemId
+      }
+      nextToken
+      startedAt
     }
   }
 `;

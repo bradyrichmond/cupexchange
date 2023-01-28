@@ -10,13 +10,13 @@ interface LegoType {
 
 export const createStoreInventory = createAsyncThunk(
     'inventory/createStoreInventory',
-    async (input: { lego: (string | undefined)[], storeId: string, userId: string }) => {
+    async (input: { lego: ({ imageKey: string | undefined, labels: any[] | undefined })[], storeId: string, userId: string }) => {
       const inventoryResponse = await DataStore.save(new Inventory({}));
       const inventoryResponseId = inventoryResponse.id;
       
-      await Promise.all(input.lego.map(async (lego: string | undefined) => {
-        if (lego) {
-          return await DataStore.save(new Lego({ imageKey: lego, inventoryItemsId: inventoryResponseId }));
+      await Promise.all(input.lego.map(async (lego: { imageKey: string | undefined, labels: any[] | undefined }) => {
+        if (lego.imageKey) {
+          return await DataStore.save(new Lego({ imageKey: lego.imageKey, labels: lego.labels ?? [], inventoryItemsId: inventoryResponseId }));
         }
       }));
       const store = await DataStore.query(Store, input.storeId);

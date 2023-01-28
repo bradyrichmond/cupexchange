@@ -53,6 +53,14 @@
       "service": "Cognito"
     }
   },
+  "predictions": {
+    "legoLabels": {
+      "dependsOn": [],
+      "identifyType": "identifyLabels",
+      "providerPlugin": "awscloudformation",
+      "service": "Rekognition"
+    }
+  },
   "storage": {
     "storeInventoryImages": {
       "dependsOn": [],

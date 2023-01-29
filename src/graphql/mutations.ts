@@ -215,6 +215,7 @@ export const createStore = /* GraphQL */ `
           items {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -286,6 +287,7 @@ export const updateStore = /* GraphQL */ `
           items {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -357,6 +359,7 @@ export const deleteStore = /* GraphQL */ `
           items {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -394,6 +397,7 @@ export const createInventory = /* GraphQL */ `
         items {
           id
           imageKey
+          labels
           createdAt
           updatedAt
           _version
@@ -423,6 +427,7 @@ export const updateInventory = /* GraphQL */ `
         items {
           id
           imageKey
+          labels
           createdAt
           updatedAt
           _version
@@ -452,6 +457,7 @@ export const deleteInventory = /* GraphQL */ `
         items {
           id
           imageKey
+          labels
           createdAt
           updatedAt
           _version
@@ -478,6 +484,7 @@ export const createLego = /* GraphQL */ `
     createLego(input: $input, condition: $condition) {
       id
       imageKey
+      labels
       createdAt
       updatedAt
       _version
@@ -495,6 +502,7 @@ export const updateLego = /* GraphQL */ `
     updateLego(input: $input, condition: $condition) {
       id
       imageKey
+      labels
       createdAt
       updatedAt
       _version
@@ -512,6 +520,7 @@ export const deleteLego = /* GraphQL */ `
     deleteLego(input: $input, condition: $condition) {
       id
       imageKey
+      labels
       createdAt
       updatedAt
       _version
@@ -567,6 +576,7 @@ export const createTrip = /* GraphQL */ `
             items {
               id
               imageKey
+              labels
               createdAt
               updatedAt
               _version
@@ -682,6 +692,7 @@ export const updateTrip = /* GraphQL */ `
             items {
               id
               imageKey
+              labels
               createdAt
               updatedAt
               _version
@@ -797,6 +808,7 @@ export const deleteTrip = /* GraphQL */ `
             items {
               id
               imageKey
+              labels
               createdAt
               updatedAt
               _version
@@ -937,6 +949,7 @@ export const createOrder = /* GraphQL */ `
           item {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -1140,6 +1153,7 @@ export const updateOrder = /* GraphQL */ `
           item {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -1343,6 +1357,7 @@ export const deleteOrder = /* GraphQL */ `
           item {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -1484,6 +1499,7 @@ export const createOrderItem = /* GraphQL */ `
       item {
         id
         imageKey
+        labels
         createdAt
         updatedAt
         _version
@@ -1512,6 +1528,7 @@ export const updateOrderItem = /* GraphQL */ `
       item {
         id
         imageKey
+        labels
         createdAt
         updatedAt
         _version
@@ -1540,6 +1557,7 @@ export const deleteOrderItem = /* GraphQL */ `
       item {
         id
         imageKey
+        labels
         createdAt
         updatedAt
         _version

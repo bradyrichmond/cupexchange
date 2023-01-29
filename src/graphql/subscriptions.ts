@@ -194,6 +194,7 @@ export const onCreateStore = /* GraphQL */ `
           items {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -262,6 +263,7 @@ export const onUpdateStore = /* GraphQL */ `
           items {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -330,6 +332,7 @@ export const onDeleteStore = /* GraphQL */ `
           items {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -366,6 +369,7 @@ export const onCreateInventory = /* GraphQL */ `
         items {
           id
           imageKey
+          labels
           createdAt
           updatedAt
           _version
@@ -394,6 +398,7 @@ export const onUpdateInventory = /* GraphQL */ `
         items {
           id
           imageKey
+          labels
           createdAt
           updatedAt
           _version
@@ -422,6 +427,7 @@ export const onDeleteInventory = /* GraphQL */ `
         items {
           id
           imageKey
+          labels
           createdAt
           updatedAt
           _version
@@ -445,6 +451,7 @@ export const onCreateLego = /* GraphQL */ `
     onCreateLego(filter: $filter) {
       id
       imageKey
+      labels
       createdAt
       updatedAt
       _version
@@ -459,6 +466,7 @@ export const onUpdateLego = /* GraphQL */ `
     onUpdateLego(filter: $filter) {
       id
       imageKey
+      labels
       createdAt
       updatedAt
       _version
@@ -473,6 +481,7 @@ export const onDeleteLego = /* GraphQL */ `
     onDeleteLego(filter: $filter) {
       id
       imageKey
+      labels
       createdAt
       updatedAt
       _version
@@ -525,6 +534,7 @@ export const onCreateTrip = /* GraphQL */ `
             items {
               id
               imageKey
+              labels
               createdAt
               updatedAt
               _version
@@ -637,6 +647,7 @@ export const onUpdateTrip = /* GraphQL */ `
             items {
               id
               imageKey
+              labels
               createdAt
               updatedAt
               _version
@@ -749,6 +760,7 @@ export const onDeleteTrip = /* GraphQL */ `
             items {
               id
               imageKey
+              labels
               createdAt
               updatedAt
               _version
@@ -886,6 +898,7 @@ export const onCreateOrder = /* GraphQL */ `
           item {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -1086,6 +1099,7 @@ export const onUpdateOrder = /* GraphQL */ `
           item {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -1286,6 +1300,7 @@ export const onDeleteOrder = /* GraphQL */ `
           item {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -1426,6 +1441,7 @@ export const onCreateOrderItem = /* GraphQL */ `
       item {
         id
         imageKey
+        labels
         createdAt
         updatedAt
         _version
@@ -1453,6 +1469,7 @@ export const onUpdateOrderItem = /* GraphQL */ `
       item {
         id
         imageKey
+        labels
         createdAt
         updatedAt
         _version
@@ -1480,6 +1497,7 @@ export const onDeleteOrderItem = /* GraphQL */ `
       item {
         id
         imageKey
+        labels
         createdAt
         updatedAt
         _version

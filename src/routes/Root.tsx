@@ -1,8 +1,8 @@
-import { Amplify, DataStore } from 'aws-amplify';
+import { Amplify, DataStore, Predictions } from 'aws-amplify';
 
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-
+import { AmazonAIPredictionsProvider } from "@aws-amplify/predictions";
 import awsExports from '../aws-exports';
 import { useLocation, useNavigate } from 'react-router';
 import { Box } from '@mui/material'
@@ -11,6 +11,9 @@ import { useAppDispatch } from '../hooks';
 import { User } from '../models';
 
 Amplify.configure(awsExports);
+
+Amplify.register(Predictions);
+Predictions.addPluggable(new AmazonAIPredictionsProvider());
 
 export default function Login() {
   const navigate = useNavigate();

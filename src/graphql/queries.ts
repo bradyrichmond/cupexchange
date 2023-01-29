@@ -238,6 +238,7 @@ export const getStore = /* GraphQL */ `
           items {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -311,6 +312,7 @@ export const listStores = /* GraphQL */ `
             items {
               id
               imageKey
+              labels
               createdAt
               updatedAt
               _version
@@ -393,6 +395,7 @@ export const syncStores = /* GraphQL */ `
             items {
               id
               imageKey
+              labels
               createdAt
               updatedAt
               _version
@@ -430,6 +433,7 @@ export const getInventory = /* GraphQL */ `
         items {
           id
           imageKey
+          labels
           createdAt
           updatedAt
           _version
@@ -461,6 +465,7 @@ export const listInventories = /* GraphQL */ `
           items {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -501,6 +506,7 @@ export const syncInventories = /* GraphQL */ `
           items {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -527,6 +533,7 @@ export const getLego = /* GraphQL */ `
     getLego(id: $id) {
       id
       imageKey
+      labels
       createdAt
       updatedAt
       _version
@@ -546,6 +553,7 @@ export const listLegos = /* GraphQL */ `
       items {
         id
         imageKey
+        labels
         createdAt
         updatedAt
         _version
@@ -574,6 +582,7 @@ export const syncLegos = /* GraphQL */ `
       items {
         id
         imageKey
+        labels
         createdAt
         updatedAt
         _version
@@ -629,6 +638,7 @@ export const getTrip = /* GraphQL */ `
             items {
               id
               imageKey
+              labels
               createdAt
               updatedAt
               _version
@@ -992,6 +1002,7 @@ export const getOrder = /* GraphQL */ `
           item {
             id
             imageKey
+            labels
             createdAt
             updatedAt
             _version
@@ -1197,6 +1208,7 @@ export const listOrders = /* GraphQL */ `
             item {
               id
               imageKey
+              labels
               createdAt
               updatedAt
               _version
@@ -1394,6 +1406,7 @@ export const syncOrders = /* GraphQL */ `
             item {
               id
               imageKey
+              labels
               createdAt
               updatedAt
               _version
@@ -1518,6 +1531,7 @@ export const getOrderItem = /* GraphQL */ `
       item {
         id
         imageKey
+        labels
         createdAt
         updatedAt
         _version
@@ -1548,6 +1562,7 @@ export const listOrderItems = /* GraphQL */ `
         item {
           id
           imageKey
+          labels
           createdAt
           updatedAt
           _version
@@ -1587,6 +1602,7 @@ export const syncOrderItems = /* GraphQL */ `
         item {
           id
           imageKey
+          labels
           createdAt
           updatedAt
           _version

@@ -9,7 +9,7 @@ import { getTrips, selectTrips } from './TripsSlice';
 import { formatRelative } from 'date-fns';
 import { getStoreById, getUserById } from '../../utils/base';
 
-interface TripType {
+export interface TripType {
     shipper: string | undefined;
     store: string | undefined;
     shippingPrice: string;

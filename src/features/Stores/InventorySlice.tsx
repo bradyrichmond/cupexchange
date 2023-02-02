@@ -3,7 +3,7 @@ import { Inventory, Lego, Store } from '../../models';
 import { DataStore } from 'aws-amplify';
 import { RootState } from '../../store';
 
-interface LegoType {
+export interface LegoType {
   id: string
   imageKey: string
 }
@@ -41,17 +41,17 @@ export const getStoreInventory = createAsyncThunk(
   }
 )
 
-interface StoreState {
+interface InventoryState {
   loading: Boolean
   currentInventory: (LegoType | undefined)[] | undefined;
 }
 
-const initialState: StoreState = {
+const initialState: InventoryState = {
   loading: false,
   currentInventory: undefined
 }
 
-export const storesSlice = createSlice({
+export const inventorySlice = createSlice({
   name: 'inventory',
   initialState,
   reducers: {
@@ -84,4 +84,4 @@ export const storesSlice = createSlice({
 
 export const selectCurrentInventory = (state: RootState) => state.inventory.currentInventory;
 
-export default storesSlice.reducer;
+export default inventorySlice.reducer;

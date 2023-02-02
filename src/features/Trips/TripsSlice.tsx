@@ -26,7 +26,7 @@ export const getTrips = createAsyncThunk(
     }
 );
 
-interface TripType {
+export interface TripType {
   id: string
   cupPrice: string
   shippingPrice: string

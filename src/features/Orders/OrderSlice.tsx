@@ -3,12 +3,26 @@ import { DataStore } from 'aws-amplify';
 import { CreateOrderInput } from '../../API';
 import { Lego, Order, OrderItem, Trip, User } from '../../models';
 import { RootState } from '../../store';
-import { getUserById } from '../../utils/base';
+import { TripType } from '../Trips/TripsSlice';
+import { UserType } from '../User/UserSlice';
+
+export interface OrderType {
+    id: string,
+    total: number,
+    orderBuyerId: string,
+    orderShipperId: string,
+    tracking: (string | null)[],
+    orderTripId: string,
+    buyer: Promise<UserType>,
+    shipper: Promise<UserType>,
+    trip: Promise<TripType>,
+    createdAt: string
+}
 
 interface InitialState {
     loading: boolean
-    outgoingOrders: (Order | undefined)[]
-    incomingOrders: (Order | undefined)[]
+    outgoingOrders: (OrderType | undefined)[]
+    incomingOrders: (OrderType | undefined)[]
 }
 
 const initialState: InitialState = {
@@ -19,7 +33,7 @@ const initialState: InitialState = {
 
 interface CreateOrderInputProps {
     orderInput: CreateOrderInput
-    orderItems: {itemId: string, count: number}[]
+    orderItems: { itemId: string, count: number }[]
 }
 
 export const createOrderAction = createAsyncThunk(
@@ -43,11 +57,45 @@ export const createOrderAction = createAsyncThunk(
     }
 )
 
-export const getMyOrders = createAsyncThunk<{ outgoingOrders: (Order | undefined)[], incomingOrders: (Order | undefined)[] }, string>(
+const mapOrders = async (orders?: Order[]): Promise<OrderType[]>  => {
+    if (orders){
+        const orderList = [];
+        for (let i = 0; i < orders.length; i++) {
+            const order = orders[i];
+
+            const buyer = order?.buyer;
+            const shipper = order?.shipper;
+            const trip = order?.trip;
+
+            if (order) {
+                   orderList.push({
+                    id: order?.id ?? '',
+                    total: order?.total ?? 0,
+                    orderBuyerId: order?.orderBuyerId ?? '',
+                    orderShipperId: order?.orderShipperId ?? '',
+                    tracking: order?.tracking ?? [],
+                    orderTripId: order?.orderTripId ?? '',
+                    buyer,
+                    shipper,
+                    trip,
+                    createdAt: order?.createdAt ?? ''
+                })
+            }
+        }
+
+        return orderList;
+    }
+
+    return [];
+}
+
+export const getMyOrders = createAsyncThunk<{ outgoingOrders: (OrderType | undefined)[], incomingOrders: (OrderType | undefined)[] }, string>(
     'orders/getMyOrders',
     async (userId: string) => {
-        const incomingOrders = await DataStore.query(Order, order => order.orderShipperId.eq(userId));
-        const outgoingOrders = await DataStore.query(Order, order => order.orderBuyerId.eq(userId));
+        const incomingOrdersData = await DataStore.query(Order, order => order.orderShipperId.eq(userId));
+        const outgoingOrdersData = await DataStore.query(Order, order => order.orderBuyerId.eq(userId));
+        const incomingOrders = await mapOrders(incomingOrdersData);
+        const outgoingOrders = await mapOrders(outgoingOrdersData);
         
         return { outgoingOrders, incomingOrders };
     }
@@ -82,8 +130,6 @@ export const orderSlice = createSlice({
         })
   }
 });
-
-export const {  } = orderSlice.actions;
 
 export const selectIncomingOrders = (state: RootState) => state.orders.incomingOrders;
 export const selectOutgoingOrders = (state: RootState) => state.orders.outgoingOrders;

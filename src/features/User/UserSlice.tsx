@@ -97,8 +97,7 @@ interface InitialState {
   loading: boolean
   addressId: string
   userData: UserType | undefined
-  users: User[],
-  userById: User | undefined
+  users: UserType[]
 }
 
 const initialState: InitialState = {
@@ -109,8 +108,7 @@ const initialState: InitialState = {
   loading: false,
   addressId:'',
   userData: undefined,
-  users: [],
-  userById: undefined
+  users: []
 }
 
 export const userSlice = createSlice({
@@ -184,17 +182,6 @@ export const userSlice = createSlice({
       state.loading = false;
       state.users = action.payload;
     })
-    .addCase(getUserById.rejected, (state, action) => {
-      console.log('getUserFail');
-      state.loading = false;
-    })
-    .addCase(getUserById.pending, (state, action) => {
-      state.loading = true;
-    })
-    .addCase(getUserById.fulfilled, (state, action) => {
-      state.loading = false;
-      state.userById = action.payload;
-    })
     .addCase(banUser.rejected, (state, action) => {
       console.log('ban user fail');
       state.loading = false;
@@ -216,6 +203,5 @@ export const selectUserCognitoGroups = (state: RootState) => state.user.userGrou
 export const selectAddressId = (state: RootState) => state.user.addressId;
 export const selectUserData = (state: RootState) => state.user.userData;
 export const selectUsers = (state: RootState) => state.user.users;
-export const selectUserById = (state: RootState) => state.user.userById;
 
 export default userSlice.reducer;

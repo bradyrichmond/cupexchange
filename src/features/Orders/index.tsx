@@ -1,12 +1,13 @@
 import { Card, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { API } from 'aws-amplify';
+import { API, DataStore } from 'aws-amplify';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { Order, OrderItem, Trip, User } from '../../models';
-import { selectUserData } from '../User/UserSlice';
-import { getMyOrders, selectIncomingOrders, selectOutgoingOrders } from './OrderSlice';
+import { Lego, Order, OrderItem, Trip, User } from '../../models';
+import { TripType } from '../Trips/TripsSlice';
+import { selectUserData, UserType } from '../User/UserSlice';
+import { getMyOrders, OrderType, selectIncomingOrders, selectOutgoingOrders } from './OrderSlice';
 
 const Orders = () => {
     const dispatch = useAppDispatch();
@@ -54,11 +55,11 @@ const Orders = () => {
     )
 }
 
-let initialUser: User | undefined;
-let initialTrip: Trip | undefined;
+let initialUser: UserType | undefined;
+let initialTrip: TripType | undefined;
 let initialOrder: (OrderItem | undefined)[];
 
-const OrderItems = (props: { orderData: Order }) => {
+const OrderItems = (props: { orderData: OrderType }) => {
     const { orderData } = props;
     const [buyer, setBuyer] = useState(initialUser);
     const [shipper, setShipper] = useState(initialUser);
@@ -73,7 +74,8 @@ const OrderItems = (props: { orderData: Order }) => {
             const buyerData = await orderData.buyer;
             const shipperData = await orderData.shipper;
             const tripData = await orderData.trip;
-            const fetchedOrderData = await orderData.orders.toArray();
+            const orderId = orderData.id;
+            const fetchedOrderData = await DataStore.query(OrderItem, (oi) => oi.orderOrdersId.eq(orderId))
             setBuyer(buyerData);
             setShipper(shipperData);
             setTrip(tripData);
@@ -96,7 +98,7 @@ const OrderItems = (props: { orderData: Order }) => {
                 </Box>
                 <Box display='flex' flexDirection='column' flex='1' paddingRight='2rem' justifyContent='center'>
                     <Typography>Ship to</Typography>
-                    buyer {JSON.stringify(buyer)}
+                    {`${buyer?.first_name} ${buyer?.last_name}`}
                     <Typography>{currentUser?.id === orderData.orderBuyerId ? 'You' : `${buyer?.first_name} ${buyer?.last_name}`}</Typography>
                 </Box>
                 <Box display='flex' flexDirection='column' paddingRight='2rem' justifyContent='center'>

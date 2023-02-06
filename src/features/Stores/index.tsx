@@ -25,7 +25,7 @@ const Stores = () => {
     
     useEffect(() => {
         dispatch(getStoreData());
-    }, [])
+    }, [dispatch])
 
     const bulkAdd = async (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target?.files;
@@ -79,7 +79,9 @@ const Stores = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <CreateStoreForm close={handleClose}/>
+                <Box>
+                    <CreateStoreForm close={handleClose}/>
+                </Box>
             </Modal>
             <Box display='flex' justifyContent='center' alignItems='center'>
                 <Typography fontSize='3rem' fontWeight='bold' padding='2rem'>
@@ -98,7 +100,13 @@ const Stores = () => {
                 </Box>
             }
             <Box margin='2rem' flex={1}>
-                <DataGrid onRowClick={handleRowClick} rows={rows} columns={columns} style={{background: 'rgba(255, 255, 255, 255)', borderRadius: '2rem', color: 'rgba(131,133,146,255)', padding: '2rem', fontSize: '1.5rem', fontWeight: 'bold' }} />
+                {storeData && storeData?.length > 0 ?
+                    <DataGrid onRowClick={handleRowClick} rows={rows} columns={columns} style={{background: 'rgba(255, 255, 255, 255)', borderRadius: '2rem', color: 'rgba(131,133,146,255)', padding: '2rem', fontSize: '1.5rem', fontWeight: 'bold' }} />
+                    :
+                    <Typography>
+                        Somehow, there are no stores!
+                    </Typography>
+                }
             </Box>
         </Box>
     )

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
-import { LazyStore, Store, Trip, User } from '../../models';
+import { Store, User } from '../../models';
 import { RootState } from '../../store';
 
 export const getStoreData = createAsyncThunk(

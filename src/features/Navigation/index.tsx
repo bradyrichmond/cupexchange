@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Badge, Box, Typography } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import React from 'react';
+import { Badge, Box } from '@mui/material';
 import StoreIcon from '@mui/icons-material/Store';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import ViewListIcon from '@mui/icons-material/ViewList';
@@ -17,13 +16,8 @@ const Navigation = () => {
     const userGroups = useAppSelector(selectUserCognitoGroups);
     const userIsModerator = userGroups.includes('moderators');
     const cartItems = useAppSelector(selectCartItems);
-    const [expandMenu, setExpandMenu] = useState(false);
 
     const itemCount = cartItems.reduce((pre, curr) => pre + curr.count, 0);
-
-    const toggleMenu = () => {
-        setExpandMenu((current) => !current);
-    }
 
     return (
         <Box display='flex' flexDirection='column' padding='2rem' height='100%' bgcolor='rgba(0,0,0,255)' justifyContent='center' alignItems='center'>
@@ -72,7 +66,7 @@ const Navigation = () => {
             </Box>
             <Box display='flex' justifyContent='center' alignItems='center' marginBottom='2rem'>
                 <Link to="/profile">
-                    <img src={legoHead} width='50px' height='50px'/>
+                    <img src={legoHead} width='50px' height='50px' alt='user profile link lego head'/>
                 </Link>
             </Box>
         </Box>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getUsers, selectUsers } from './UserSlice';
@@ -6,14 +6,13 @@ import { DataGrid, GridColDef, GridEventListener, GridRowsProp } from '@mui/x-da
 import { useNavigate } from 'react-router';
 
 const Users = () => {
-    const [currentPage, setCurrentPage] = useState(0);
     const dispatch = useAppDispatch();
     const users = useAppSelector(selectUsers);
     const navigate = useNavigate();
     
     useEffect(() => {
         dispatch(getUsers());
-    }, [])
+    }, [dispatch])
 
     const rows: GridRowsProp = users ?? [];
 

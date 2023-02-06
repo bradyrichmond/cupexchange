@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { Lego } from '../models';
 
@@ -14,7 +14,7 @@ export const useLegoData = (id: string) => {
         }
 
         getLegoData();
-    }, [])
+    }, [id])
 
     return legoData;
 }

@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 import { getUserById } from '../../utils/base';
 import { banUser, selectUserCognitoGroups, selectUserData, UserType } from './UserSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { Amplify, API, Auth } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 
 let initialUserData: UserType | undefined;
 
@@ -25,7 +25,7 @@ const UserData = () => {
         }
 
         getUserData();
-    }, [])
+    }, [id])
 
     const handleBanUser = () => {
         dispatch(banUser(id ?? ''));

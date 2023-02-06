@@ -6,7 +6,6 @@ import { Storage } from '@aws-amplify/storage';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { deleteStoreMutation, getSingleStoreData, selectCurrentStoreData } from './StoresSlice';
 import FileUpload from '../../utils/FileUpload';
-import { Lego } from '../../models';
 import { createStoreInventory, getStoreInventory, selectCurrentInventory } from './InventorySlice';
 import { formatRelative, parseISO } from 'date-fns';
 import { getUserData, selectFbUsername, selectUserCognitoGroups, selectUserData } from '../User/UserSlice';
@@ -62,24 +61,20 @@ const StoreData = () => {
     useEffect(() => {
         const fetchInventory = async () => {
             if (currentStoreData) {
-                try {
-                    dispatch(getStoreInventory( currentStoreData.storeInventoryId ?? ''))
-                } catch (e) {
-                    console.error(JSON.stringify(e))
-                }
+                dispatch(getStoreInventory( currentStoreData.storeInventoryId ?? ''));
             }
         }
 
         fetchInventory();
-    }, [currentStoreData])
+    }, [dispatch, currentStoreData])
 
     useEffect(() => {
         dispatch(getUserData(fbUsername));
-    }, [fbUsername])
+    }, [dispatch, fbUsername])
 
     useEffect(() => {
         dispatch(getSingleStoreData(id ?? ''));
-    }, [id])
+    }, [dispatch, id])
 
     return (
         <Box display='flex' flexDirection='column' margin='2rem'>
@@ -156,7 +151,7 @@ export const InventoryItem = (props: InventoryItemProps) => {
 
             getUrl();
         }
-    }, [])
+    }, [imageKey])
 
     const addItemToCart = () => {
         if (addToOrder) {

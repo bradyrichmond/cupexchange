@@ -17,7 +17,7 @@ interface CreateTripFormProps {
 
 const CreateTripForm = ({ close }: CreateTripFormProps) => {
     const { register, handleSubmit } = useForm();
-    const [store, setStore] = useState('None');
+    const [store, setStore] = useState('');
     const [orderExpiration, setOrderExpiration] = useState('');
     const currentUser = useAppSelector(selectUserData);
     const storeData = useAppSelector(selectStoreData);
@@ -26,7 +26,7 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
 
     useEffect(() => {
         dispatch(getStoreData());
-    }, [])
+    }, [dispatch])
 
     const handleStoreChange = (e:SelectChangeEvent<string>) => {
         setStore(e.target.value);
@@ -53,14 +53,12 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
                     <Box display='flex' flexDirection='column'>
                         <Typography>Shipper Name: {userFullName}</Typography>
                         <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                            <InputLabel id="demo-simple-select-standard-label">Store</InputLabel>
+                            <InputLabel>Store</InputLabel>
                             <Select
-                            onChange={handleStoreChange}
-                            label="Store"
+                                onChange={handleStoreChange}
+                                label="Store"
+                                value={store}
                             >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
                                 {storeData?.map((store) => {
                                     return (<MenuItem value={store.id} key={store.id}>{store.name}</MenuItem>)
                                 })}
@@ -79,10 +77,6 @@ const CreateTripForm = ({ close }: CreateTripFormProps) => {
                         </LocalizationProvider>
                         <TextField label="Cup Price" variant="standard" {...register('cupPrice', { required: true, minLength: 2 })} />
                         <TextField label="Shipping price per 3 cups" variant="standard" {...register('shippingPrice', { required: true, minLength: 1 })} />
-                        <Box paddingTop='1rem'>
-                            <InputLabel>Do you want to set a limit for the total number of cups you will fill? Leave blank for no limit.</InputLabel>
-                            <TextField id="standard-basic" label="Cup Limit" variant="standard" {...register('cupLimit')} />
-                        </Box>
                         <Button type='submit'>Create Trip</Button>
                     </Box>
                 </form>

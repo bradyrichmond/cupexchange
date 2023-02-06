@@ -1,11 +1,10 @@
+import React, { useEffect, useState } from 'react';
 import { Card, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { API, DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify';
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { Lego, Order, OrderItem, Trip, User } from '../../models';
-import { TripType } from '../Trips/TripsSlice';
+import { OrderItem } from '../../models';
 import { selectUserData, UserType } from '../User/UserSlice';
 import { getMyOrders, OrderType, selectIncomingOrders, selectOutgoingOrders } from './OrderSlice';
 
@@ -17,7 +16,7 @@ const Orders = () => {
 
     useEffect(() => {
         dispatch(getMyOrders(currentUser?.id ?? ''));
-    }, [])
+    }, [dispatch, currentUser?.id])
 
     return (
         <Box display='flex' flexDirection='column' padding='2rem'>
@@ -29,6 +28,7 @@ const Orders = () => {
                                     if (order) {
                                         return <OrderItems orderData={order} />;
                                     }
+                                    return undefined;
                                 })
                                 :
                                 <Typography variant='h2'>No outgoing orders</Typography>
@@ -44,6 +44,7 @@ const Orders = () => {
                                 if (order) {
                                     return <OrderItems orderData={order} />;
                                 }
+                                return undefined;
                             })
                             :
                             <Typography variant='h2'>No incoming orders</Typography>
@@ -56,34 +57,27 @@ const Orders = () => {
 }
 
 let initialUser: UserType | undefined;
-let initialTrip: TripType | undefined;
 let initialOrder: (OrderItem | undefined)[];
 
 const OrderItems = (props: { orderData: OrderType }) => {
     const { orderData } = props;
     const [buyer, setBuyer] = useState(initialUser);
-    const [shipper, setShipper] = useState(initialUser);
-    const [trip, setTrip] = useState(initialTrip);
     const [orders, setOrders] = useState(initialOrder);
-    const { createdAt, tracking } = orderData;
+    const { createdAt } = orderData;
     const currentUser = useAppSelector(selectUserData);
     const orderDate = format(Date.parse(createdAt ?? ''), "MMMM d, y");
 
     useEffect(() => {
         const getOrderData = async () => {
             const buyerData = await orderData.buyer;
-            const shipperData = await orderData.shipper;
-            const tripData = await orderData.trip;
             const orderId = orderData.id;
             const fetchedOrderData = await DataStore.query(OrderItem, (oi) => oi.orderOrdersId.eq(orderId))
             setBuyer(buyerData);
-            setShipper(shipperData);
-            setTrip(tripData);
             setOrders(fetchedOrderData);
         }
 
         getOrderData();
-    }, [])
+    }, [orderData.buyer, orderData.id])
 
     return (
         <Box border='2px solid rgba(246,236,54,255)' borderRadius='1rem' marginBottom='1rem'>

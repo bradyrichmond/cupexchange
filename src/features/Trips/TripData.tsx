@@ -38,12 +38,12 @@ const TripData = () => {
     
     useEffect(() => {
         dispatch(getStoreInventory(currentStore?.storeInventoryId ?? ''))
-    }, [currentStore])
+    }, [dispatch, currentStore])
 
     useEffect(() => {
         dispatch(emptyCart({}));
         dispatch(getSingleTrip(id ?? ''));
-    }, [])
+    }, [dispatch, id])
 
     const addToOrder = (id: string) => {
         dispatch(addCartItem(id));
@@ -52,17 +52,18 @@ const TripData = () => {
     return (
         <Box padding='2rem' height='100%' width='100%'>
             <Typography fontSize='3rem'>{title}</Typography>
-            {inventoryItems && <>
-                <Typography>Inventory current as of {relativeUpdatedAt}</Typography>
-                <Box display='flex' flexDirection='row'>
-                    {inventoryItems && inventoryItems.map((i) => {
-                        return (
-                            <InventoryItem imageKey={i?.imageKey} addToOrder={addToOrder} itemId={i?.id ?? ''}/>
-                        )
-                    })}
-                </Box> 
-            </>}
-            {!inventoryItems && 
+            {inventoryItems && inventoryItems.length > 0 ? 
+                <>
+                    <Typography>Inventory current as of {relativeUpdatedAt}</Typography>
+                    <Box display='flex' flexDirection='row'>
+                        {inventoryItems && inventoryItems.map((i) => {
+                            return (
+                                <InventoryItem imageKey={i?.imageKey} addToOrder={addToOrder} itemId={i?.id ?? ''}/>
+                            )
+                        })}
+                    </Box> 
+                </>
+            :
                 <Typography>No inventory data</Typography>
             }
         </Box>

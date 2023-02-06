@@ -34,6 +34,7 @@ const FileUpload = (props: FileUploadInput) => {
                     if (label?.metadata?.confidence > 70) {
                         return label.name;
                     }
+                    return undefined;
                 })
 
                 const guidName = uuidv4();

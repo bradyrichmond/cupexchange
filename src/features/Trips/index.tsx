@@ -63,7 +63,7 @@ const Stores = () => {
 
     useEffect(() => {
         dispatch(getTrips(currentPage))
-    }, [])
+    }, [dispatch, currentPage])
 
     const handleRowClick: GridEventListener<'rowClick'> = (
         params,
@@ -91,7 +91,9 @@ const Stores = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <CreateTripForm close={handleClose} />
+                <Box>
+                    <CreateTripForm close={handleClose} />
+                </Box>
             </Modal>
             <Box display='flex' alignItems='center' justifyContent='center' paddingBottom='2rem'>
                 <Typography fontSize='3rem' fontWeight='bold'>Upcoming Trips</Typography>
@@ -100,7 +102,11 @@ const Stores = () => {
                 <Button onClick={handleOpen} variant='contained'><Add />Add Trip</Button>
             </Box>
             <Box marginTop='2rem' flex={1}>
-                <DataGrid onRowClick={handleRowClick} rows={rows} columns={columns} onPageChange={handlePageChange} style={{background: 'rgba(255, 255, 255, 255)', borderRadius: '2rem', color: 'rgba(131,133,146,255)', padding: '2rem', fontSize: '1.5rem', fontWeight: 'bold' }}/>
+                {trips && trips.length > 0 ? 
+                    <DataGrid onRowClick={handleRowClick} rows={rows} columns={columns} onPageChange={handlePageChange} style={{background: 'rgba(255, 255, 255, 255)', borderRadius: '2rem', color: 'rgba(131,133,146,255)', padding: '2rem', fontSize: '1.5rem', fontWeight: 'bold' }}/>
+                    :
+                    <Box>No upcoming trips scheduled</Box>
+                }
             </Box>
         </Box>
     )

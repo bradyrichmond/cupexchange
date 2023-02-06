@@ -65,12 +65,10 @@ const SignUp = () => {
                             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                                 <InputLabel>State</InputLabel>
                                 <Select
-                                onChange={handleDistrictChange}
-                                label="State"
+                                    onChange={handleDistrictChange}
+                                    label="State"
+                                    value={district}
                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
                                     {DISTRICTS?.map((district: string) => {
                                         return (<MenuItem value={district} key={district}>{district}</MenuItem>)
                                     })}

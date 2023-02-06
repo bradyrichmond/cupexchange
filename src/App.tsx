@@ -3,7 +3,6 @@ import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
-  useLocation,
 } from "react-router-dom";
 import { Box } from '@mui/material';
 
@@ -26,7 +25,7 @@ import Cart from './features/Orders/Cart';
 import Profile from './features/User/Profile';
 import UserData from './features/User/UserData';
 
-const buildRoutes = (isLoggedIn: boolean, pathname: string, userIsModerator: boolean) => createBrowserRouter([
+export const buildRoutes = (isLoggedIn: boolean, pathname: string, userIsModerator: boolean) => createBrowserRouter([
   {
     path: '/',
     element: isLoggedIn ? <Home /> : <Navigate to='/login' state={{goto: pathname}}/>,

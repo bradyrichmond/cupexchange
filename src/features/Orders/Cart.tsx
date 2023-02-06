@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { CartItem, emptyCart, removeCartItem, selectCartItems, updateItem } from './CartSlice';
 import { DataStore, Storage } from 'aws-amplify';

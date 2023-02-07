@@ -2,6 +2,7 @@ import React from 'react';
 import Trips from './';
 
 import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../test-utils';
 import { generateFullState } from '../../graphql-test-utils';
 
@@ -33,6 +34,18 @@ describe('Stores', () => {
 
         waitFor(() => {
             expect(screen.getByText("No upcoming trips scheduled")).not.toBeInTheDocument()
+        });
+    })
+
+    it ('opens create trip form modal', async () => {
+        renderWithProviders(<Trips />, {
+            preloadedState
+        });
+
+        const addTripButton = await screen.getByText('Add Trip');
+        userEvent.click(addTripButton);
+        waitFor(() => {
+            expect(screen.getByText("Create Trip")).toBeInTheDocument();
         });
     })
 })

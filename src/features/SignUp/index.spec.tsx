@@ -12,8 +12,9 @@ jest.mock("react-router", () => ({
   }));
 
 describe('signUp', () => {
-    it('renders', async () => {
+    it('renders with email from location state', async () => {
        renderWithProviders(<SignUp />);
-       expect(screen.getByText("Complete Sign up")).toBeInTheDocument();
+       expect(screen.getByText('Complete Sign up')).toBeInTheDocument();
+       expect(screen.getByText('test_email@cupexchange.com')).toBeInTheDocument();
     });
 })  

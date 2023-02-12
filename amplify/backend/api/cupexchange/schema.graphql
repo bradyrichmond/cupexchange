@@ -52,6 +52,7 @@ type Lego @model @auth(rules: [{ allow: private }]) {
   id: ID!
   imageKey: String!
   labels: [String]
+  comments: [Comment] @hasMany
 }
 
 type Trip @model @auth(rules: [

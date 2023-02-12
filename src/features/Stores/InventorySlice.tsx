@@ -1,11 +1,26 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { Inventory, Lego, Store } from '../../models';
+import { Comment, Inventory, Lego, LazyLego, Store } from '../../models';
 import { DataStore } from 'aws-amplify';
 import { RootState } from '../../store';
+import { CommentType } from '../Comments/CommentSlice';
 
 export interface LegoType {
   id: string
   imageKey: string
+  comments: CommentType[]
+}
+
+const convertComment = async (commentData: Comment) => {
+  const { id, createdBy, comment, createdAt, edited } = commentData;
+  const createdByUser = await createdBy;
+
+  return {
+    id,
+    createdBy: createdByUser,
+    comment,
+    createdAt: createdAt ?? '', 
+    edited
+  }
 }
 
 export const createStoreInventory = createAsyncThunk(
@@ -31,13 +46,20 @@ export const createStoreInventory = createAsyncThunk(
 export const getStoreInventory = createAsyncThunk(
   'inventory/getStoreInventory',
   async (id: string) => {
-    try {
-      const lego = await DataStore.query(Lego, (L) => L.inventoryItemsId.eq(id));
-      const legoList: LegoType[] = lego.map((l) => { return { id: l.id, imageKey: l.imageKey } });
-      return legoList;
-    } catch (e) {
-      console.error(JSON.stringify(e));
-    }
+    const lego = await DataStore.query(Lego, (L) => L.inventoryItemsId.eq(id));
+    const legoList: LegoType[] = await Promise.all(lego.map(async (l) => {
+      const commentsList = await l.comments.toArray();
+      const transformedComments = await Promise.all(commentsList.map(async (c) => {
+        const transformedComment = await convertComment(c);
+        return transformedComment;
+      }))
+      return { 
+        id: l.id, 
+        imageKey: l.imageKey,
+        comments: transformedComments 
+      }
+    }));
+    return legoList;
   }
 )
 

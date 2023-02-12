@@ -75,11 +75,11 @@ const Stores = () => {
 
     const handleClose = async () => {
         setOpen(false);
-        await setCurrentPage(0);
+        setCurrentPage(0);
     }
 
     const handlePageChange = async (page: number) => {
-        await setCurrentPage(page);
+        setCurrentPage(page);
         await dispatch(getTrips(currentPage));
     }
 

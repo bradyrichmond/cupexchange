@@ -41,7 +41,7 @@ export const buildRoutes = (isLoggedIn: boolean, pathname: string, userIsModerat
       {
         path: 'stores',
         element: <Stores />
-      },
+      },  
       {
         path: 'stores/:id',
         element: <StoreData />

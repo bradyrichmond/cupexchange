@@ -11,6 +11,8 @@ import { formatRelative, parseISO } from 'date-fns';
 import { getUserData, selectFbUsername, selectUserCognitoGroups, selectUserData } from '../User/UserSlice';
 import DeleteStoreModal from './DeleteStoreModal';
 import { removeCartItem, selectCartItems, updateItem } from '../Orders/CartSlice';
+import CommentsContent from '../Comments';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 const StoreData = () => {
     const { id } = useParams();
@@ -138,6 +140,7 @@ export const InventoryItem = (props: InventoryItemProps) => {
     const { imageKey, addToOrder, itemId } = props;
     const dispatch = useAppDispatch();
     const [url, setUrl] = useState('');
+    const [isViewingComments, setIsViewingComments] = useState(false);
     const cartItems = useAppSelector(selectCartItems);
     const itemsInCart = cartItems.find((item) => item.itemId === itemId);
     const itemCount = itemsInCart ? itemsInCart.count : 0;
@@ -171,8 +174,26 @@ export const InventoryItem = (props: InventoryItemProps) => {
         dispatch(updateItem({itemId, itemCount: itemCount - 1}));
     }
 
+    const stopViewingComments = () => {
+        setIsViewingComments(false);
+    }
+
+    const startViewingComments = () => {
+        setIsViewingComments(true);
+    }
+
     return (
         <Box border='2px solid rgba(246,236,54,255)' borderRadius='1rem' padding='2rem' margin='2rem' flex='1' minWidth='200px' display='flex' flexDirection='column'>
+            <Modal
+                open={isViewingComments}
+                onClose={stopViewingComments}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box height="100%" width="100%" display='flex' justifyContent='center' alignItems='center' borderRadius='1rem' padding='2rem'>
+                    <CommentsContent />
+                </Box>
+            </Modal>
             <Box flex='1'>
                 <img src={url} alt=""  width='100%'/>
             </Box>
@@ -183,6 +204,9 @@ export const InventoryItem = (props: InventoryItemProps) => {
                 {addToOrder && itemCount > 0 &&
                     <Counter itemCount={itemCount} addAction={addItem} minusAction={subtractItem}/>
                 }
+                <Box onClick={startViewingComments}>
+                    <ChatBubbleOutlineIcon />
+                </Box>
             </Box>
         </Box>
     )
@@ -190,6 +214,7 @@ export const InventoryItem = (props: InventoryItemProps) => {
 
 export const Counter = (props: { minusAction: () => void, itemCount: number, addAction: () => void }) => {
     const { minusAction, itemCount, addAction } = props;
+
     return (
         <Box display='flex' flexDirection='row'>
             <Button onClick={minusAction}><RemoveCircleOutline /></Button>

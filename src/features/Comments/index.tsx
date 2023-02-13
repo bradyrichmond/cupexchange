@@ -13,8 +13,8 @@ const CommentsContent = (props: CommentProps) => {
     return (
         <Box>
             {comments && comments.length > 0 ?
-                comments.map(() => {
-                  return  <CommentItem />
+                comments.map((c) => {
+                  return  <CommentItem comment={c} key={c.id} />
                 })
                 :
                 <Typography>No comments</Typography>
@@ -23,9 +23,15 @@ const CommentsContent = (props: CommentProps) => {
     )
 }
 
-const CommentItem = () => {
+interface CommentItemProps {
+    comment: Comment
+}
+
+const CommentItem = (props: CommentItemProps) => {
+    const { comment } = props;
+
     return (
-        <Typography>There are comments</Typography>
+        <Typography>{comment.comment}</Typography>
     )
 }
 

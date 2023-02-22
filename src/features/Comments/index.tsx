@@ -1,30 +1,35 @@
 import React from 'react';
 import { Box } from '@mui/system';
-import { Comment } from '../../models';
 import { Typography } from '@mui/material';
+import { CommentType } from './CommentSlice';
+import CreateCommentForm from './CreateCommentForm';
 
 interface CommentProps {
-    comments?: Comment[]
+    comments?: CommentType[]
+    parent?: string
 }
 
 const CommentsContent = (props: CommentProps) => {
-    const { comments } = props;
+    const { comments, parent } = props;
 
     return (
-        <Box>
-            {comments && comments.length > 0 ?
-                comments.map((c) => {
-                  return  <CommentItem comment={c} key={c.id} />
-                })
-                :
-                <Typography>No comments</Typography>
-            }
+        <Box padding='2rem' borderRadius='2rem' bgcolor='rgba(255, 255, 255, 255)' minWidth='25%' minHeight='25%' display='flex' flexDirection='column'>
+            <Box flex='1'>
+                {comments && comments.length > 0 ?
+                    comments.map((c) => {
+                        return  <CommentItem comment={c} key={c.id} />
+                    })
+                    :
+                    <Typography>No comments</Typography>
+                }
+            </Box>
+            <CreateCommentForm parent={parent}/>
         </Box>
     )
 }
 
 interface CommentItemProps {
-    comment: Comment
+    comment: CommentType
 }
 
 const CommentItem = (props: CommentItemProps) => {

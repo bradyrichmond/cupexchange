@@ -13,6 +13,7 @@ import DeleteStoreModal from './DeleteStoreModal';
 import { removeCartItem, selectCartItems, updateItem } from '../Orders/CartSlice';
 import CommentsContent from '../Comments';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import { CommentType } from '../Comments/CommentSlice';
 
 const StoreData = () => {
     const { id } = useParams();
@@ -120,7 +121,7 @@ const StoreData = () => {
                     <Box display='flex' flexDirection='row'>
                         {inventory?.map((inv) => {
                             return (
-                                <InventoryItem imageKey={inv?.imageKey} key={inv?.id} itemId={inv?.id ?? ''}/>
+                                <InventoryItem imageKey={inv?.imageKey} key={inv?.id} itemId={inv?.id ?? ''} comments={inv?.comments}/>
                             );
                         })}
                     </Box>
@@ -134,10 +135,11 @@ interface InventoryItemProps{
     imageKey: string | undefined
     addToOrder?: (id: string) => void
     itemId: string
+    comments?: CommentType[]
 }
 
 export const InventoryItem = (props: InventoryItemProps) => {
-    const { imageKey, addToOrder, itemId } = props;
+    const { imageKey, addToOrder, itemId, comments } = props;
     const dispatch = useAppDispatch();
     const [url, setUrl] = useState('');
     const [isViewingComments, setIsViewingComments] = useState(false);
@@ -191,7 +193,7 @@ export const InventoryItem = (props: InventoryItemProps) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box height="100%" width="100%" display='flex' justifyContent='center' alignItems='center' borderRadius='1rem' padding='2rem'>
-                    <CommentsContent />
+                    <CommentsContent comments={comments} parent={itemId}/>
                 </Box>
             </Modal>
             <Box flex='1'>
@@ -204,9 +206,12 @@ export const InventoryItem = (props: InventoryItemProps) => {
                 {addToOrder && itemCount > 0 &&
                     <Counter itemCount={itemCount} addAction={addItem} minusAction={subtractItem}/>
                 }
-                <Box onClick={startViewingComments}>
+                <Box onClick={startViewingComments} data-testid='show-messages'>
                     <ChatBubbleOutlineIcon />
                 </Box>
+            </Box>
+            <Box>
+                {JSON.stringify(comments)}
             </Box>
         </Box>
     )

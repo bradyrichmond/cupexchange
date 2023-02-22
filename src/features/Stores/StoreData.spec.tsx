@@ -5,6 +5,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../../test-utils';
 
 import { generateFullState } from '../../graphql-test-utils';
+import userEvent from '@testing-library/user-event';
 
 const preloadedState = generateFullState();
 
@@ -22,7 +23,7 @@ jest.mock('../../hooks', () => ({
 
 describe('Store Data', () => {
 
-    it('displays error when invalid id', async () => {
+    it('displays test store data', async () => {
         renderWithProviders(<StoreData />, {
             preloadedState
         });
@@ -30,4 +31,18 @@ describe('Store Data', () => {
             expect(screen.getByText("Test Store")).toBeInTheDocument()
         });
     });
+
+    it('opens comments modal', async () => {
+        renderWithProviders(<StoreData />, {
+            preloadedState
+        });
+
+        waitFor(() => {
+            const commentIcon = screen.getAllByTestId('show-messages')[0];
+            userEvent.click(commentIcon);
+        })
+        waitFor(() => {
+            expect(screen.getByText('This is a comment')).toBeInTheDocument();
+        })
+    })
 })

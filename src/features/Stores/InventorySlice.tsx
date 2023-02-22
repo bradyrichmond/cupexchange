@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { Comment, Inventory, Lego, LazyLego, Store } from '../../models';
+import { Comment, Inventory, Lego, Store } from '../../models';
 import { DataStore } from 'aws-amplify';
 import { RootState } from '../../store';
 import { CommentType } from '../Comments/CommentSlice';
@@ -31,7 +31,7 @@ export const createStoreInventory = createAsyncThunk(
       
       await Promise.all(input.lego.map(async (lego: { imageKey: string | undefined, labels: any[] | undefined }) => {
         if (lego.imageKey) {
-          return await DataStore.save(new Lego({ imageKey: lego.imageKey, labels: lego.labels ?? [], inventoryItemsId: inventoryResponseId }));
+          return await DataStore.save(new Lego({ imageKey: lego.imageKey, labels: lego.labels ?? [], inventoryItemsId: inventoryResponseId, comments: [] }));
         }
       }));
       const store = await DataStore.query(Store, input.storeId);
@@ -53,6 +53,7 @@ export const getStoreInventory = createAsyncThunk(
         const transformedComment = await convertComment(c);
         return transformedComment;
       }))
+      
       return { 
         id: l.id, 
         imageKey: l.imageKey,

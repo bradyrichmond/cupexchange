@@ -131,8 +131,10 @@ type EagerInventory = {
   };
   readonly id: string;
   readonly items: Lego[];
+  readonly createdBy?: User | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly inventoryCreatedById?: string | null;
 }
 
 type LazyInventory = {
@@ -142,8 +144,10 @@ type LazyInventory = {
   };
   readonly id: string;
   readonly items: AsyncCollection<Lego>;
+  readonly createdBy: AsyncItem<User | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly inventoryCreatedById?: string | null;
 }
 
 export declare type Inventory = LazyLoading extends LazyLoadingDisabled ? EagerInventory : LazyInventory

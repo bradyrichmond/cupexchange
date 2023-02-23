@@ -8,6 +8,7 @@ export interface LegoType {
   id: string
   imageKey: string
   comments: CommentType[]
+  itemAddedById?: string | null
 }
 
 const convertComment = async (commentData: Comment) => {
@@ -26,7 +27,7 @@ const convertComment = async (commentData: Comment) => {
 export const createStoreInventory = createAsyncThunk(
     'inventory/createStoreInventory',
     async (input: { lego: ({ imageKey: string | undefined, labels: any[] | undefined })[], storeId: string, userId: string }) => {
-      const inventoryResponse = await DataStore.save(new Inventory({}));
+      const inventoryResponse = await DataStore.save(new Inventory({ inventoryCreatedById: input.userId }));
       const inventoryResponseId = inventoryResponse.id;
       
       await Promise.all(input.lego.map(async (lego: { imageKey: string | undefined, labels: any[] | undefined }) => {
@@ -53,11 +54,14 @@ export const getStoreInventory = createAsyncThunk(
         const transformedComment = await convertComment(c);
         return transformedComment;
       }))
+
+      const inventory = await DataStore.query(Inventory, id);
       
       return { 
         id: l.id, 
         imageKey: l.imageKey,
-        comments: transformedComments 
+        comments: transformedComments,
+        itemAddedById: inventory?.inventoryCreatedById
       }
     }));
     return legoList;

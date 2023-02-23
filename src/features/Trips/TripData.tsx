@@ -56,9 +56,9 @@ const TripData = () => {
                 <>
                     <Typography>Inventory current as of {relativeUpdatedAt}</Typography>
                     <Box display='flex' flexDirection='row'>
-                        {inventoryItems && inventoryItems.map((i) => {
+                        {inventoryItems && inventoryItems.map((inv) => {
                             return (
-                                <InventoryItem imageKey={i?.imageKey} addToOrder={addToOrder} itemId={i?.id ?? ''}/>
+                                <InventoryItem imageKey={inv?.imageKey} addToOrder={addToOrder} itemId={inv?.id ?? ''} itemAddedById={inv?.itemAddedById ?? ''}/>
                             )
                         })}
                     </Box> 

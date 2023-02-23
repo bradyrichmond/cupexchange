@@ -230,11 +230,41 @@ export const createStore = /* GraphQL */ `
           nextToken
           startedAt
         }
+        createdBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        inventoryCreatedById
       }
       createdAt
       updatedAt
@@ -306,11 +336,41 @@ export const updateStore = /* GraphQL */ `
           nextToken
           startedAt
         }
+        createdBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        inventoryCreatedById
       }
       createdAt
       updatedAt
@@ -382,11 +442,41 @@ export const deleteStore = /* GraphQL */ `
           nextToken
           startedAt
         }
+        createdBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        inventoryCreatedById
       }
       createdAt
       updatedAt
@@ -438,11 +528,41 @@ export const createInventory = /* GraphQL */ `
         nextToken
         startedAt
       }
+      createdBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      inventoryCreatedById
     }
   }
 `;
@@ -486,11 +606,41 @@ export const updateInventory = /* GraphQL */ `
         nextToken
         startedAt
       }
+      createdBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      inventoryCreatedById
     }
   }
 `;
@@ -534,11 +684,41 @@ export const deleteInventory = /* GraphQL */ `
         nextToken
         startedAt
       }
+      createdBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      inventoryCreatedById
     }
   }
 `;
@@ -794,11 +974,41 @@ export const createTrip = /* GraphQL */ `
             nextToken
             startedAt
           }
+          createdBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            userAddressId
+            owner
+          }
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          inventoryCreatedById
         }
         createdAt
         updatedAt
@@ -910,11 +1120,41 @@ export const updateTrip = /* GraphQL */ `
             nextToken
             startedAt
           }
+          createdBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            userAddressId
+            owner
+          }
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          inventoryCreatedById
         }
         createdAt
         updatedAt
@@ -1026,11 +1266,41 @@ export const deleteTrip = /* GraphQL */ `
             nextToken
             startedAt
           }
+          createdBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            userAddressId
+            owner
+          }
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          inventoryCreatedById
         }
         createdAt
         updatedAt
@@ -1223,11 +1493,28 @@ export const createOrder = /* GraphQL */ `
               nextToken
               startedAt
             }
+            createdBy {
+              id
+              fbUsername
+              first_name
+              last_name
+              email
+              banned
+              deleted
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              userAddressId
+              owner
+            }
             createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
+            inventoryCreatedById
           }
           createdAt
           updatedAt
@@ -1431,11 +1718,28 @@ export const updateOrder = /* GraphQL */ `
               nextToken
               startedAt
             }
+            createdBy {
+              id
+              fbUsername
+              first_name
+              last_name
+              email
+              banned
+              deleted
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              userAddressId
+              owner
+            }
             createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
+            inventoryCreatedById
           }
           createdAt
           updatedAt
@@ -1639,11 +1943,28 @@ export const deleteOrder = /* GraphQL */ `
               nextToken
               startedAt
             }
+            createdBy {
+              id
+              fbUsername
+              first_name
+              last_name
+              email
+              banned
+              deleted
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              userAddressId
+              owner
+            }
             createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
+            inventoryCreatedById
           }
           createdAt
           updatedAt

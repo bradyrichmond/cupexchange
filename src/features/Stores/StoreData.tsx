@@ -121,7 +121,7 @@ const StoreData = () => {
                     <Box display='flex' flexDirection='row'>
                         {inventory?.map((inv) => {
                             return (
-                                <InventoryItem imageKey={inv?.imageKey} key={inv?.id} itemId={inv?.id ?? ''} comments={inv?.comments}/>
+                                <InventoryItem imageKey={inv?.imageKey} key={inv?.id} itemId={inv?.id ?? ''} comments={inv?.comments} itemAddedById={inv?.itemAddedById ?? ''}/>
                             );
                         })}
                     </Box>
@@ -136,10 +136,11 @@ interface InventoryItemProps{
     addToOrder?: (id: string) => void
     itemId: string
     comments?: CommentType[]
+    itemAddedById: string
 }
 
 export const InventoryItem = (props: InventoryItemProps) => {
-    const { imageKey, addToOrder, itemId, comments } = props;
+    const { imageKey, addToOrder, itemId, comments, itemAddedById } = props;
     const dispatch = useAppDispatch();
     const [url, setUrl] = useState('');
     const [isViewingComments, setIsViewingComments] = useState(false);
@@ -193,7 +194,7 @@ export const InventoryItem = (props: InventoryItemProps) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box height="100%" width="100%" display='flex' justifyContent='center' alignItems='center' borderRadius='1rem' padding='2rem'>
-                    <CommentsContent comments={comments} parent={itemId}/>
+                    <CommentsContent comments={comments} parent={itemId} itemAddedById={itemAddedById} />
                 </Box>
             </Modal>
             <Box flex='1'>
@@ -209,9 +210,6 @@ export const InventoryItem = (props: InventoryItemProps) => {
                 <Box onClick={startViewingComments} data-testid='show-messages'>
                     <ChatBubbleOutlineIcon />
                 </Box>
-            </Box>
-            <Box>
-                {JSON.stringify(comments)}
             </Box>
         </Box>
     )

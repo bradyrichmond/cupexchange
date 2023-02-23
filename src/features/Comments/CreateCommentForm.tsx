@@ -23,7 +23,7 @@ const CreateCommentForm = (props: CreateCommentFormInput) => {
         const user = await DataStore.query(User, userId);
         
         if (user) {
-            dispatch(createComment({ comment, createdAt: Date.now().toString(), commentCreatedById: userId, parent, createdBy: user }))
+            dispatch(createComment({ comment, commentCreatedById: userId, parent, createdBy: user }));
         }
     }
 

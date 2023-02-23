@@ -24,15 +24,14 @@ interface CreateCommentInput {
    createdBy: User
    parent?: string
    comment: string
-   createdAt: string
    commentCreatedById: string
 }
 
 export const createComment = createAsyncThunk(
    'comments/createComment',
    async (input: CreateCommentInput) => {
-      const { createdBy, parent, comment, createdAt, commentCreatedById } = input;
-      await DataStore.save(new Comment({ createdBy, comment, createdAt, commentCreatedById, parent, legoCommentsId: parent }));
+      const { createdBy, parent, comment, commentCreatedById } = input;
+      await DataStore.save(new Comment({ createdBy, comment, commentCreatedById, parent, legoCommentsId: parent }));
    }
 )
 

@@ -1,22 +1,38 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { Inventory, Lego, Store } from '../../models';
+import { Comment, Inventory, Lego, Store } from '../../models';
 import { DataStore } from 'aws-amplify';
 import { RootState } from '../../store';
+import { CommentType } from '../Comments/CommentSlice';
 
 export interface LegoType {
   id: string
   imageKey: string
+  comments: CommentType[]
+  itemAddedById?: string | null
+}
+
+const convertComment = async (commentData: Comment) => {
+  const { id, createdBy, comment, createdAt, edited } = commentData;
+  const createdByUser = await createdBy;
+
+  return {
+    id,
+    createdBy: createdByUser,
+    comment,
+    createdAt: createdAt ?? '', 
+    edited
+  }
 }
 
 export const createStoreInventory = createAsyncThunk(
     'inventory/createStoreInventory',
     async (input: { lego: ({ imageKey: string | undefined, labels: any[] | undefined })[], storeId: string, userId: string }) => {
-      const inventoryResponse = await DataStore.save(new Inventory({}));
+      const inventoryResponse = await DataStore.save(new Inventory({ inventoryCreatedById: input.userId }));
       const inventoryResponseId = inventoryResponse.id;
       
       await Promise.all(input.lego.map(async (lego: { imageKey: string | undefined, labels: any[] | undefined }) => {
         if (lego.imageKey) {
-          return await DataStore.save(new Lego({ imageKey: lego.imageKey, labels: lego.labels ?? [], inventoryItemsId: inventoryResponseId }));
+          return await DataStore.save(new Lego({ imageKey: lego.imageKey, labels: lego.labels ?? [], inventoryItemsId: inventoryResponseId, comments: [] }));
         }
       }));
       const store = await DataStore.query(Store, input.storeId);
@@ -31,13 +47,24 @@ export const createStoreInventory = createAsyncThunk(
 export const getStoreInventory = createAsyncThunk(
   'inventory/getStoreInventory',
   async (id: string) => {
-    try {
-      const lego = await DataStore.query(Lego, (L) => L.inventoryItemsId.eq(id));
-      const legoList: LegoType[] = lego.map((l) => { return { id: l.id, imageKey: l.imageKey } });
-      return legoList;
-    } catch (e) {
-      console.error(JSON.stringify(e));
-    }
+    const lego = await DataStore.query(Lego, (L) => L.inventoryItemsId.eq(id));
+    const legoList: LegoType[] = await Promise.all(lego.map(async (l) => {
+      const commentsList = await l.comments.toArray();
+      const transformedComments = await Promise.all(commentsList.map(async (c) => {
+        const transformedComment = await convertComment(c);
+        return transformedComment;
+      }))
+
+      const inventory = await DataStore.query(Inventory, id);
+      
+      return { 
+        id: l.id, 
+        imageKey: l.imageKey,
+        comments: transformedComments,
+        itemAddedById: inventory?.inventoryCreatedById
+      }
+    }));
+    return legoList;
   }
 )
 

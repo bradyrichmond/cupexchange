@@ -195,6 +195,10 @@ export const onCreateStore = /* GraphQL */ `
             id
             imageKey
             labels
+            comments {
+              nextToken
+              startedAt
+            }
             createdAt
             updatedAt
             _version
@@ -205,11 +209,41 @@ export const onCreateStore = /* GraphQL */ `
           nextToken
           startedAt
         }
+        createdBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        inventoryCreatedById
       }
       createdAt
       updatedAt
@@ -264,6 +298,10 @@ export const onUpdateStore = /* GraphQL */ `
             id
             imageKey
             labels
+            comments {
+              nextToken
+              startedAt
+            }
             createdAt
             updatedAt
             _version
@@ -274,11 +312,41 @@ export const onUpdateStore = /* GraphQL */ `
           nextToken
           startedAt
         }
+        createdBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        inventoryCreatedById
       }
       createdAt
       updatedAt
@@ -333,6 +401,10 @@ export const onDeleteStore = /* GraphQL */ `
             id
             imageKey
             labels
+            comments {
+              nextToken
+              startedAt
+            }
             createdAt
             updatedAt
             _version
@@ -343,11 +415,41 @@ export const onDeleteStore = /* GraphQL */ `
           nextToken
           startedAt
         }
+        createdBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        inventoryCreatedById
       }
       createdAt
       updatedAt
@@ -370,6 +472,24 @@ export const onCreateInventory = /* GraphQL */ `
           id
           imageKey
           labels
+          comments {
+            items {
+              id
+              parent
+              comment
+              createdAt
+              edited
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              legoCommentsId
+              commentCreatedById
+              owner
+            }
+            nextToken
+            startedAt
+          }
           createdAt
           updatedAt
           _version
@@ -380,11 +500,41 @@ export const onCreateInventory = /* GraphQL */ `
         nextToken
         startedAt
       }
+      createdBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      inventoryCreatedById
     }
   }
 `;
@@ -399,6 +549,24 @@ export const onUpdateInventory = /* GraphQL */ `
           id
           imageKey
           labels
+          comments {
+            items {
+              id
+              parent
+              comment
+              createdAt
+              edited
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              legoCommentsId
+              commentCreatedById
+              owner
+            }
+            nextToken
+            startedAt
+          }
           createdAt
           updatedAt
           _version
@@ -409,11 +577,41 @@ export const onUpdateInventory = /* GraphQL */ `
         nextToken
         startedAt
       }
+      createdBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      inventoryCreatedById
     }
   }
 `;
@@ -428,6 +626,24 @@ export const onDeleteInventory = /* GraphQL */ `
           id
           imageKey
           labels
+          comments {
+            items {
+              id
+              parent
+              comment
+              createdAt
+              edited
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              legoCommentsId
+              commentCreatedById
+              owner
+            }
+            nextToken
+            startedAt
+          }
           createdAt
           updatedAt
           _version
@@ -438,11 +654,41 @@ export const onDeleteInventory = /* GraphQL */ `
         nextToken
         startedAt
       }
+      createdBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      inventoryCreatedById
     }
   }
 `;
@@ -452,6 +698,53 @@ export const onCreateLego = /* GraphQL */ `
       id
       imageKey
       labels
+      comments {
+        items {
+          id
+          createdBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            userAddressId
+            owner
+          }
+          parent
+          comment
+          createdAt
+          edited
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          legoCommentsId
+          commentCreatedById
+          owner
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -467,6 +760,53 @@ export const onUpdateLego = /* GraphQL */ `
       id
       imageKey
       labels
+      comments {
+        items {
+          id
+          createdBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            userAddressId
+            owner
+          }
+          parent
+          comment
+          createdAt
+          edited
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          legoCommentsId
+          commentCreatedById
+          owner
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -482,6 +822,53 @@ export const onDeleteLego = /* GraphQL */ `
       id
       imageKey
       labels
+      comments {
+        items {
+          id
+          createdBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            userAddressId
+            owner
+          }
+          parent
+          comment
+          createdAt
+          edited
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          legoCommentsId
+          commentCreatedById
+          owner
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -545,11 +932,41 @@ export const onCreateTrip = /* GraphQL */ `
             nextToken
             startedAt
           }
+          createdBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            userAddressId
+            owner
+          }
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          inventoryCreatedById
         }
         createdAt
         updatedAt
@@ -658,11 +1075,41 @@ export const onUpdateTrip = /* GraphQL */ `
             nextToken
             startedAt
           }
+          createdBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            userAddressId
+            owner
+          }
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          inventoryCreatedById
         }
         createdAt
         updatedAt
@@ -771,11 +1218,41 @@ export const onDeleteTrip = /* GraphQL */ `
             nextToken
             startedAt
           }
+          createdBy {
+            id
+            fbUsername
+            first_name
+            last_name
+            address {
+              id
+              address
+              address2
+              district
+              city
+              postal_code
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+            }
+            email
+            banned
+            deleted
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            userAddressId
+            owner
+          }
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          inventoryCreatedById
         }
         createdAt
         updatedAt
@@ -833,6 +1310,7 @@ export const onDeleteTrip = /* GraphQL */ `
 export const onCreateOrder = /* GraphQL */ `
   subscription OnCreateOrder($filter: ModelSubscriptionOrderFilterInput) {
     onCreateOrder(filter: $filter) {
+      id
       buyer {
         id
         fbUsername
@@ -899,6 +1377,10 @@ export const onCreateOrder = /* GraphQL */ `
             id
             imageKey
             labels
+            comments {
+              nextToken
+              startedAt
+            }
             createdAt
             updatedAt
             _version
@@ -960,11 +1442,28 @@ export const onCreateOrder = /* GraphQL */ `
               nextToken
               startedAt
             }
+            createdBy {
+              id
+              fbUsername
+              first_name
+              last_name
+              email
+              banned
+              deleted
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              userAddressId
+              owner
+            }
             createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
+            inventoryCreatedById
           }
           createdAt
           updatedAt
@@ -1018,7 +1517,6 @@ export const onCreateOrder = /* GraphQL */ `
         owner
       }
       total
-      id
       createdAt
       updatedAt
       _version
@@ -1034,6 +1532,7 @@ export const onCreateOrder = /* GraphQL */ `
 export const onUpdateOrder = /* GraphQL */ `
   subscription OnUpdateOrder($filter: ModelSubscriptionOrderFilterInput) {
     onUpdateOrder(filter: $filter) {
+      id
       buyer {
         id
         fbUsername
@@ -1100,6 +1599,10 @@ export const onUpdateOrder = /* GraphQL */ `
             id
             imageKey
             labels
+            comments {
+              nextToken
+              startedAt
+            }
             createdAt
             updatedAt
             _version
@@ -1161,11 +1664,28 @@ export const onUpdateOrder = /* GraphQL */ `
               nextToken
               startedAt
             }
+            createdBy {
+              id
+              fbUsername
+              first_name
+              last_name
+              email
+              banned
+              deleted
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              userAddressId
+              owner
+            }
             createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
+            inventoryCreatedById
           }
           createdAt
           updatedAt
@@ -1219,7 +1739,6 @@ export const onUpdateOrder = /* GraphQL */ `
         owner
       }
       total
-      id
       createdAt
       updatedAt
       _version
@@ -1235,6 +1754,7 @@ export const onUpdateOrder = /* GraphQL */ `
 export const onDeleteOrder = /* GraphQL */ `
   subscription OnDeleteOrder($filter: ModelSubscriptionOrderFilterInput) {
     onDeleteOrder(filter: $filter) {
+      id
       buyer {
         id
         fbUsername
@@ -1301,6 +1821,10 @@ export const onDeleteOrder = /* GraphQL */ `
             id
             imageKey
             labels
+            comments {
+              nextToken
+              startedAt
+            }
             createdAt
             updatedAt
             _version
@@ -1362,11 +1886,28 @@ export const onDeleteOrder = /* GraphQL */ `
               nextToken
               startedAt
             }
+            createdBy {
+              id
+              fbUsername
+              first_name
+              last_name
+              email
+              banned
+              deleted
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              userAddressId
+              owner
+            }
             createdAt
             updatedAt
             _version
             _deleted
             _lastChangedAt
+            inventoryCreatedById
           }
           createdAt
           updatedAt
@@ -1420,7 +1961,6 @@ export const onDeleteOrder = /* GraphQL */ `
         owner
       }
       total
-      id
       createdAt
       updatedAt
       _version
@@ -1442,6 +1982,40 @@ export const onCreateOrderItem = /* GraphQL */ `
         id
         imageKey
         labels
+        comments {
+          items {
+            id
+            createdBy {
+              id
+              fbUsername
+              first_name
+              last_name
+              email
+              banned
+              deleted
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              userAddressId
+              owner
+            }
+            parent
+            comment
+            createdAt
+            edited
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            legoCommentsId
+            commentCreatedById
+            owner
+          }
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -1470,6 +2044,40 @@ export const onUpdateOrderItem = /* GraphQL */ `
         id
         imageKey
         labels
+        comments {
+          items {
+            id
+            createdBy {
+              id
+              fbUsername
+              first_name
+              last_name
+              email
+              banned
+              deleted
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              userAddressId
+              owner
+            }
+            parent
+            comment
+            createdAt
+            edited
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            legoCommentsId
+            commentCreatedById
+            owner
+          }
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -1498,6 +2106,40 @@ export const onDeleteOrderItem = /* GraphQL */ `
         id
         imageKey
         labels
+        comments {
+          items {
+            id
+            createdBy {
+              id
+              fbUsername
+              first_name
+              last_name
+              email
+              banned
+              deleted
+              createdAt
+              updatedAt
+              _version
+              _deleted
+              _lastChangedAt
+              userAddressId
+              owner
+            }
+            parent
+            comment
+            createdAt
+            edited
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            legoCommentsId
+            commentCreatedById
+            owner
+          }
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
@@ -1514,6 +2156,501 @@ export const onDeleteOrderItem = /* GraphQL */ `
       _lastChangedAt
       orderOrdersId
       orderItemItemId
+    }
+  }
+`;
+export const onCreateComment = /* GraphQL */ `
+  subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
+    onCreateComment(filter: $filter) {
+      id
+      createdBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      parent
+      comment
+      createdAt
+      edited
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      legoCommentsId
+      commentCreatedById
+      owner
+    }
+  }
+`;
+export const onUpdateComment = /* GraphQL */ `
+  subscription OnUpdateComment($filter: ModelSubscriptionCommentFilterInput) {
+    onUpdateComment(filter: $filter) {
+      id
+      createdBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      parent
+      comment
+      createdAt
+      edited
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      legoCommentsId
+      commentCreatedById
+      owner
+    }
+  }
+`;
+export const onDeleteComment = /* GraphQL */ `
+  subscription OnDeleteComment($filter: ModelSubscriptionCommentFilterInput) {
+    onDeleteComment(filter: $filter) {
+      id
+      createdBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      parent
+      comment
+      createdAt
+      edited
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      legoCommentsId
+      commentCreatedById
+      owner
+    }
+  }
+`;
+export const onCreateReview = /* GraphQL */ `
+  subscription OnCreateReview($filter: ModelSubscriptionReviewFilterInput) {
+    onCreateReview(filter: $filter) {
+      id
+      comment {
+        id
+        createdBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        parent
+        comment
+        createdAt
+        edited
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        legoCommentsId
+        commentCreatedById
+        owner
+      }
+      positive
+      reviewOf {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      reviewBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      reviewCommentId
+      reviewReviewOfId
+      reviewReviewById
+      owner
+    }
+  }
+`;
+export const onUpdateReview = /* GraphQL */ `
+  subscription OnUpdateReview($filter: ModelSubscriptionReviewFilterInput) {
+    onUpdateReview(filter: $filter) {
+      id
+      comment {
+        id
+        createdBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        parent
+        comment
+        createdAt
+        edited
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        legoCommentsId
+        commentCreatedById
+        owner
+      }
+      positive
+      reviewOf {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      reviewBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      reviewCommentId
+      reviewReviewOfId
+      reviewReviewById
+      owner
+    }
+  }
+`;
+export const onDeleteReview = /* GraphQL */ `
+  subscription OnDeleteReview($filter: ModelSubscriptionReviewFilterInput) {
+    onDeleteReview(filter: $filter) {
+      id
+      comment {
+        id
+        createdBy {
+          id
+          fbUsername
+          first_name
+          last_name
+          address {
+            id
+            address
+            address2
+            district
+            city
+            postal_code
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+          email
+          banned
+          deleted
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userAddressId
+          owner
+        }
+        parent
+        comment
+        createdAt
+        edited
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        legoCommentsId
+        commentCreatedById
+        owner
+      }
+      positive
+      reviewOf {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      reviewBy {
+        id
+        fbUsername
+        first_name
+        last_name
+        address {
+          id
+          address
+          address2
+          district
+          city
+          postal_code
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        email
+        banned
+        deleted
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userAddressId
+        owner
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      reviewCommentId
+      reviewReviewOfId
+      reviewReviewById
+      owner
     }
   }
 `;

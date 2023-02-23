@@ -131,8 +131,10 @@ type EagerInventory = {
   };
   readonly id: string;
   readonly items: Lego[];
+  readonly createdBy?: User | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly inventoryCreatedById?: string | null;
 }
 
 type LazyInventory = {
@@ -142,8 +144,10 @@ type LazyInventory = {
   };
   readonly id: string;
   readonly items: AsyncCollection<Lego>;
+  readonly createdBy: AsyncItem<User | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly inventoryCreatedById?: string | null;
 }
 
 export declare type Inventory = LazyLoading extends LazyLoadingDisabled ? EagerInventory : LazyInventory
@@ -160,6 +164,7 @@ type EagerLego = {
   readonly id: string;
   readonly imageKey: string;
   readonly labels?: (string | null)[] | null;
+  readonly comments?: (Comment | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly inventoryItemsId?: string | null;
@@ -173,6 +178,7 @@ type LazyLego = {
   readonly id: string;
   readonly imageKey: string;
   readonly labels?: (string | null)[] | null;
+  readonly comments: AsyncCollection<Comment>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly inventoryItemsId?: string | null;
@@ -182,6 +188,44 @@ export declare type Lego = LazyLoading extends LazyLoadingDisabled ? EagerLego :
 
 export declare const Lego: (new (init: ModelInit<Lego>) => Lego) & {
   copyOf(source: Lego, mutator: (draft: MutableModel<Lego>) => MutableModel<Lego> | void): Lego;
+}
+
+type EagerComment = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Comment, 'id'>;
+    readOnlyFields: 'updatedAt';
+  };
+  readonly id: string;
+  readonly createdBy: User;
+  readonly parent?: string | null;
+  readonly comment: string;
+  readonly createdAt?: string | null;
+  readonly edited?: boolean | null;
+  readonly updatedAt?: string | null;
+  readonly legoCommentsId?: string | null;
+  readonly commentCreatedById: string;
+}
+
+type LazyComment = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Comment, 'id'>;
+    readOnlyFields: 'updatedAt';
+  };
+  readonly id: string;
+  readonly createdBy: AsyncItem<User>;
+  readonly parent?: string | null;
+  readonly comment: string;
+  readonly createdAt?: string | null;
+  readonly edited?: boolean | null;
+  readonly updatedAt?: string | null;
+  readonly legoCommentsId?: string | null;
+  readonly commentCreatedById: string;
+}
+
+export declare type Comment = LazyLoading extends LazyLoadingDisabled ? EagerComment : LazyComment
+
+export declare const Comment: (new (init: ModelInit<Comment>) => Comment) & {
+  copyOf(source: Comment, mutator: (draft: MutableModel<Comment>) => MutableModel<Comment> | void): Comment;
 }
 
 type EagerTrip = {
@@ -304,4 +348,44 @@ export declare type OrderItem = LazyLoading extends LazyLoadingDisabled ? EagerO
 
 export declare const OrderItem: (new (init: ModelInit<OrderItem>) => OrderItem) & {
   copyOf(source: OrderItem, mutator: (draft: MutableModel<OrderItem>) => MutableModel<OrderItem> | void): OrderItem;
+}
+
+type EagerReview = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Review, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly comment?: Comment | null;
+  readonly positive?: boolean | null;
+  readonly reviewOf: User;
+  readonly reviewBy: User;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly reviewCommentId?: string | null;
+  readonly reviewReviewOfId: string;
+  readonly reviewReviewById: string;
+}
+
+type LazyReview = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Review, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly comment: AsyncItem<Comment | undefined>;
+  readonly positive?: boolean | null;
+  readonly reviewOf: AsyncItem<User>;
+  readonly reviewBy: AsyncItem<User>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly reviewCommentId?: string | null;
+  readonly reviewReviewOfId: string;
+  readonly reviewReviewById: string;
+}
+
+export declare type Review = LazyLoading extends LazyLoadingDisabled ? EagerReview : LazyReview
+
+export declare const Review: (new (init: ModelInit<Review>) => Review) & {
+  copyOf(source: Review, mutator: (draft: MutableModel<Review>) => MutableModel<Review> | void): Review;
 }

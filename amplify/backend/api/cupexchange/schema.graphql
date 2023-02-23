@@ -46,12 +46,14 @@ type Store @model @auth(rules: [
 type Inventory @model @auth(rules: [{ allow: private }]) {
   id: ID!
   items: [Lego!]! @hasMany
+  createdBy: User @hasOne
 }
 
 type Lego @model @auth(rules: [{ allow: private }]) {
   id: ID!
   imageKey: String!
   labels: [String]
+  comments: [Comment] @hasMany
 }
 
 type Trip @model @auth(rules: [
@@ -74,6 +76,7 @@ type Order @model @auth(rules: [
   { allow: private, operations: [create, read] }
 ]) 
 {
+  id: ID!
   buyer: User! @hasOne
   shipper: User! @hasOne
   tracking: [String]!
@@ -88,4 +91,31 @@ type OrderItem @model @auth(rules: [
 ]) {
   item: Lego! @hasOne
   count: Int!
+}
+
+type Comment @model @auth(rules: [
+    { allow: groups, groups: ["moderators", "admins"], operations: [update, delete] },
+    { allow: owner, operations: [update, delete] },
+    { allow: private, operations: [create, read] }
+  ]) 
+{
+  id: ID!
+  createdBy: User! @hasOne
+  parent: String
+  comment: String!
+  createdAt: String
+  edited: Boolean
+}
+
+type Review @model @auth(rules: [
+    { allow: groups, groups: ["moderators", "admins"], operations: [update, delete] },
+    { allow: owner, operations: [update, delete] },
+    { allow: private, operations: [create, read] }
+  ]) 
+{
+  id: ID!
+  comment: Comment @hasOne
+  positive: Boolean
+  reviewOf: User! @hasOne
+  reviewBy: User! @hasOne
 }

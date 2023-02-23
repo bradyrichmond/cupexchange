@@ -12,6 +12,7 @@ export interface UserType {
   email: string
   userAddressId?: string | null
   paypalMeURL?: string
+
 }
 
 export const getUserData = createAsyncThunk<UserType, string>(

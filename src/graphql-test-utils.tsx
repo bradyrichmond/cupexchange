@@ -39,13 +39,7 @@ export const generateUsers = (count: number, seed?: string): UserType[] => {
     const users = [];
 
     for (let i = 0; i < count; i++) {
-        users.push({
-            id: getUuid('testid'),
-            fbUsername: `facebook_${userName}`,
-            first_name: getUuid(`first_name_${seed ?? (Math.random()*1000000).toString()}`),
-            last_name: getUuid(`last_name_${seed ?? (Math.random()*1000000).toString()}`),
-            email: `${getUuid(seed ?? (Math.random()*1000000).toString())}@cupexchange.com`
-        })
+        users.push(generateUser())
     }
 
     return users;
@@ -59,7 +53,8 @@ export const generateUser = (seed?: string): UserType => {
         fbUsername: `facebook_${userName}`,
         first_name: getUuid(`first_name_${seed ?? (Math.random()*1000000).toString()}`),
         last_name: getUuid(`last_name_${seed ?? (Math.random()*1000000).toString()}`),
-        email: `${getUuid(seed ?? (Math.random()*1000000).toString())}@cupexchange.com`
+        email: `${getUuid(seed ?? (Math.random()*1000000).toString())}@cupexchange.com`,
+        paypalMeURL: 'https://paypal.me/test'
     }
 }
 
@@ -72,25 +67,10 @@ export const generateOrderState = (seed?: string) => {
 }
 
 export const generateOrders = (count: number, seed?: string): OrderType[] => {
-    const numberOfCups = Math.ceil(Math.random() * 10);
-    const shippingPrice = 10;
-    const cupPrice = 18;
-
     const orders = [];
 
     for (let i = 0; i < count; i++) {
-        orders.push({
-            id: getUuid(`${numberOfCups}${i}_${(Math.random() * 1000000).toString()}`),
-            total: (numberOfCups * cupPrice) + shippingPrice,
-            orderBuyerId: getUuid(seed ?? (Math.random() * 1000000).toString()),
-            orderShipperId: getUuid(seed ?? (Math.random() * 1000000).toString()),
-            tracking: [],
-            orderTripId: getUuid(seed ?? (Math.random() * 1000000).toString()),
-            buyer: Promise.resolve(generateUser()),
-            shipper: Promise.resolve(generateUser()),
-            trip: Promise.resolve(generateTrip()),
-            createdAt: Date.now().toString(),
-        })
+        orders.push(generateOrder())
     }
 
     return orders;
@@ -128,14 +108,7 @@ export const generateTrips = (count: number, seed?: string): TripType[] => {
     const trips:TripType[] = [];
 
     for (let i = 0; i < count; i++) {
-        trips.push({
-            id: getUuid(`tripId_${i}_${(Math.random() * 1000000).toString()}`),
-            cupPrice: '18',
-            shippingPrice: '10',
-            orderExpiration: Date.now(),
-            tripStoreId: getUuid(seed ?? (Math.random() * 1000000).toString()),
-            tripShipperId: getUuid(seed ?? (Math.random() * 1000000).toString())
-        })
+        trips.push(generateTrip())
     }
 
     return trips;
@@ -164,13 +137,7 @@ export const generateStores = (count: number, seed?: string): StoreType[] => {
     let stores: StoreType[] = [];
 
     for (let i = 0; i < count; i++) {
-        stores.push({
-            id: getUuid(seed ?? (Math.random() * 1000000).toString()),
-            name: 'Test_Store',
-            district: 'Test_District',
-            city: 'Test_City',
-            storeInventoryId: getUuid(seed ?? (Math.random() * 1000000).toString())
-        })
+        stores.push(generateStore())
     }
 
     return stores;
@@ -194,12 +161,13 @@ export const createInventoryState = (seed?: string) => {
 }
 
 export const createLego = (count: number): LegoType[] => {
-    const lego = [];
+    const lego: LegoType[] = [];
 
     for (let i = 0; i < count; i++) {
         lego.push({
             id: getUuid((Math.random() * 1000000).toString()),
-            imageKey: getUuid((Math.random() * 1000000).toString())
+            imageKey: getUuid((Math.random() * 1000000).toString()),
+            comments: generateComments(2)
         })
     }
 
@@ -218,6 +186,44 @@ export const generateCartItem = (count: number) => {
     }
 
     return cartItems;
+}
+
+export const generateComment = () => {
+    return {
+        id: getUuid((Math.random() * 1000000).toString()),
+        createdBy: generateUser(),
+        parent: getUuid((Math.random() * 1000000).toString()),
+        comment: 'This is a comment',
+        createdAt: Date.now().toString(),
+        edited: false
+    }
+}
+
+export const generateComments = (count: number) => {
+    const comments = [];
+    for (let i = 0; i < count; i++) {
+        comments.push(generateComment());
+    }
+
+    return comments;
+}
+
+export const generateReview = () => {
+    return {
+        id: getUuid((Math.random() * 1000000).toString()),
+        comment: generateComment(),
+        positive: true,
+        reviewOf: generateUser(),
+        reviewBy: generateUser()
+    }
+}
+
+export const generateReviews = (count: number) => {
+    const reviews = [];
+
+    for (let i = 0; i < count; i++) {
+        reviews.push(generateReview());
+    }
 }
 
 export const generateCartState = () => {

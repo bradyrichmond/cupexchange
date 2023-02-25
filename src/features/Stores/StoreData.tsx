@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Badge, Box, Button, Modal, Paper, Typography } from '@mui/material';
 import { AddCircleOutline, Refresh, RemoveCircleOutline } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router';
 import { Storage } from '@aws-amplify/storage';
@@ -80,15 +80,15 @@ const StoreData = () => {
     }, [dispatch, id])
 
     return (
-        <Box display='flex' flexDirection='column' margin='2rem'>
+        <Box display='flex' flexDirection='column' padding='2rem' height='100%' flex='1'>
             <Modal
                 open={isAddingInventory}
                 onClose={stopDeletingStore}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box height="100%" width="100%" display='flex' justifyContent='center' alignItems='center' borderRadius='1rem' padding='2rem'>
-                    <FileUpload onComplete={handleFileUploadComplete} />
+                <Box height="100%" width="100%" display='flex' justifyContent='center' alignItems='center' padding='2rem'>
+                    <FileUpload onComplete={handleFileUploadComplete} onClose={stopAddingInventory}/>
                 </Box>
             </Modal>
             <Modal
@@ -101,12 +101,12 @@ const StoreData = () => {
                     <DeleteStoreModal cancel={stopDeletingStore} confirm={confirmDeleteStore} storeName={currentStoreData?.name ?? ' this store'} />
                 </Box>
             </Modal>
-            <Box flex='row'>
+            <Box display='flex' flexDirection='row' justifyContent='center' alignItems='center'>
                 <Typography fontSize='3rem' display='inline-block'>{currentStoreData?.name}</Typography>
-                <Typography fontSize='2rem' color='#ccc' paddingLeft='1rem' display='inline-block'>{`${currentStoreData?.city}, ${currentStoreData?.district}`}</Typography>
+                <Typography fontSize='2rem' paddingLeft='1rem' display='inline-block'> - {`${currentStoreData?.city}, ${currentStoreData?.district}`}</Typography>
             </Box>
-            <Box flex='1' paddingTop='2rem' borderTop='1px solid rgba(246,236,54,255)'>
-                <Box marginBottom='2rem' display='flex' flexDirection='row'>
+            <Box flex='1' paddingTop='2rem' borderTop='2px solid rgba(0,0,0,255)' display='flex' flexDirection='column'>
+                <Box paddingBottom='2rem' display='flex' flexDirection='row'>
                     {inventory && 
                         <Box flex='1'>
                             <Typography>Store Inventory as of {relativeUpdatedAt}</Typography>
@@ -118,7 +118,7 @@ const StoreData = () => {
                     </Box>
                 </Box>
                 {inventory && 
-                    <Box display='flex' flexDirection='row'>
+                    <Box display='flex' flexDirection='row' overflow='auto' flexWrap='wrap'>
                         {inventory?.map((inv) => {
                             return (
                                 <InventoryItem imageKey={inv?.imageKey} key={inv?.id} itemId={inv?.id ?? ''} comments={inv?.comments} itemAddedById={inv?.itemAddedById ?? ''}/>
@@ -186,7 +186,7 @@ export const InventoryItem = (props: InventoryItemProps) => {
     }
 
     return (
-        <Box border='2px solid rgba(246,236,54,255)' borderRadius='1rem' padding='2rem' margin='2rem' flex='1' minWidth='200px' display='flex' flexDirection='column'>
+        <Box border='2px solid rgba(0,0,0,255)' borderRadius='1rem' padding='2rem' minWidth='200px' maxWidth='600px' display='flex' flexDirection='column'>
             <Modal
                 open={isViewingComments}
                 onClose={stopViewingComments}
@@ -194,12 +194,10 @@ export const InventoryItem = (props: InventoryItemProps) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box height="100%" width="100%" display='flex' justifyContent='center' alignItems='center' borderRadius='1rem' padding='2rem'>
-                    <CommentsContent comments={comments} parent={itemId} itemAddedById={itemAddedById} />
+                    <CommentsContent comments={comments} parent={itemId} itemAddedById={itemAddedById} onClose={stopViewingComments}/>
                 </Box>
             </Modal>
-            <Box flex='1'>
-                <img src={url} alt=""  width='100%'/>
-            </Box>
+            <Paper style={{ backgroundImage: `url(${url})`, backgroundPosition: 'center', backgroundSize: 'contain', width: '400px', height: '400px' }} />
             <Box paddingTop='1rem'>
                 {addToOrder && itemCount < 1 && 
                     <Button onClick={addItemToCart}>Request a cup</Button>
@@ -208,7 +206,9 @@ export const InventoryItem = (props: InventoryItemProps) => {
                     <Counter itemCount={itemCount} addAction={addItem} minusAction={subtractItem}/>
                 }
                 <Box onClick={startViewingComments} data-testid='show-messages'>
-                    <ChatBubbleOutlineIcon />
+                    <Badge badgeContent={comments?.length ?? ''} color='primary'>
+                        <ChatBubbleOutlineIcon />
+                    </Badge>
                 </Box>
             </Box>
         </Box>

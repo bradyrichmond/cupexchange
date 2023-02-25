@@ -39,7 +39,7 @@ const Home = () => {
                 <Box>
                     <Navigation />
                 </Box>
-                <Box flex={1} height='100%' bgcolor='rgba(255, 207, 0, 255)'>
+                <Box flex='1' height='100%' bgcolor='rgba(255, 207, 0, 255)' display='flex' overflow='auto'>
                     <Outlet />
                 </Box>
             </Box>

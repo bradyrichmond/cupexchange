@@ -1,14 +1,16 @@
 import React, { ChangeEvent } from 'react';
-import { Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { Predictions, Storage } from 'aws-amplify';
 import {v4 as uuidv4} from 'uuid';
+import ModalContainer from './ModalContainer';
 
 interface FileUploadInput {
     onComplete: (results: { imageKey: string | undefined, labels: any[] | undefined }[]) => void;
+    onClose: () => void;
 }
 
 const FileUpload = (props: FileUploadInput) => {
-    const { onComplete } = props;
+    const { onComplete, onClose } = props;
 
     const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.currentTarget.files;
@@ -51,10 +53,19 @@ const FileUpload = (props: FileUploadInput) => {
     }
 
     return (
-        <Button variant="contained" component="label">
-            Upload
-            <input hidden accept="image/*" multiple type="file" onChange={handleChange} />
-        </Button>
+        <ModalContainer onClose={onClose}>
+            <Box display='flex' flexDirection='column' height='100%'>
+                <Box flex='1'>
+                    <Typography variant='h2'>
+                        Upload images from the store
+                    </Typography>
+                </Box>
+                <Button variant="contained" component="label">
+                    Upload
+                    <input hidden accept="image/*" multiple type="file" onChange={handleChange} />
+                </Button>
+            </Box>
+        </ModalContainer>
     )
 }
 

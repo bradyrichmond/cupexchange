@@ -24,12 +24,12 @@ const generatedComments = generateComments(10);
 describe('Comments', () => {
 
     it('renders when no comments are found', async () => {
-       renderWithProviders(<CommentsContent comments={[]} itemAddedById='1' />);
+       renderWithProviders(<CommentsContent comments={[]} itemAddedById='1' onClose={() => {}}/>);
        expect(screen.getByText("No comments")).toBeInTheDocument();
     });
 
     it('renders orders when they are found', async () => {
-        renderWithProviders(<CommentsContent comments={generatedComments} itemAddedById='1' />, {
+        renderWithProviders(<CommentsContent comments={generatedComments} itemAddedById='1' onClose={() => {}}/>, {
             preloadedState
         });
 

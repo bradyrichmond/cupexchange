@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
+import ModalContainer from '../../utils/ModalContainer';
 
 interface DeleteStoreModalProps {
     confirm: () => void
@@ -11,15 +12,16 @@ const DeleteStoreModal = (props: DeleteStoreModalProps) => {
     const { confirm, cancel, storeName } = props;
 
     return (
-        <Box padding='2rem' borderRadius='2rem' bgcolor='#ffffff'>
-            <Typography>Are you sure you want to delete {storeName}</Typography>
-            <Box display='flex' flexDirection='row'>
-                <Box flex='1' display='flex' justifyContent='center' alignItems='center'>
-                    <Button onClick={cancel}>Cancel</Button>
-                    <Button onClick={confirm}>Confirm</Button>
+        <ModalContainer onClose={cancel}>
+            <Box padding='2rem' borderRadius='2rem' bgcolor='#ffffff'>
+                <Typography>Are you sure you want to delete {storeName}</Typography>
+                <Box display='flex' flexDirection='row'>
+                    <Box flex='1' display='flex' justifyContent='center' alignItems='center'>
+                        <Button onClick={confirm}>Confirm</Button>
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+        </ModalContainer>
     )
 }
 

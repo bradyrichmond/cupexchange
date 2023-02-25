@@ -7,6 +7,7 @@ import { createStoreMutation, getStoreData } from './StoresSlice';
 import { DISTRICTS } from '../../utils/constants';
 import { DataStore } from 'aws-amplify';
 import { User } from '../../models';
+import ModalContainer from '../../utils/ModalContainer';
 
 interface CreateStoreFormProps {
     close: () => void
@@ -33,30 +34,32 @@ const CreateStoreForm = ({ close }: CreateStoreFormProps) => {
     }
 
     return (
-        <Box display='flex' justifyContent='center' alignItems='center' height='100%' width='100%'>
-            <Box bgcolor='rgba(255, 255, 255, 255)' borderRadius='1rem' padding='2rem'>
-                <Typography id="modal-modal-title" variant="h6" component="h2" marginBottom='2rem'>
-                    Create Store
-                </Typography>
-                <form onSubmit={handleSubmit(handleCreateStore)}>
-                    <TextField id="standard-basic" label="Store Name" variant="standard" {...register('storeName', { required: true, minLength: 2 })} />
-                    <TextField id="standard-basic" label="Store City" variant="standard" {...register('storeCity', { required: true, minLength: 2 })} />
-                    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                        <InputLabel>State</InputLabel>
-                        <Select
-                            onChange={handleDistrictChange}
-                            label="State"
-                            value={district}
-                        >
-                            {DISTRICTS?.map((district: string) => {
-                                return (<MenuItem value={district} key={district}>{district}</MenuItem>)
-                            })}
-                        </Select>
-                    </FormControl>
-                    <Button type='submit'>Create Store</Button>
-                </form>
+        <ModalContainer onClose={close}>
+            <Box display='flex' justifyContent='center' alignItems='center' height='100%' width='100%'>
+                <Box bgcolor='rgba(255, 255, 255, 255)' borderRadius='1rem' padding='2rem'>
+                    <Typography id="modal-modal-title" variant="h6" component="h2" marginBottom='2rem'>
+                        Create Store
+                    </Typography>
+                    <form onSubmit={handleSubmit(handleCreateStore)}>
+                        <TextField id="standard-basic" label="Store Name" variant="standard" {...register('storeName', { required: true, minLength: 2 })} />
+                        <TextField id="standard-basic" label="Store City" variant="standard" {...register('storeCity', { required: true, minLength: 2 })} />
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                            <InputLabel>State</InputLabel>
+                            <Select
+                                onChange={handleDistrictChange}
+                                label="State"
+                                value={district}
+                            >
+                                {DISTRICTS?.map((district: string) => {
+                                    return (<MenuItem value={district} key={district}>{district}</MenuItem>)
+                                })}
+                            </Select>
+                        </FormControl>
+                        <Button type='submit'>Create Store</Button>
+                    </form>
+                </Box>
             </Box>
-        </Box>
+        </ModalContainer>
     )
 }
 

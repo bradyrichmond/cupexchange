@@ -1,6 +1,6 @@
 import { DataStore } from "aws-amplify"
 import { CreateAddressInput } from "../API";
-import { Address, Order, Store, Trip, User } from "../models"
+import { Address, Order, Review, Store, Trip, User } from "../models"
 
 const getUserById = async (userId: string) => {
     const userData = await DataStore.query(User, userId);
@@ -44,10 +44,22 @@ const getOrdersForUser = async (userId: string) => {
     return orders;
 }
 
+const getOrderById = (orderId: string) => {
+    const order = DataStore.query(Order, orderId);
+    return order;
+}
+
+const getReviewsByOrderId = (orderId: string) => {
+    const reviews = DataStore.query(Review, (r) => r.reviewOrderId.eq(orderId));
+    return reviews;
+}
+
 export {
     createAddress,
     getAddressById,
+    getOrderById,
     getOrdersForUser,
+    getReviewsByOrderId,
     getStoreById,
     getTripsForUser,
     getUserById

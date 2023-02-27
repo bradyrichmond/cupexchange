@@ -6,7 +6,7 @@ import { getUserById } from '../../utils/base';
 import { banUser, selectUserCognitoGroups, selectUserData, UserType } from './UserSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { API, Auth } from 'aws-amplify';
-import UserHistory from './Userhistory';
+import UserHistory from './UserHistory';
 
 let initialUserData: UserType | undefined;
 

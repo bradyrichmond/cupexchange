@@ -357,12 +357,14 @@ type EagerReview = {
   };
   readonly id: string;
   readonly comment?: Comment | null;
+  readonly order?: Order | null;
   readonly positive?: boolean | null;
   readonly reviewOf: User;
   readonly reviewBy: User;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly reviewCommentId?: string | null;
+  readonly reviewOrderId?: string | null;
   readonly reviewReviewOfId: string;
   readonly reviewReviewById: string;
 }
@@ -374,12 +376,14 @@ type LazyReview = {
   };
   readonly id: string;
   readonly comment: AsyncItem<Comment | undefined>;
+  readonly order: AsyncItem<Order | undefined>;
   readonly positive?: boolean | null;
   readonly reviewOf: AsyncItem<User>;
   readonly reviewBy: AsyncItem<User>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly reviewCommentId?: string | null;
+  readonly reviewOrderId?: string | null;
   readonly reviewReviewOfId: string;
   readonly reviewReviewById: string;
 }

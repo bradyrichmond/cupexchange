@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Box, Card, Typography } from "@mui/material";
 import { getOrdersForUser, getTripsForUser } from '../../utils/base';
 import { Trip } from '../../models';
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridEventListener, GridRowsProp } from '@mui/x-data-grid';
 import { formatRelative, parseISO } from 'date-fns';
 import { Order } from '../../API';
+import { useNavigate } from 'react-router';
 
 interface UserHistoryProps {
     userId: string
@@ -30,17 +31,6 @@ interface UserOrderHistoryProps {
     userId: string
 }
 
-// id: string;
-//     buyer: User;
-//     shipper: User;
-//     tracking: Array<string | null>;
-//     numberOfCups: number;
-//     orders?: ModelOrderItemConnection | null | undefined;
-//     trip: Trip;
-//     total: number;
-//     createdAt: string;
-//     updatedAt: string;
-
 interface MorphedOrder {
     id: string
     storeName: string
@@ -53,6 +43,7 @@ let initialOrders: MorphedOrder[];
 const UserOrderHistory = (props: UserOrderHistoryProps) => {
     const { userId } = props;
     const [orders, setOrders] = useState(initialOrders);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getOrders = async () => {
@@ -85,8 +76,12 @@ const UserOrderHistory = (props: UserOrderHistoryProps) => {
         { field: 'numberOfCups', headerName: '# of cups', width: 250 },
     ];
 
-    const handleRowClick = () => {
-
+    const handleRowClick: GridEventListener<'rowClick'> = (
+        params,
+        event,
+        details,
+    ) => {
+        navigate(`/orders/${params.row.id}`);
     }
 
     return (
@@ -112,6 +107,7 @@ let initialTrips: MorphedTrips[];
 const UserTripHistory = (props: UserTripHistoryProps) => {
     const { userId } = props;
     const [trips, setTrips] = useState(initialTrips);
+    const navigate = useNavigate();
 
     const tripRows: GridRowsProp = trips ?? [];
 
@@ -141,8 +137,12 @@ const UserTripHistory = (props: UserTripHistoryProps) => {
         getTrips();
     }, [userId])
 
-    const handleRowClick = () => {
-
+    const handleRowClick: GridEventListener<'rowClick'> = (
+        params,
+        event,
+        details,
+    ) => {
+        navigate(`/orders/${params.row.id}`);
     }
 
     return (

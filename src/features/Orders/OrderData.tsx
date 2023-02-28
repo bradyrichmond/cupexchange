@@ -58,7 +58,7 @@ const OrderData = () => {
                         <Box marginTop='2rem' padding='2rem'>
                             {orderItems.map((item: OrderItem) => {
                                 return (
-                                    <OrderDataItem item={item} />
+                                    <OrderDataItem item={item} key={item.id} />
                                 )
                             })}
                         </Box>
@@ -95,7 +95,7 @@ const OrderDataItem = (props: OrderDataItemProps) => {
 
     return (
         <Box marginBottom='1rem' display='flex' flexDirection='row' alignItems='center'>
-            <Paper style={{height: '200px', width: '200px', background: `url('${imageUrl}')`, backgroundSize: 'contain', marginRight: '2rem'}} />
+            <Paper style={{height: '200px', width: '200px', backgroundImage: `url('${imageUrl}')`, backgroundSize: 'contain', marginRight: '2rem'}} />
             <Typography variant='h3'>{`${itemCount} cup(s)`}</Typography>
         </Box>
     )
@@ -153,7 +153,7 @@ const OrderDataActions = (props: OrderDataActionsProps) => {
                 </Box>
             </Modal>
             <Box display='flex' flexDirection='column' padding='2rem'>
-                {!shipperReview && currentUserData?.id !== shipperId &&  <Button variant='contained' onClick={() => startCreatingReview(shipperId)}>Submit Shipper Review</Button>}
+                {!shipperReview && currentUserData?.id !== shipperId &&<Button variant='contained' onClick={() => startCreatingReview(shipperId)}>Submit Shipper Review</Button>}
                 {!buyerReview && currentUserData?.id !== buyerId && <Button variant='contained' onClick={() => startCreatingReview(buyerId)}>Submit Buyer Review</Button>}
             </Box>
         </Box>

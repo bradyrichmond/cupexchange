@@ -7,6 +7,7 @@ import { Comment, User } from '../../models';
 import { useAppSelector } from '../../hooks';
 import { selectUserData } from '../User/UserSlice';
 import { createReview } from '../../utils/base';
+import { useParams } from 'react-router';
 
 interface CreateReviewModalProps {
     onClose: () => void
@@ -18,6 +19,7 @@ const CreateReviewModal = (props: CreateReviewModalProps) => {
     const [sentiment, setSentiment] = useState('positive');
     const { handleSubmit, register } = useForm();
     const currentUser = useAppSelector(selectUserData);
+    const { id } = useParams();
 
     const handleFormSubmit = async (data: any) => {
         const fullUserData = await DataStore.query(User, currentUser?.id ?? '');
@@ -26,7 +28,8 @@ const CreateReviewModal = (props: CreateReviewModalProps) => {
             if (data.comment){
                 newComment = await DataStore.save(new Comment({ comment: data.comment, commentCreatedById: currentUser?.id ?? '',  createdBy: fullUserData}));
             }
-            createReview({ positive: !!(sentiment === 'positive'), reviewCommentId: newComment?.id, reviewReviewOfId: reviewOfId, reviewReviewById: currentUser?.id ?? '' });
+            createReview({ positive: !!(sentiment === 'positive'), reviewCommentId: newComment?.id, reviewReviewOfId: reviewOfId, reviewReviewById: currentUser?.id ?? '' }, id ?? '');
+            onClose();
         }
     }
 

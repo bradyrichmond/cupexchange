@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Card, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { getOrdersForUser, getTripsForUser } from '../../utils/base';
 import { Trip } from '../../models';
 import { DataGrid, GridColDef, GridEventListener, GridRowsProp } from '@mui/x-data-grid';
 import { formatRelative, parseISO } from 'date-fns';
-import { Order } from '../../API';
 import { useNavigate } from 'react-router';
+import UserReviewHistory from '../Reviews/UserReviewHistory';
 
 interface UserHistoryProps {
     userId: string
@@ -22,6 +22,9 @@ const UserHistory = (props: UserHistoryProps) => {
             <Box display='flex' flexDirection='row' flex='1'>
                 <UserOrderHistory userId={userId} />
                 <UserTripHistory userId={userId} />
+            </Box>
+            <Box display='flex' flexDirection='row' flex='1' width='100%' marginTop='2rem'>
+                <UserReviewHistory userId={userId} />
             </Box>
         </Box>
     )

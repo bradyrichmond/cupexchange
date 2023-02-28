@@ -1,5 +1,5 @@
 import { DataStore } from "aws-amplify"
-import { CreateAddressInput } from "../API";
+import { CreateAddressInput, CreateReviewInput } from "../API";
 import { Address, Order, Review, Store, Trip, User } from "../models"
 
 const getUserById = async (userId: string) => {
@@ -54,8 +54,18 @@ const getReviewsByOrderId = (orderId: string) => {
     return reviews;
 }
 
+const createReview = async (input: CreateReviewInput) => {
+    const { positive, reviewCommentId, reviewReviewOfId, reviewReviewById } = input;
+    const reviewBy = await DataStore.query(User, reviewReviewById);
+    const reviewOf = await DataStore.query(User, reviewReviewOfId);
+    if (reviewBy && reviewOf) {
+        await DataStore.save(new Review({ positive, reviewCommentId, reviewReviewById, reviewReviewOfId, reviewBy, reviewOf }));
+    }
+}
+
 export {
     createAddress,
+    createReview,
     getAddressById,
     getOrderById,
     getOrdersForUser,

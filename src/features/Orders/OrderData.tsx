@@ -3,11 +3,12 @@ import { Box } from '@mui/system';
 import { useParams } from 'react-router';
 import { getOrderById, getReviewsByOrderId } from '../../utils/base';
 import { Order, OrderItem, Review, User } from '../../models';
-import { Button, Card, Paper, Typography } from '@mui/material';
+import { Button, Card, Modal, Paper, Typography } from '@mui/material';
 import { format, parseISO } from 'date-fns';
 import { Storage } from 'aws-amplify';
 import { useAppSelector } from '../../hooks';
 import { selectUserData } from '../User/UserSlice';
+import CreateReviewModal from '../Reviews';
 
 let initialOrder: Order;
 let initialOrderItems: OrderItem[];
@@ -112,8 +113,10 @@ const OrderDataActions = (props: OrderDataActionsProps) => {
     const { reviews, buyerId, shipperId } = props;
     const [buyerReview, setBuyerReview] = useState(initialReview);
     const [shipperReview, setShipperReview] = useState(initialReview);
+    const [creatingReview, setCreatingReview] = useState(false);
+    const [reviewOf, setReviewOf] = useState('');
     const currentUserData = useAppSelector(selectUserData);
-
+    
     useEffect(() => {
         const load = async () => {
             const fetchedBuyerReviewComment = await reviews.find(r => r.reviewReviewById === buyerId)?.comment;
@@ -126,13 +129,32 @@ const OrderDataActions = (props: OrderDataActionsProps) => {
         }
 
         load();
-    }, [reviews])
+    }, [reviews, buyerId, shipperId])
+
+    const handleClose = () => {
+        setCreatingReview(false);
+    }
+
+    const startCreatingReview = (reviewOfId: string) => {
+        setReviewOf(reviewOfId);
+        setCreatingReview(true);
+    }
     
     return (
         <Box display='flex' flexDirection='row'>
-            <Box display='flex' flexDirection='column'>
-                {!shipperReview && currentUserData?.id !== shipperId && <Button variant='contained'>Submit Shipper Review</Button>}
-                {!buyerReview && currentUserData?.id !== buyerId && <Button variant='contained'>Submit Buyer Review</Button>}
+            <Modal
+                open={creatingReview}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box width='100%' height='100%' display='flex' justifyContent='center' alignItems='center'>
+                    <CreateReviewModal onClose={handleClose} reviewOfId={reviewOf}/>
+                </Box>
+            </Modal>
+            <Box display='flex' flexDirection='column' padding='2rem'>
+                {!shipperReview && currentUserData?.id !== shipperId &&  <Button variant='contained' onClick={() => startCreatingReview(shipperId)}>Submit Shipper Review</Button>}
+                {!buyerReview && currentUserData?.id !== buyerId && <Button variant='contained' onClick={() => startCreatingReview(buyerId)}>Submit Buyer Review</Button>}
             </Box>
         </Box>
     )

@@ -115,6 +115,7 @@ type Review @model @auth(rules: [
 {
   id: ID!
   comment: Comment @hasOne
+  order: Order @hasOne
   positive: Boolean
   reviewOf: User! @hasOne
   reviewBy: User! @hasOne

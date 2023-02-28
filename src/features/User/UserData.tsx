@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card } from '@mui/material';
+import { Button, Card, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useParams } from 'react-router';
 import { getUserById } from '../../utils/base';
 import { banUser, selectUserCognitoGroups, selectUserData, UserType } from './UserSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { API, Auth } from 'aws-amplify';
+import UserHistory from './UserHistory';
 
 let initialUserData: UserType | undefined;
 
@@ -63,13 +64,20 @@ const UserData = () => {
     }
 
     return (
-        <Box padding='2rem'>
-            <Card>
-                <Box display='flex' justifyContent='center' alignItems='center' paddingBottom='3rem'>{idUser?.first_name} {idUser?.last_name}</Box>
-                {userIsModerator && currentUser?.id !== id && <Box><Button variant='contained' color='secondary' onClick={handleBanUser}>Ban User</Button></Box>}
-                {userIsAdmin && currentUser?.id !== id  && <Box><Button variant='contained' color='secondary' onClick={handlePromoteToModerator}>Promote User to Moderator</Button></Box>}
-                {userIsAdmin && currentUser?.id !== id  && <Box><Button variant='contained' color='secondary' onClick={handlePromoteToAdmin}>Promote User to Admin</Button></Box>}
-            </Card>
+        <Box padding='2rem' width='100%' height='100%' display='flex' flexDirection='column' flex='1'>
+            <Box marginBottom='2rem'>
+                <Card>
+                    <Box display='flex' justifyContent='center' alignItems='center' paddingBottom='3rem'>
+                        <Typography variant='h2'>{idUser?.first_name} {idUser?.last_name}</Typography>
+                    </Box>
+                    {userIsModerator && currentUser?.id !== id && <Box><Button variant='contained' color='secondary' onClick={handleBanUser}>Ban User</Button></Box>}
+                    {userIsAdmin && currentUser?.id !== id  && <Box><Button variant='contained' color='secondary' onClick={handlePromoteToModerator}>Promote User to Moderator</Button></Box>}
+                    {userIsAdmin && currentUser?.id !== id  && <Box><Button variant='contained' color='secondary' onClick={handlePromoteToAdmin}>Promote User to Admin</Button></Box>}
+                </Card>
+            </Box>
+            <Box flex='1' display='flex' flexDirection='column'>
+                <UserHistory userId={id ?? ''} />
+            </Box>
         </Box>
     )
 }

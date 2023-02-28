@@ -1139,6 +1139,24 @@ export const schema = {
                         ]
                     }
                 },
+                "order": {
+                    "name": "order",
+                    "isArray": false,
+                    "type": {
+                        "model": "Order"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "reviewOrderId"
+                        ]
+                    }
+                },
                 "positive": {
                     "name": "positive",
                     "isArray": false,
@@ -1200,6 +1218,13 @@ export const schema = {
                 },
                 "reviewCommentId": {
                     "name": "reviewCommentId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "reviewOrderId": {
+                    "name": "reviewOrderId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -1270,5 +1295,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.5",
-    "version": "7d8e71065050a09a3c92d8434f7c2f51"
+    "version": "83f56ba1c6a167859d7ddfeed912e5c7"
 };

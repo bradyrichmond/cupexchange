@@ -24,6 +24,7 @@ import Orders from './features/Orders';
 import Cart from './features/Orders/Cart';
 import Profile from './features/User/Profile';
 import UserData from './features/User/UserData';
+import OrderData from './features/Orders/OrderData';
 
 export const buildRoutes = (isLoggedIn: boolean, pathname: string, userIsModerator: boolean) => createBrowserRouter([
   {
@@ -37,6 +38,10 @@ export const buildRoutes = (isLoggedIn: boolean, pathname: string, userIsModerat
       {
         path: 'orders',
         element: <Orders />
+      },
+      {
+        path: 'orders/:id',
+        element: <OrderData />
       },
       {
         path: 'stores',

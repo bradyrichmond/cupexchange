@@ -1,32 +1,89 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Typography } from "@mui/material";
+import { Box, Theme, Typography } from "@mui/material";
 import { getOrdersForUser, getTripsForUser } from '../../utils/base';
 import { Trip } from '../../models';
 import { DataGrid, GridColDef, GridEventListener, GridRowsProp } from '@mui/x-data-grid';
 import { formatRelative, parseISO } from 'date-fns';
 import { useNavigate } from 'react-router';
 import UserReviewHistory from '../Reviews/UserReviewHistory';
+import { ResponsiveContext } from '../Home';
+import { createStyles, makeStyles } from '@mui/styles';
 
 interface UserHistoryProps {
     userId: string
 }
 
+const useMobileStyles = makeStyles((theme: Theme) => createStyles({
+    userHistoryContainer: {
+        flex: '1',
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    title: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    historyContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        flex: '1',
+        minHeight: '1000px'
+    }
+}));
+
+const useStyles = makeStyles((theme: Theme) => createStyles({
+    userHistoryContainer: {
+        flex: '1',
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    title: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: '3rem'
+    },
+    historyContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        flex: '1'
+    }
+}));
+
 const UserHistory = (props: UserHistoryProps) => {
     const { userId } = props;
+    const mobileStyles = useMobileStyles();
+    const styles = useStyles();
 
     return (
-        <Box flex='1' display='flex' flexDirection='column'>
-            <Box display='flex' justifyContent='center' alignItems='center' paddingBottom='3rem'>
-                <Typography variant='h2'>History</Typography>
-            </Box>
-            <Box display='flex' flexDirection='row' flex='1'>
-                <UserOrderHistory userId={userId} />
-                <UserTripHistory userId={userId} />
-            </Box>
-            <Box display='flex' flexDirection='row' flex='1' width='100%' marginTop='2rem'>
-                <UserReviewHistory userId={userId} />
-            </Box>
-        </Box>
+        <ResponsiveContext.Consumer>
+            {({
+                isDesktopOrLaptop,
+                isBigScreen,
+                isTabletOrMobile,
+                isPortrait,
+                isRetina
+            }) => {
+                const classes = isTabletOrMobile ? mobileStyles : styles;
+
+                return (
+                    <Box className={classes.userHistoryContainer}>
+                        <Box className={classes.title}>
+                            <Typography variant='h2'>History</Typography>
+                        </Box>
+                        <Box className={classes.historyContainer}>
+                            <UserOrderHistory userId={userId} />
+                            <UserTripHistory userId={userId} />
+                        </Box>
+                        <Box className={classes.historyContainer}>
+                            <UserReviewHistory userId={userId} />
+                        </Box>
+                    </Box>
+                )
+            }
+        }
+        </ResponsiveContext.Consumer>
     )
 }
 
@@ -88,7 +145,7 @@ const UserOrderHistory = (props: UserOrderHistoryProps) => {
     }
 
     return (
-        <Box flex='1' display='flex' justifyContent='center' alignItems='center' flexDirection='column'>
+        <Box flex='1' display='flex' justifyContent='center' alignItems='center' flexDirection='column' minHeight='300px' paddingTop='2rem'>
             <Typography variant='h3'>User Order History</Typography>
             <DataGrid onRowClick={handleRowClick} rows={orderRows} columns={orderColumns} style={{background: 'rgba(255, 255, 255, 255)', borderRadius: '2rem', color: 'rgba(131,133,146,255)', padding: '2rem', fontSize: '1.5rem', fontWeight: 'bold', width: '90%' }}/>
         </Box>
@@ -149,7 +206,7 @@ const UserTripHistory = (props: UserTripHistoryProps) => {
     }
 
     return (
-        <Box flex='1' display='flex' justifyContent='center' alignItems='center' flexDirection='column'>
+        <Box flex='1' display='flex' justifyContent='center' alignItems='center' flexDirection='column' minHeight='300px'>
             <Typography variant='h3'>User Trip History</Typography>
             <DataGrid onRowClick={handleRowClick} rows={tripRows} columns={tripColumns} style={{background: 'rgba(255, 255, 255, 255)', borderRadius: '2rem', color: 'rgba(131,133,146,255)', padding: '2rem', fontSize: '1.5rem', fontWeight: 'bold', width: '90%' }}/>
         </Box>

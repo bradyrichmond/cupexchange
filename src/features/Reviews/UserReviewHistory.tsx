@@ -67,8 +67,8 @@ const UserReviewHistory = (props: UserReviewHistoryProps) => {
 
     return (
         <Box width='100%' display='flex' justifyContent='center' alignItems='center' flexDirection='column'>
-            <Typography variant='h2'>User Review History</Typography>
-            <Box display='flex' flexDirection='row' flex='1' width='100%'>
+            <Typography variant='h3'>User Review History</Typography>
+            <Box display='flex' flexDirection='row' flex='1' width='100%' minHeight='300px'>
                 <Box flex='1'>
                     <PieChart data={[
                         { title: 'Positive', value: positiveCount, color: '#23C552' },
